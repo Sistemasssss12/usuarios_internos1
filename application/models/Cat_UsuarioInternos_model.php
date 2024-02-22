@@ -15,13 +15,19 @@ class Cat_UsuarioInternos_model extends CI_Model{
   }
   function get(){
     $this->db
-    ->select("u.*, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as referente")
-    ->from('usuario as u')
+    /*->select("u.*, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as referente")
+    ->from('usuario as u','rol as r')
     //->join('usuario as u','u.id = u.id_usuario',"left")
-    //->join('usuario_cliente as uc','uc.id_Usuario = c.id',"left")
-    ->where('u.eliminado', 0)
-    ->order_by('u.creacion','ASC')
-    ->group_by('u.id');
+   // ->join('rol as r','u.id_Usuario = c.id',"left")
+    ->where('u.eliminado', 0) */
+    ->select("u.*, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as referente, r.nombre as nombre_rol")
+        ->from('usuario as u')
+        ->join('rol as r', 'r.id_usuario = u.id_rol', 'left')  // Agregar JOIN con la tabla 'rol'
+        ->where('u.eliminado', 0)
+        ->where('u.status', 1);
+
+  //  ->order_by('u.creacion','ASC');
+    //->group_by('u.id');
 
     $query = $this->db->get();
     if($query->num_rows() > 0){
