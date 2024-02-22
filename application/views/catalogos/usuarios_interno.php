@@ -31,15 +31,13 @@
 	<?php echo $modals; ?>
 	<div class="loader" style="display: none;"></div>
 	<input type="hidden" id="idusuario">
-	<input type="hidden" id="idUsuarioCliente">
-
-
+	<!--<input type="hidden" id="idUsuarioCliente"> -->
 </div>
 <!-- /.content-wrapper -->
 <script>
 	var url = '<?php echo base_url('Cat_UsuarioInternos/get'); ?>';
-	var tipos_bloqueo_php = '<?php foreach($tipos_bloqueo as $row){ echo '<option value="'.$row->tipo.'">'.$row->descripcion.'</option>';} ?>';
-	var tipos_desbloqueo_php = '<?php foreach($tipos_desbloqueo as $row){ echo '<option value="'.$row->tipo.'">'.$row->descripcion.'</option>';} ?>';
+	//var tipos_bloqueo_php = '< ?php foreach($tipos_bloqueo as $row){ echo '<option value="'.$row->tipo.'">'.$row->descripcion.'</option>';} ?>';
+	//var tipos_desbloqueo_php = '< ?php foreach($tipos_desbloqueo as $row){ echo '<option value="'.$row->tipo.'">'.$row->descripcion.'</option>';} ?>';
 	$(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
 		$('#newModal').on('shown.bs.modal', function() {
@@ -70,7 +68,7 @@
 					visible: false
 				},
 				{
-					title: 'Nombre',
+					title: 'Nombre de usuario',
 					data: 'nombre',
 					bSortable: false,
 					"width": "20%",
@@ -78,15 +76,15 @@
             return '<span class="badge badge-pill badge-dark">#' + full.id + '</span><br><b>'+data+'</b>';
           }
 				},
-				/*{
-					title: 'Clave',
-					data: 'clave',
+				{
+					title: 'Tipo de rol',
+					data: 'id_rol',
 					bSortable: false,
 					"width": "3%",
           mRender: function(data, type, full){
             return '<b>'+data+'</b>';
           }
-				},*/
+				},
 				{
 					title: 'Fecha de alta',
 					data: 'creacion',
@@ -103,8 +101,8 @@
 						return tiempo;
 					}
 				},
-				{
-					title: 'Accesos',
+			/*	{
+					title: 'Acessos',
 					data: 'numero_accesos',
 					bSortable: false,
 					"width": "10%",
@@ -115,7 +113,7 @@
 							return 'Cuenta con ' + data + ' registro(s) de acceso';
 						}
 					}
-				},
+				},*/
 				{
 					title: 'Acciones',
 					data: 'id',
@@ -123,14 +121,14 @@
 					"width": "10%",
 					mRender: function(data, type, full) {
             let editar = '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
-            let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar Usuario" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
-            let acceso = '<a href="javascript:void(0)" data-toggle="tooltip" title="Ver accesos" id="acceso" class="fa-tooltip icono_datatable icono_azul_claro"><i class="fas fa-sign-in-alt"></i></a>';
+            let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar Usuario" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> '; 
+           let acceso = '<a href="javascript:void(0)" data-toggle="tooltip" title="Ver accesos" id="acceso" class="fa-tooltip icono_datatable icono_azul_claro"><i class="fas fa-sign-in-alt"></i></a>';
 
-            let accion = (full.status == 0)? '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' : '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> ';
+           let accion = (full.status == 0)? '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' : '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> '; 
             
-            let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> ';
+            let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> '; 
 						
-            return editar + accion + eliminar + acceso + bloqueo;
+            return editar + eliminar + bloqueo;
 					}
 				}
 			],
@@ -187,7 +185,7 @@
                 salida += '<th scope="col">Alta</th>';
                 salida += '<th scope="col">Usuario</th>';
                 salida += '<th scope="col">Categoría</th>';
-                salida += '<th scope="col">Eliminar</th>';
+               /* salida += '<th scope="col">Eliminar</th>';*/
                 salida += '</tr>';
                 salida += '</thead>';
                 salida += '<tbody>';
