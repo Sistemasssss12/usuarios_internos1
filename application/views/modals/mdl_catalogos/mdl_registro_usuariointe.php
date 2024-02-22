@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-12">
               <label>Tipo de rol *</label>
-              <select class="form-control" id="tipo_rol" name="tipo_rol">
+              <select class="form-control" id="tipo_rol" name="id_rol">
                 <option value="1">Administrador</option>
                 <option value="2">Analista</option>
                 <option value="4">Reclutadora</option>

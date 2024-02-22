@@ -83,6 +83,17 @@
 					"width": "3%",
           mRender: function(data, type, full){
             return '<b>'+data+'</b>';
+						/*var selectHTML = '<div class="col-12"><label>Tipo de rol *</label><select class="form-control" id="id_rol" name="id_rol">' +
+            '<option value="1">Administrador</option>' +
+            '<option value="2">Analista</option>' +
+            '<option value="4">Reclutadora</option>' +
+            '<option value="6">Gerente</option>' +
+            '<option value="9">Lider de proyecto</option>' +
+            '<option value="10">Recursos Humanos</option>' +
+            '<option value="11">Coordinadora de reclutamiento</option>' +
+            '</select><br></div>';
+
+        return selectHTML;*/
           }
 				},
 				{

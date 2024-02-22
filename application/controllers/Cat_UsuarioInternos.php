@@ -296,23 +296,23 @@ class Cat_UsuarioInternos extends CI_Controller{
       $id_usuario = $this->session->userdata('id');
       date_default_timezone_set('America/Mexico_City');
       $date = date('Y-m-d H:i:s');
-      $nombre = $this->input->post('nombre');
-      $paterno = $this->input->post('paterno');
-      $materno = $this->input->post('materno');
-      $tipo_rol = $this->input->post('tipo_rol');
+      $nombre = $this->input->post('nombre_usuario');
+      $paterno = $this->input->post('paterno_usuario');
+      $materno = $this->input->post('materno_usuario');
+      $id_rol = $this->input->post('id_rol_usuario');
       $correo = $this->input->post('correo');
       $uncode_password = $this->input->post('password');
       $base = 'k*jJlrsH:cY]O^Z^/J2)Pz{)qz:+yCa]^+V0S98Zf$sV[c@hKKG07Q{utg%OlODS';
       $password = md5($base.$uncode_password);
       $idUsuario = $this->input->post('id_Usuario');
 
-      $id_usuario = array(
+      $UsuariosInternos = array(
         'creacion' => $date,
         'edicion' => $date,
         'id_Usuario' => $idUsuario ,
         'nombre' => $nombre,
         'paterno' => $paterno,
-        'tipo_rol' => $tipo_rol,
+        'id_rol' => $id_rol,
         'correo' => $correo,
         'password' => $password,
       

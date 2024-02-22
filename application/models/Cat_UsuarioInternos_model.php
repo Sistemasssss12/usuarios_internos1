@@ -8,7 +8,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     ->select("u.id")
     ->from('usuario as u')
     ->where('u.eliminado', 0)
-    ->where('u.eliminado', 0);
+    ->where('u.status', 1);
 
     $query = $this->db->get();
     return $query->num_rows();
