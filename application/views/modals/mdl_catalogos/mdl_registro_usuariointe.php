@@ -12,7 +12,7 @@
           <div class="row">
             <div class="col-md-12">
               <label>Usuarios internos*</label>
-              <select name="id_Usuario" id="id_cliente" class="form-control"></select>
+              <select name="nombre" id="nombre" class="form-control"></select>
               <br>
             </div>
           </div>
@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-12">
               <label>Tipo de rol *</label>
-              <select class="form-control" id="tipo_rol" name="id_rol">
+              <select class="form-control" id="id_rol" name="id_rol">
                 <option value="1">Administrador</option>
                 <option value="2">Analista</option>
                 <option value="4">Reclutadora</option>
@@ -102,14 +102,14 @@
   </div>
 </div> ---->
 <script>
-  /*$("#newModal").on("hidden.bs.modal", function() {
+  $("#newModal").on("hidden.bs.modal", function() {
     $("#newModal input").val("");
     $("#newModal #msj_error").css('display', 'none');
     $("#titulo_nuevo_modal").text("Nuevo cliente");
-  }); */
+  }); 
   $("#accesoModal").on("hidden.bs.modal", function() {
     $("#accesoModal input, #accesoModal select").val("");
-    $("#accesoModal #tipo_rol").val(0);
+    $("#accesoModal #id_rol").val(0);
     $("#accesoModal input").removeClass("requerido");
     $("#accesoModal #msj_error").css('display', 'none');
     $("#idCliente").val("");

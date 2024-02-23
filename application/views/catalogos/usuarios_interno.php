@@ -73,12 +73,21 @@
 					bSortable: false,
 					"width": "20%",
           mRender: function(data, type, full){
-            return '<span class="badge badge-pill badge-dark">#' + full.id + '</span><br><b>'+data+'</b>';
+            return '<span class="badge badge-pill badge-dark">' + '</span><br><b>'+data+'</b>';
+          }
+				},
+				{
+					title: 'Apellidos',
+					data: 'paterno',
+					bSortable: false,
+					"width": "20%",
+          mRender: function(data, type, full){
+            return '<span class="badge badge-pill badge-dark">' + '</span><br><b>'+data+'</b>';
           }
 				},
 				{
 					title: 'Tipo de rol',
-					data: 'id_rol',
+					data: 'nombre_rol',
 					bSortable: false,
 					"width": "3%",
           mRender: function(data, type, full){
@@ -429,11 +438,11 @@
           $('.loader').fadeOut();
         },200);
         if(res != 0){
-          $('#id_cliente').empty();
+          $('#nombre').empty();
           var dato = JSON.parse(res);
-          $('#id_cliente').append('<option value="">Selecciona</option>');
+          $('#nombre').append('<option value="">Selecciona</option>');
           for(let i = 0; i < dato.length; i++){
-            $('#id_cliente').append('<option value="'+dato[i]['id']+'">'+dato[i]['nombre']+'</option>');
+            $('#nombre').append('<option value="'+dato[i]['id']+'">'+dato[i]['nombre']+' '+dato[i]['paterno']+'</option>');
           }
           $('#nuevoAccesoUsuariosInternos').modal('show');
         }

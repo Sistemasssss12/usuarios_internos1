@@ -131,7 +131,7 @@ class Cat_UsuarioInternos extends CI_Controller{
     }
     echo json_encode($msj);
   } */
-  /*function status(){
+  function status(){
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
     $idCliente = $this->input->post('id');
@@ -142,9 +142,9 @@ class Cat_UsuarioInternos extends CI_Controller{
         'id_usuario' => $id_usuario,
         'status' => 0
       );
-      $this->cat_cliente_model->edit($data, $idCliente);
-      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
-      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente);
+      $this->cat_UsuarioInternos_model->edit($data, $idCliente);
+      //$this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
+      //$this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente); --QUITAR
       $msj = array(
         'codigo' => 1,
         'msg' => 'Cliente inactivado correctamente'
@@ -264,7 +264,7 @@ class Cat_UsuarioInternos extends CI_Controller{
       );
     }
     echo json_encode($msj);
-  }   */
+  }   
   function getActivos(){
     $res = $this->Cat_UsuarioInternos_model->getActivos();
     if($res){
@@ -278,6 +278,7 @@ class Cat_UsuarioInternos extends CI_Controller{
     $this->form_validation->set_rules('nombre', 'nombre', 'required|trim');
     $this->form_validation->set_rules('paterno', 'paterno', 'required|trim');
     $this->form_validation->set_rules('materno', 'materno', 'required|trim');
+  
     $this->form_validation->set_rules('correo', 'Correo', 'required|trim|valid_email|is_unique[usuario.correo]');
     $this->form_validation->set_rules('password', 'Contraseña', 'required|trim');
 
@@ -296,20 +297,20 @@ class Cat_UsuarioInternos extends CI_Controller{
       $id_usuario = $this->session->userdata('id');
       date_default_timezone_set('America/Mexico_City');
       $date = date('Y-m-d H:i:s');
-      $nombre = $this->input->post('nombre_usuario');
-      $paterno = $this->input->post('paterno_usuario');
-      $materno = $this->input->post('materno_usuario');
-      $id_rol = $this->input->post('id_rol_usuario');
+      $nombre = $this->input->post('nombre');
+      $paterno = $this->input->post('paterno');
+      $materno = $this->input->post('materno');
+      $id_rol = $this->input->post('id_rol');
       $correo = $this->input->post('correo');
       $uncode_password = $this->input->post('password');
       $base = 'k*jJlrsH:cY]O^Z^/J2)Pz{)qz:+yCa]^+V0S98Zf$sV[c@hKKG07Q{utg%OlODS';
       $password = md5($base.$uncode_password);
-      $idUsuario = $this->input->post('id_Usuario');
+      $idUsuario = $this->input->post('id_usuario');
 
       $UsuariosInternos = array(
         'creacion' => $date,
         'edicion' => $date,
-        'id_Usuario' => $idUsuario ,
+        'id_usuario' => $id_usuario ,
         'nombre' => $nombre,
         'paterno' => $paterno,
         'id_rol' => $id_rol,
@@ -317,7 +318,8 @@ class Cat_UsuarioInternos extends CI_Controller{
         'password' => $password,
       
       );
-      $this->Cat_UsuarioInternos_model->addUsuarioInterno($usuario);
+      var_dump($UsuariosInternos);
+      $this->Cat_UsuarioInternos_model->addUsuarioInterno($UsuariosInternos);
 
       $dataCliente = $this->Cat_UsuarioInternos_model->getById($idUsuario );
       if($dataCliente->ingles == 0){
