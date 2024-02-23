@@ -100,22 +100,22 @@ class Cat_UsuarioInternos_model extends CI_Model{
       return FALSE;
     }
   }
-  function editAccesoUsuarioCliente($usuario, $idUsuario){
+  function editAccesoUsuarioCliente($usuario, $idusuario){
     $this->db
-    ->where('id_usuario', $idUsuario)
+    ->where('id_usuario', $idusuario)
     ->update('usuario_cliente', $usuario);
   }
-  function editAccesoUsuarioSubcliente($usuario, $idUsuario){
+  function editAccesoUsuarioSubcliente($usuario, $idusuario){
     $this->db
-    ->where('id_usuario', $idUsuario)
+    ->where('id_usuario', $idusuario)
     ->update('usuario_subcliente', $usuario);
   }
   function addUsuarioInterno($usuario){
     $this->db->insert("usuario", $usuario);
   }
-  function deleteAccesoUsuarioCliente($idUsuarioCliente){
+  function deleteAccesoUsuarioCliente($idusuarioCliente){
     $this->db
-    ->where('id', $idUsuarioCliente)
+    ->where('id', $idusuarioCliente)
     ->delete('usuario_cliente');
   }
 

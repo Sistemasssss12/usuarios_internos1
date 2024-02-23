@@ -134,7 +134,7 @@ class Cat_UsuarioInternos extends CI_Controller{
   function status(){
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
-    $idCliente = $this->input->post('id');
+    $idUsuario = $this->input->post('id');
     $accion = $this->input->post('accion');
     if($accion == "desactivar"){
       $data = array(
@@ -142,7 +142,7 @@ class Cat_UsuarioInternos extends CI_Controller{
         'id_usuario' => $id_usuario,
         'status' => 0
       );
-      $this->cat_UsuarioInternos_model->edit($data, $idCliente);
+      $this->cat_UsuarioInternos_model->edit($data, $idUsuario);
       //$this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
       //$this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente); --QUITAR
       $msj = array(
@@ -156,9 +156,9 @@ class Cat_UsuarioInternos extends CI_Controller{
         'id_usuario' => $id_usuario,
         'status' => 1
       );
-      $this->cat_cliente_model->edit($data, $idCliente);
-      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
-      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente);
+      $this->cat_cliente_model->edit($data, $idUsuario);
+      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idUsuario);
+      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idUsuario);
 
       $msj = array(
         'codigo' => 1,
@@ -171,9 +171,9 @@ class Cat_UsuarioInternos extends CI_Controller{
         'id_usuario' => $id_usuario,
         'eliminado' => 1
       );
-      $this->cat_cliente_model->edit($data, $idCliente);
-      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
-      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente);
+      $this->cat_cliente_model->edit($data, $idUsuario);
+      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idUsuario);
+      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idUsuario);
       $msj = array(
         'codigo' => 1,
         'msg' => 'Cliente eliminado correctamente'
@@ -185,10 +185,10 @@ class Cat_UsuarioInternos extends CI_Controller{
         'id_usuario' => $id_usuario,
         'bloqueado' => $this->input->post('opcion_motivo')
       );
-      $this->cat_cliente_model->edit($cliente, $idCliente);
+      $this->cat_cliente_model->edit($cliente, $idUsuario);
 
       if($this->input->post('bloquear_subclientes') === 'SI'){
-        $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idCliente);
+        $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idUsuario);
         if($data['subclientes']){
           foreach($data['subclientes'] as $row){
             $subcliente = array(
@@ -205,13 +205,13 @@ class Cat_UsuarioInternos extends CI_Controller{
       $dataBloqueos = array(
         'status' => 0
       );
-      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idCliente);
+      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idUsuario);
 
       $data_bloqueo = array(
         'creacion' => $date,
         'id_usuario' => $id_usuario,
         'descripcion' => $this->input->post('opcion_descripcion'),
-        'id_cliente' => $idCliente,
+        'id_cliente' => $idUsuario,
         'bloqueo_subclientes' => $this->input->post('bloquear_subclientes'),
         'tipo' => 'BLOQUEO',
         'mensaje' => $this->input->post('mensaje_comentario'),
@@ -228,9 +228,9 @@ class Cat_UsuarioInternos extends CI_Controller{
         'id_usuario' => $id_usuario,
         'bloqueado' => 'NO'
       );
-      $this->cat_cliente_model->edit($cliente, $idCliente);
+      $this->cat_cliente_model->edit($cliente, $idUsuario);
 
-      $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idCliente);
+      $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idUsuario);
       if($data['subclientes']){
         foreach($data['subclientes'] as $row){
           $subcliente = array(
@@ -246,13 +246,13 @@ class Cat_UsuarioInternos extends CI_Controller{
       $dataBloqueos = array(
         'status' => 0
       );
-      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idCliente);
+      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idUsuario);
 
       $data_bloqueo = array(
         'creacion' => $date,
         'id_usuario' => $id_usuario,
         'descripcion' => $this->input->post('opcion_descripcion'),
-        'id_cliente' => $idCliente,
+        'id_cliente' => $idUsuario,
         'bloqueo_subclientes' => 'NO',
         'tipo' => 'DESBLOQUEO',
         'status' => 0,

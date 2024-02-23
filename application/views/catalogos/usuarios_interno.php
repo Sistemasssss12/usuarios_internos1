@@ -31,7 +31,6 @@
 	<?php echo $modals; ?>
 	<div class="loader" style="display: none;"></div>
 	<input type="hidden" id="idusuario">
-	<!--<input type="hidden" id="idUsuarioCliente"> -->
 </div>
 <!-- /.content-wrapper -->
 <script>
@@ -92,17 +91,6 @@
 					"width": "3%",
           mRender: function(data, type, full){
             return '<b>'+data+'</b>';
-						/*var selectHTML = '<div class="col-12"><label>Tipo de rol *</label><select class="form-control" id="id_rol" name="id_rol">' +
-            '<option value="1">Administrador</option>' +
-            '<option value="2">Analista</option>' +
-            '<option value="4">Reclutadora</option>' +
-            '<option value="6">Gerente</option>' +
-            '<option value="9">Lider de proyecto</option>' +
-            '<option value="10">Recursos Humanos</option>' +
-            '<option value="11">Coordinadora de reclutamiento</option>' +
-            '</select><br></div>';
-
-        return selectHTML;*/
           }
 				},
 				{
@@ -449,7 +437,8 @@
 			}
 		});
   }
-  function crearAcceso() {
+  
+	function crearAcceso() {
     let datos = $('#formAccesoUsuariosinternos').serialize();
     $.ajax({
       url: '<?php echo base_url('Cat_UsuarioInternos/addUsuarioInterno'); ?>',
@@ -480,6 +469,9 @@
       }
     });
   }
+
+
+
 	function controlAcceso(accion, idUsuarioCliente) {
 		$("tr#" + idUsuarioCliente).hide();
 		$.ajax({
@@ -510,7 +502,7 @@
 				} 
 			}
 		});
-	}
+	} 
 	function generarPassword() {
 		$.ajax({
 			url: '<?php echo base_url('Funciones/generarPassword'); ?>',
@@ -531,4 +523,19 @@
 		
 		 debug: true
 	}
+
+	/*function mostrarAvisoAdicional(mensaje) {
+  // Crear un elemento div para el aviso
+  var avisoDiv = document.createElement('div');
+  avisoDiv.className = 'aviso-adicional';
+  avisoDiv.innerHTML = mensaje;
+
+  // Agregar el aviso al cuerpo del documento
+  document.body.appendChild(avisoDiv);
+
+  // Ocultar el aviso después de un tiempo (por ejemplo, 5 segundos)
+  setTimeout(function() {
+    document.body.removeChild(avisoDiv);
+  }, 1000);
+}*/
 </script>
