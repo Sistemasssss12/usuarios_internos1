@@ -109,7 +109,7 @@
 						return tiempo;
 					}
 				},
-			/*	{
+				/*{
 					title: 'Acessos',
 					data: 'numero_accesos',
 					bSortable: false,

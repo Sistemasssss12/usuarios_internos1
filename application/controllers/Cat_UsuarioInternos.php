@@ -318,11 +318,11 @@ class Cat_UsuarioInternos extends CI_Controller{
         'password' => $password,
       
       );
-      var_dump($UsuariosInternos);
+     var_dump($UsuariosInternos);
       $this->Cat_UsuarioInternos_model->addUsuarioInterno($UsuariosInternos);
 
       $dataCliente = $this->Cat_UsuarioInternos_model->getById($idUsuario );
-      if($dataCliente->ingles == 0){
+     /* if($dataCliente->ingles == 0){
         $existe_cliente = $this->Cat_UsuarioInternos_model->checkPermisosByCliente($idUsuario );
         if($existe_cliente == 0){
           $url = "Cliente_General/index/".$idUsuario ;
@@ -337,14 +337,15 @@ class Cat_UsuarioInternos extends CI_Controller{
           );
           $this->cat_cliente_model->addPermiso($permiso);
         }
-      }
+      } ----------QUITAR------*/ 
       $msj = array(
         'codigo' => 1,
         'msg' => 'success'
       );
     }
-    echo json_encode($msj);
-  }
+    echo json_encode($msj); 
+  } 
+
   function getClientesAccesos(){
     $id_Usuario = $this->input->post('id_Usuario');
     $res = $this->Cat_UsarioInternos_model->getAccesos($id_Usuario);
