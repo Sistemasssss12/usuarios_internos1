@@ -134,7 +134,7 @@
 
            let accion = (full.status == 0)? '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' : '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> '; 
             
-            let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> '; 
+           let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> '; 
 						
             return editar + eliminar + bloqueo;
 					}
@@ -147,34 +147,34 @@
 			},
 			rowCallback: function(row, data) {
 				$("a#editar", row).bind('click', () => {
-					$("#idCliente").val(data.id);
-					$("#titulo_nuevo_modal").text("Editar cliente");
+					$("#idusuario").val(data.id);
+					$("#titulo_nuevo_modal").text("Editar Usuario");
 					$("#nombre").val(data.nombre);
-					$("#clave").val(data.clave);
+					$("#id_rol").val(data.id_rol);
 					$("#newModal").modal("show");
 				});
 				$("a#activar", row).bind('click', () => {
-          mostrarMensajeConfirmacion('activar cliente',data.nombre,data.id)
+          mostrarMensajeConfirmacion('activar usuario',data.nombre,data.id)
 				});
-				$("a#desactivar", row).bind('click', () => {
-          mostrarMensajeConfirmacion('desactivar cliente',data.nombre,data.id)
-				});
-        $("a#bloquear_cliente", row).bind('click', () => {
-          mostrarMensajeConfirmacion('bloquear cliente',data.nombre,data.id)
-				});
-        $("a#desbloquear_cliente", row).bind('click', () => {
-          mostrarMensajeConfirmacion('desbloquear cliente',data.nombre,data.id)
-				});
+				/*$("a#desactivar", row).bind('click', () => {
+          mostrarMensajeConfirmacion('desactivar usuario',data.nombre,data.id)
+				}); */
+       /* $("a#bloquear_cliente", row).bind('click', () => {
+          mostrarMensajeConfirmacion('bloquear usuario',data.nombre,data.id)
+				});*/
+       /* $("a#desbloquear_cliente", row).bind('click', () => {
+          mostrarMensajeConfirmacion('desbloquear usuario',data.nombre,data.id)
+				}); */
 				$("a#eliminar", row).bind('click', () => {
-          mostrarMensajeConfirmacion('eliminar cliente',data.nombre,data.id)
+          mostrarMensajeConfirmacion('eliminar usuario',data.nombre,data.id)
 				});
 				$("a#acceso", row).bind('click', () => {
-          $(".nombreCliente").text(data.nombre);
+          $(".nombre").text(data.nombre);
 					$.ajax({
 						url: '<?php echo base_url('Cat_UsuarioInternos/getClientesAccesos'); ?>',
 						type: 'post',
 						data: {
-							'id_cliente': data.id
+							'id_usuario': data.id
 						},
 						beforeSend: function() {
 							$('.loader').css("display", "block");
@@ -349,13 +349,13 @@
 			$('#btnConfirmar').attr("onclick","accionCliente('bloquear',"+valor2+")");
 			$('#mensajeModal').modal('show');
 		}
-    if(accion == "desbloquear cliente"){
+    /*if(accion == "desbloquear cliente"){
 			$('#titulo_mensaje').text('Desbloquear cliente');
 			$('#mensaje').html('¿Desea desbloquear al cliente <b>'+valor1+'</b>?');
 			$('#mensaje').append('<div class="row mt-3"><div class="col-12"><label>Razón de desbloqueo *</label><select class="form-control" id="opcion_motivo" name="opcion_motivo"><option value="">Selecciona</option>'+tipos_desbloqueo_php+'</select></div></div>');
 			$('#btnConfirmar').attr("onclick","accionCliente('desbloquear',"+valor2+")");
 			$('#mensajeModal').modal('show');
-		}
+		}*/
 	}
   function accionCliente(accion, id) {
     let opcion_motivo = $('#mensajeModal #opcion_motivo').val()

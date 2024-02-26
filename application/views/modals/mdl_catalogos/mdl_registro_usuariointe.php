@@ -105,7 +105,7 @@
   $("#newModal").on("hidden.bs.modal", function() {
     $("#newModal input").val("");
     $("#newModal #msj_error").css('display', 'none');
-    $("#titulo_nuevo_modal").text("Nuevo cliente");
+    $("#titulo_nuevo_modal").text("Nuevo Usuario");
   }); 
   $("#accesoModal").on("hidden.bs.modal", function() {
     $("#accesoModal input, #accesoModal select").val("");

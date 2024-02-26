@@ -66,7 +66,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     ->where('id_usuario', $id_usuario)
     ->update('permiso', $permiso);
   }
-  function getById($idusuario){
+    function getById($idusuario){
     $this->db
     ->select('*')
     ->from('usuario')
