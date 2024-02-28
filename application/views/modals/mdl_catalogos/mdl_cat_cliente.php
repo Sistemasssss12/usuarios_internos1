@@ -171,7 +171,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>  
 <script>
   $("#newModal").on("hidden.bs.modal", function() {
     $("#newModal input").val("");

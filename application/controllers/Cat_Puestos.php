@@ -77,6 +77,7 @@ class Cat_Puestos extends CI_Controller{
     }
     echo json_encode($msj);
   }
+  
   function editar(){
     $this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|is_unique[puesto.nombre]');
 

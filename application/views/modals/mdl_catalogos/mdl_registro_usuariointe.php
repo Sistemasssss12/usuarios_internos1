@@ -9,13 +9,13 @@
       </div>
       <div class="modal-body">
         <form id="formAccesoUsuariosinternos">
-          <div class="row">
+         <!-- <div class="row">
             <div class="col-md-12">
               <label>Usuarios internos*</label>
               <select name="nombre" id="nombre" class="form-control"></select>
               <br>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-md-4">
               <label>Nombre *</label>
@@ -28,7 +28,7 @@
               <br>
             </div>
             <div class="col-md-4">
-              <label>Apellido Materno *</label>
+              <label>Apellido Materno </label>
               <input type="text" class="form-control" name="materno" id="materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
@@ -82,7 +82,7 @@
     </div>
   </div>
 </div>
-<!--<div class="modal fade" id="bloquearClienteModal" role="dialog" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="bloquearClienteModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -100,7 +100,10 @@
       </div>
     </div>
   </div>
-</div> ---->
+</div>
+
+
+
 <script>
   $("#newModal").on("hidden.bs.modal", function() {
     $("#newModal input").val("");
@@ -118,3 +121,6 @@
     $("#accesosClienteModal #div_accesos").empty();
   });
 </script>
+
+
+  

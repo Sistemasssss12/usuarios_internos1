@@ -76,8 +76,17 @@
           }
 				},
 				{
-					title: 'Apellidos',
+					title: 'Apellido Paterno',
 					data: 'paterno',
+					bSortable: false,
+					"width": "20%",
+          mRender: function(data, type, full){
+            return '<span class="badge badge-pill badge-dark">' + '</span><br><b>'+data+'</b>';
+          }
+				},
+				{
+					title: 'Correo',
+					data: 'correo',
 					bSortable: false,
 					"width": "20%",
           mRender: function(data, type, full){
@@ -321,7 +330,7 @@
 			$('#mensaje').html('¿Desea activar al cliente <b>'+valor1+'</b>?');
 			$('#btnConfirmar').attr("onclick","accionCliente('activar',"+valor2+")");
 			$('#mensajeModal').modal('show');
-		}
+		} 
     if(accion == "desactivar cliente"){
 			$('#titulo_mensaje').text('Desactivar cliente');
 			$('#mensaje').html('¿Desea desactivar al cliente <b>'+valor1+'</b>?');
@@ -413,7 +422,7 @@
         }
 			}
 		});
-  }*/ //---QUITAR DESPUES
+  }*/ //---EQUITAR DESPUES
 	function Accesousuariointerno(){
     $.ajax({
 			url: '<?php echo base_url('Cat_UsuarioInternos/getActivos'); ?>',
@@ -437,7 +446,7 @@
 			}
 		});
   }
-  
+  /*--------------ORIGINAL----------------------------*/
 	function crearAcceso() {
     let datos = $('#formAccesoUsuariosinternos').serialize();
     $.ajax({
@@ -461,17 +470,18 @@
             title: 'Usuario guardado correctamente',
             showConfirmButton: false,
             timer: 2500
-          })
+          }) 
+					
+					mostrarMensajeExitoEnInterfaz('El contenido ha sido guardado correctamente.');
         } 
         else {
           $("#nuevoAccesoUsuariosInternos #msj_error").css('display', 'block').html(data.msg);
         }
       }
     });
-  }
+  } 
 
-
-
+/*----------------------------------------------------------*/
 	function controlAcceso(accion, idUsuarioCliente) {
 		$("tr#" + idUsuarioCliente).hide();
 		$.ajax({
@@ -524,18 +534,18 @@
 		 debug: true
 	}
 
-	/*function mostrarAvisoAdicional(mensaje) {
-  // Crear un elemento div para el aviso
-  var avisoDiv = document.createElement('div');
-  avisoDiv.className = 'aviso-adicional';
-  avisoDiv.innerHTML = mensaje;
-
-  // Agregar el aviso al cuerpo del documento
-  document.body.appendChild(avisoDiv);
-
-  // Ocultar el aviso después de un tiempo (por ejemplo, 5 segundos)
-  setTimeout(function() {
-    document.body.removeChild(avisoDiv);
-  }, 1000);
-}*/
 </script>
+
+<!--<style>
+	.mensaje-exito {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #28a745;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  z-index: 9999;
+}
+</style> -->
