@@ -131,7 +131,7 @@
 						}
 					}
 				},*/
-				{
+				/*{
 					title: 'Acciones',
 					data: 'id',
 					bSortable: false,
@@ -147,7 +147,7 @@
 						
             return editar + eliminar + bloqueo;
 					}
-				}
+				} */
 			],
 			fnDrawCallback: function(oSettings) {
 				$('a[data-toggle="tooltip"]').tooltip({
@@ -324,7 +324,7 @@
       }
     });
   }*/
-  function mostrarMensajeConfirmacion(accion,valor1,valor2){
+  /*function mostrarMensajeConfirmacion(accion,valor1,valor2){
 		if(accion == "activar cliente"){
 			$('#titulo_mensaje').text('Activar cliente');
 			$('#mensaje').html('¿Desea activar al cliente <b>'+valor1+'</b>?');
@@ -364,8 +364,8 @@
 			$('#mensaje').append('<div class="row mt-3"><div class="col-12"><label>Razón de desbloqueo *</label><select class="form-control" id="opcion_motivo" name="opcion_motivo"><option value="">Selecciona</option>'+tipos_desbloqueo_php+'</select></div></div>');
 			$('#btnConfirmar').attr("onclick","accionCliente('desbloquear',"+valor2+")");
 			$('#mensajeModal').modal('show');
-		}*/
-	}
+		}*
+	} */
   function accionCliente(accion, id) {
     let opcion_motivo = $('#mensajeModal #opcion_motivo').val()
     let opcion_descripcion = $( "#mensajeModal #opcion_motivo option:selected" ).text();
@@ -472,7 +472,6 @@
             timer: 2500
           }) 
 					
-					mostrarMensajeExitoEnInterfaz('El contenido ha sido guardado correctamente.');
         } 
         else {
           $("#nuevoAccesoUsuariosInternos #msj_error").css('display', 'block').html(data.msg);

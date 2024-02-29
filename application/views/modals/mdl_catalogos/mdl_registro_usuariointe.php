@@ -117,9 +117,9 @@
     $("#accesoModal #msj_error").css('display', 'none');
     $("#idCliente").val("");
   });
-  $("#accesosClienteModal").on("hidden.bs.modal", function() {
+  /*$("#accesosClienteModal").on("hidden.bs.modal", function() {
     $("#accesosClienteModal #div_accesos").empty();
-  });
+  });*/
 </script>
 
 
