@@ -42,17 +42,7 @@
 		$('#newModal').on('shown.bs.modal', function() {
 			$(this).find('input[type=text],select,textarea').filter(':visible:first').focus();
 		});
-		var msj = localStorage.getItem("success");
-		if (msj == 1) {
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: 'Se ha guardado correctamente',
-				showConfirmButton: false,
-				timer: 2500
-			})
-			localStorage.removeItem("success");
-		}
+		
 		$('#tabla').DataTable({
 			"pageLength": 25,
 			//"pagingType": "simple",
@@ -162,9 +152,9 @@
 					$("#id_rol").val(data.id_rol);
 					$("#newModal").modal("show");
 				});
-				$("a#activar", row).bind('click', () => {
+				/*$("a#activar", row).bind('click', () => {
           mostrarMensajeConfirmacion('activar usuario',data.nombre,data.id)
-				});
+				}); */
 				/*$("a#desactivar", row).bind('click', () => {
           mostrarMensajeConfirmacion('desactivar usuario',data.nombre,data.id)
 				}); */
@@ -174,13 +164,15 @@
        /* $("a#desbloquear_cliente", row).bind('click', () => {
           mostrarMensajeConfirmacion('desbloquear usuario',data.nombre,data.id)
 				}); */
-				$("a#eliminar", row).bind('click', () => {
+				/*$("a#eliminar", row).bind('click', () => {
           mostrarMensajeConfirmacion('eliminar usuario',data.nombre,data.id)
-				});
-				$("a#acceso", row).bind('click', () => {
+				}); */
+				/****************************************************************/
+
+				/*$("a#acceso", row).bind('click', () => {
           $(".nombre").text(data.nombre);
 					$.ajax({
-						url: '<?php echo base_url('Cat_UsuarioInternos/getClientesAccesos'); ?>',
+						url: '< ?php echo base_url('Cat_UsuarioInternos/getClientesAccesos'); ?>',
 						type: 'post',
 						data: {
 							'id_usuario': data.id
@@ -202,7 +194,7 @@
                 salida += '<th scope="col">Alta</th>';
                 salida += '<th scope="col">Usuario</th>';
                 salida += '<th scope="col">Categoría</th>';
-               /* salida += '<th scope="col">Eliminar</th>';*/
+               /* salida += '<th scope="col">Eliminar</th>';*
                 salida += '</tr>';
                 salida += '</thead>';
                 salida += '<tbody>';
@@ -221,10 +213,11 @@
 						}
 					});
           $("#accesosClienteModal").modal('show');
-				});
-				$("a#desactivar_acceso", row).bind('click', () => {
+				}); */
+
+				/*$("a#desactivar_acceso", row).bind('click', () => {
 					$.ajax({
-						url: '<?php echo base_url('Cliente/controlAccesoCliente'); ?>',
+						url: '< ?php echo base_url('Cliente/controlAccesoCliente'); ?>',
 						type: 'post',
 						data: {
 							'idUsuarioCliente': data.idUsuarioCliente,
@@ -246,10 +239,10 @@
 							}, 4000);
 						}
 					});
-				});
-				$("a#activar_acceso", row).bind('click', () => {
+				}); */
+				/*$("a#activar_acceso", row).bind('click', () => {
 					$.ajax({
-						url: '<?php echo base_url('Cliente/controlAccesoCliente'); ?>',
+						url: '< ?php echo base_url('Cliente/controlAccesoCliente'); ?>',
 						type: 'post',
 						data: {
 							'idUsuarioCliente': data.idUsuarioCliente,
@@ -271,7 +264,7 @@
 							}, 4000);
 						}
 					});
-				});
+				}); */
 			},
 			"language": {
 				"lengthMenu": "Mostrar _MENU_ registros por página",
@@ -286,7 +279,7 @@
 					"sNext": "Siguiente",
 					"sPrevious": "Anterior"
 				}
-			}
+			} 
 		});
 	});
   /*function guardarCliente(){
@@ -366,13 +359,13 @@
 			$('#mensajeModal').modal('show');
 		}*
 	} */
-  function accionCliente(accion, id) {
+  /*function accionCliente(accion, id) {
     let opcion_motivo = $('#mensajeModal #opcion_motivo').val()
     let opcion_descripcion = $( "#mensajeModal #opcion_motivo option:selected" ).text();
     let mensaje_comentario = $('#mensajeModal #mensaje_comentario').val()
     let bloquear_subclientes = $("#mensajeModal #bloquear_subclientes").is(":checked")? 'SI':'NO';
 		$.ajax({
-			url: '<?php echo base_url('Cat_UsuarioInternos/status'); ?>',
+			url: '< ?php echo base_url('Cat_UsuarioInternos/status'); ?>',
 			type: 'post',
 			data: {
 				'id': id, 'accion': accion, 'opcion_motivo':opcion_motivo, 'mensaje_comentario':mensaje_comentario,
@@ -399,7 +392,7 @@
 				} 
 			}
 		});
-	}
+	}*/
   /*function registrarAccesoCliente(){
     $.ajax({
 			url: '< !?php echo base_url('Cat_Cliente/getActivos'); ?>', QUITAR EL SIGNO !
@@ -481,10 +474,10 @@
   } 
 
 /*----------------------------------------------------------*/
-	function controlAcceso(accion, idUsuarioCliente) {
+	/*function controlAcceso(accion, idUsuarioCliente) {
 		$("tr#" + idUsuarioCliente).hide();
 		$.ajax({
-			url: '<?php echo base_url('Cat_UsuarioInternos/controlAcceso'); ?>',
+			url: '< ?php echo base_url('Cat_UsuarioInternos/controlAcceso'); ?>',
 			type: 'post',
 			data: {
 				'idUsuarioCliente': idUsuarioCliente,
@@ -511,7 +504,8 @@
 				} 
 			}
 		});
-	} 
+	} */
+
 	function generarPassword() {
 		$.ajax({
 			url: '<?php echo base_url('Funciones/generarPassword'); ?>',
@@ -535,16 +529,3 @@
 
 </script>
 
-<!--<style>
-	.mensaje-exito {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #28a745;
-  color: #ffffff;
-  padding: 15px;
-  border-radius: 5px;
-  z-index: 9999;
-}
-</style> -->

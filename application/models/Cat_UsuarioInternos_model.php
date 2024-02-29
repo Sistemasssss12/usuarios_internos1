@@ -53,19 +53,19 @@ class Cat_UsuarioInternos_model extends CI_Model{
     $this->db->insert("usuario", $usuario);
     return $this->db->insert_id();
   }
-  function addPermiso($permiso){
+  /*function addPermiso($permiso){
     $this->db->insert("permiso", $permiso);
-  }
+  } */
   function edit($usuario, $id){
     $this->db
     ->where('id', $id)
     ->update('usuario', $usuario);
   }
-  function editPermiso($permiso, $id_usuario){
+  /*function editPermiso($permiso, $id_usuario){
     $this->db
     ->where('id_usuario', $id_usuario)
     ->update('permiso', $permiso);
-  }
+  }*/
     function getById($idusuario){
     $this->db
     ->select('*')
@@ -75,15 +75,6 @@ class Cat_UsuarioInternos_model extends CI_Model{
     $query = $this->db->get();
     return $query->row();
   }
-  /*function checkPermisosByCliente($id_cliente){
-    $this->db
-    ->select("id")
-    ->from('permiso')
-    ->where('id_cliente', $id_cliente);
-
-    $query = $this->db->get();
-    return $query->num_rows();
-  }*/
   function getAccesos($id_usuario){
     $this->db
     ->select("u.*,CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario, CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario_cliente, uc.correo as correo_usuario, uc.creacion as alta, uc.id as idUsuarioCliente, uc.id_rol")
@@ -100,24 +91,24 @@ class Cat_UsuarioInternos_model extends CI_Model{
       return FALSE;
     }
   }
-  function editAccesoUsuarioCliente($usuario, $idusuario){
+  /*function editAccesoUsuarioCliente($usuario, $idusuario){
     $this->db
     ->where('id_usuario', $idusuario)
     ->update('usuario_cliente', $usuario);
-  }
+  } 
   function editAccesoUsuarioSubcliente($usuario, $idusuario){
     $this->db
     ->where('id_usuario', $idusuario)
     ->update('usuario_subcliente', $usuario);
-  }
+  }*/
   function addUsuarioInterno($usuario){
     $this->db->insert("usuario", $usuario);
   }
-  function deleteAccesoUsuarioCliente($idusuarioCliente){
+ /* function deleteAccesoUsuarioCliente($idusuarioCliente){
     $this->db
     ->where('id', $idusuarioCliente)
     ->delete('usuario_cliente');
-  }
+  } */
 
   
   
@@ -138,7 +129,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }
   }
 
-  function getUsuariosClientePorCandidato($id_usuario){
+  /*function getUsuariosClientePorCandidato($id_usuario){
     $this->db
     ->select("cl.correo, CONCAT(c.nombre,' ',c.paterno,' ',c.materno) as candidato, c.privacidad as privacidadCandidato, cl.privacidad as privacidadCliente")
     ->from('candidato as c')
@@ -151,7 +142,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }else{
       return FALSE;
     }
-  }
+  }*/
   /*function addHistorialBloqueos($data){
     $this->db->insert("bloqueo_historial", $data);
   }
