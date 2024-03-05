@@ -12,12 +12,13 @@ class Cat_UsuarioInternos_model extends CI_Model{
 
     $query = $this->db->get();
     return $query->num_rows();
-  }
+  } 
+
   function get(){
     $this->db
     ->select("u.*, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as referente, r.nombre as nombre_rol")
         ->from('usuario as u')
-        ->join('rol as r', 'r.id = u.id_rol')  // JOIN con la tabla 'rol'
+        ->join('rol as r', 'r.id = u.id_rol')  //JOIN con la tabla 'rol'
         ->where('u.eliminado', 0)
         ->where('u.status', 1);
 
@@ -29,6 +30,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
       return FALSE;
     }
   }
+
   function existe($nombre,$id){
     $this->db
     ->select('id')
@@ -39,6 +41,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     $query = $this->db->get();
     return $query->num_rows();
   }
+
   function check($id){
     $this->db
     ->select('id')
@@ -53,19 +56,13 @@ class Cat_UsuarioInternos_model extends CI_Model{
     $this->db->insert("usuario", $usuario);
     return $this->db->insert_id();
   }
-  /*function addPermiso($permiso){
-    $this->db->insert("permiso", $permiso);
-  } */
+  
   function edit($usuario, $id){
     $this->db
     ->where('id', $id)
     ->update('usuario', $usuario);
   }
-  /*function editPermiso($permiso, $id_usuario){
-    $this->db
-    ->where('id_usuario', $id_usuario)
-    ->update('permiso', $permiso);
-  }*/
+  
     function getById($idusuario){
     $this->db
     ->select('*')
@@ -75,6 +72,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     $query = $this->db->get();
     return $query->row();
   }
+  
   function getAccesos($id_usuario){
     $this->db
     ->select("u.*,CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario, CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario_cliente, uc.correo as correo_usuario, uc.creacion as alta, uc.id as idUsuarioCliente, uc.id_rol")
@@ -90,28 +88,26 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }else{
       return FALSE;
     }
-  }
-  /*function editAccesoUsuarioCliente($usuario, $idusuario){
+  } 
+  function editAccesoUsuarioCliente($usuario, $idusuario){
     $this->db
     ->where('id_usuario', $idusuario)
     ->update('usuario_cliente', $usuario);
   } 
-  function editAccesoUsuarioSubcliente($usuario, $idusuario){
-    $this->db
-    ->where('id_usuario', $idusuario)
-    ->update('usuario_subcliente', $usuario);
-  }*/
-  function addUsuarioInterno($usuario){
+  
+  function addUsuarioInterno($usuario) {
     $this->db->insert("usuario", $usuario);
-  }
- /* function deleteAccesoUsuarioCliente($idusuarioCliente){
-    $this->db
-    ->where('id', $idusuarioCliente)
-    ->delete('usuario_cliente');
-  } */
 
-  
-  
+    // Obtén el ID del último registro insertado
+    $insert_id = $this->db->insert_id();
+
+    return $insert_id; // Puedes devolver el ID o cualquier otra cosa que necesites
+}
+
+  function updateUsuarioInterno($usuario,$id){
+    $this->db->update("usuario", $usuario)
+     ->where('id',$id);
+  }
   
   function getActivos(){
     $this->db
@@ -129,36 +125,4 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }
   }
 
-  /*function getUsuariosClientePorCandidato($id_usuario){
-    $this->db
-    ->select("cl.correo, CONCAT(c.nombre,' ',c.paterno,' ',c.materno) as candidato, c.privacidad as privacidadCandidato, cl.privacidad as privacidadCliente")
-    ->from('candidato as c')
-    ->join("usuario_cliente as cl","cl.id_cliente = c.id_cliente")
-    ->where('c.id', $id_usuario);
-
-    $query = $this->db->get();
-    if($query->num_rows() > 0){
-      return $query->result();
-    }else{
-      return FALSE;
-    }
-  }*/
-  /*function addHistorialBloqueos($data){
-    $this->db->insert("bloqueo_historial", $data);
-  }
-  function editHistorialBloqueos($dataBloqueos, $idCliente){
-    $this->db
-    ->where('id_cliente', $idCliente)
-    ->update('bloqueo_historial', $dataBloqueos);
-  }
-  function getBloqueoHistorial($id_cliente){
-    $this->db
-    ->select("*")
-    ->from('bloqueo_historial')
-    ->where('status', 1)
-    ->where('id_cliente', $id_cliente);
-
-    $consulta = $this->db->get();
-    return $consulta->row();
-  }*/
 } 
