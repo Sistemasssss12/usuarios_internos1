@@ -121,23 +121,24 @@
 						}
 					}
 				},*/
-				/*{
+				{
 					title: 'Acciones',
 					data: 'id',
 					bSortable: false,
 					"width": "10%",
 					mRender: function(data, type, full) {
-            let editar = '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
-            let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar Usuario" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> '; 
-           let acceso = '<a href="javascript:void(0)" data-toggle="tooltip" title="Ver accesos" id="acceso" class="fa-tooltip icono_datatable icono_azul_claro"><i class="fas fa-sign-in-alt"></i></a>';
+            let editar = '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar Usuario" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
 
-           let accion = (full.status == 0)? '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' : '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> '; 
+            let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar Usuario" id="eliminar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-trash"></i></a> '; 
+           //let acceso = '<a href="javascript:void(0)" data-toggle="tooltip" title="Ver accesos" id="acceso" class="fa-tooltip icono_datatable icono_azul_claro"><i class="fas fa-sign-in-alt"></i></a>';
+
+           //let accion = (full.status == 0)? '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' : '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> '; 
             
-           let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> '; 
+          // let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> '; 
 						
-            return editar + eliminar + bloqueo;
+            return editar + eliminar;
 					}
-				} */
+				} 
 			],
 			fnDrawCallback: function(oSettings) {
 				$('a[data-toggle="tooltip"]').tooltip({
@@ -164,9 +165,9 @@
        /* $("a#desbloquear_cliente", row).bind('click', () => {
           mostrarMensajeConfirmacion('desbloquear usuario',data.nombre,data.id)
 				}); */
-				/*$("a#eliminar", row).bind('click', () => {
+				$("a#eliminar", row).bind('click', () => {
           mostrarMensajeConfirmacion('eliminar usuario',data.nombre,data.id)
-				}); */
+				}); 
 				/****************************************************************/
 
 				/*$("a#acceso", row).bind('click', () => {
@@ -282,11 +283,12 @@
 			} 
 		});
 	});
-  /*function guardarCliente(){
+
+  function guardarCliente(){
     let datos = $('#formCatCliente').serialize();
     datos += '&id=' + $("#idCliente").val();
     $.ajax({
-      url: '<-?php echo base_url('Cat_Cliente/set'); ?>',
+      url: '<?php echo base_url('Cat_Cliente/set'); ?>',
       type: "POST",
       data: datos,
       beforeSend: function() {
@@ -316,9 +318,10 @@
         }
       }
     });
-  }*/
-  /*function mostrarMensajeConfirmacion(accion,valor1,valor2){
-		if(accion == "activar cliente"){
+  }
+
+  function mostrarMensajeConfirmacion(accion,valor1,valor2){
+		/*if(accion == "activar cliente"){
 			$('#titulo_mensaje').text('Activar cliente');
 			$('#mensaje').html('¿Desea activar al cliente <b>'+valor1+'</b>?');
 			$('#btnConfirmar').attr("onclick","accionCliente('activar',"+valor2+")");
@@ -328,15 +331,15 @@
 			$('#titulo_mensaje').text('Desactivar cliente');
 			$('#mensaje').html('¿Desea desactivar al cliente <b>'+valor1+'</b>?');
 			$('#btnConfirmar').attr("onclick","accionCliente('desactivar',"+valor2+")");
-			$('#mensajeModal').modal('show');
-		}
-    if(accion == "eliminar cliente"){
-			$('#titulo_mensaje').text('Eliminar cliente');
-			$('#mensaje').html('¿Desea eliminar al cliente <b>'+valor1+'</b>?');
+			$('#mensajeModal').modal('show'); 
+		}*/
+    if(accion == "eliminar usuario"){
+			$('#titulo_mensaje').text('Eliminar usuario');
+			$('#mensaje').html('¿Desea eliminar el usuario <b>'+valor1+'</b>?');
 			$('#btnConfirmar').attr("onclick","accionCliente('eliminar',"+valor2+")");
 			$('#mensajeModal').modal('show');
 		}
-    if(accion == "eliminar usuario cliente"){
+    /*if(accion == "eliminar usuario cliente"){
 			$('#titulo_mensaje').text('Eliminar usuario');
 			$('#mensaje').html('¿Desea eliminar al usuario <b>'+valor1+'</b>?');
 			$('#btnConfirmar').attr("onclick","controlAcceso('eliminar',"+valor2+")");
@@ -357,15 +360,15 @@
 			$('#mensaje').append('<div class="row mt-3"><div class="col-12"><label>Razón de desbloqueo *</label><select class="form-control" id="opcion_motivo" name="opcion_motivo"><option value="">Selecciona</option>'+tipos_desbloqueo_php+'</select></div></div>');
 			$('#btnConfirmar').attr("onclick","accionCliente('desbloquear',"+valor2+")");
 			$('#mensajeModal').modal('show');
-		}*
-	} */
+		}*/
+	} 
   /*function accionCliente(accion, id) {
-    let opcion_motivo = $('#mensajeModal #opcion_motivo').val()
-    let opcion_descripcion = $( "#mensajeModal #opcion_motivo option:selected" ).text();
-    let mensaje_comentario = $('#mensajeModal #mensaje_comentario').val()
-    let bloquear_subclientes = $("#mensajeModal #bloquear_subclientes").is(":checked")? 'SI':'NO';
+    //let opcion_motivo = $('#mensajeModal #opcion_motivo').val()
+   // let opcion_descripcion = $( "#mensajeModal #opcion_motivo option:selected" ).text();
+   // let mensaje_comentario = $('#mensajeModal #mensaje_comentario').val()
+    //let bloquear_subclientes = $("#mensajeModal #bloquear_subclientes").is(":checked")? 'SI':'NO';
 		$.ajax({
-			url: '< ?php echo base_url('Cat_UsuarioInternos/status'); ?>',
+			url: '< ?php echo base_url('Cat_UsuarioInternos/status'); ?>', //QUITAR ESPACIO
 			type: 'post',
 			data: {
 				'id': id, 'accion': accion, 'opcion_motivo':opcion_motivo, 'mensaje_comentario':mensaje_comentario,
@@ -392,10 +395,11 @@
 				} 
 			}
 		});
-	}*/
-  /*function registrarAccesoCliente(){
+	} */
+  
+	/*function registrarAccesoCliente(){
     $.ajax({
-			url: '< !?php echo base_url('Cat_Cliente/getActivos'); ?>', QUITAR EL SIGNO !
+			url: '< ?php echo base_url('Cat_Cliente/getActivos'); ?>', QUITAR EL ESPACIO
 			type: 'post',
 			beforeSend: function() {
 				$('.loader').css("display", "block");
@@ -416,6 +420,8 @@
 			}
 		});
   }*/ //---EQUITAR DESPUES
+
+	/*--------------LLAMADO DEL BOTON REGISTRO USUARIO INTERNOS----------------------------*/
 	function Accesousuariointerno(){
     $.ajax({
 			url: '<?php echo base_url('Cat_UsuarioInternos/getActivos'); ?>',
@@ -439,8 +445,8 @@
 			}
 		});
   }
-  /*--------------ORIGINAL----------------------------*/
-	function crearAcceso() {
+  /*--------------LLAMADO DEL ONCLIK DEL GUARDADO DE REGISTROS DEL FORMULARIO----------------------------*/
+	function registroUsuariosInternos() {
     let datos = $('#formAccesoUsuariosinternos').serialize();
     $.ajax({
       url: '<?php echo base_url('Cat_UsuarioInternos/addUsuarioInterno'); ?>',
@@ -464,7 +470,8 @@
             showConfirmButton: false,
             timer: 2500
           }) 
-					
+
+					$('#formAccesoUsuariosinternos')[0].reset(); //se limpian nnuevamente los campos de registro despues de guardar
         } 
         else {
           $("#nuevoAccesoUsuariosInternos #msj_error").css('display', 'block').html(data.msg);
@@ -474,38 +481,6 @@
   } 
 
 /*----------------------------------------------------------*/
-	/*function controlAcceso(accion, idUsuarioCliente) {
-		$("tr#" + idUsuarioCliente).hide();
-		$.ajax({
-			url: '< ?php echo base_url('Cat_UsuarioInternos/controlAcceso'); ?>',
-			type: 'post',
-			data: {
-				'idUsuarioCliente': idUsuarioCliente,
-				'accion': accion
-			},
-			beforeSend: function() {
-				$('.loader').css("display", "block");
-			},
-			success: function(res) {
-				setTimeout(function(){
-						$('.loader').fadeOut();
-				},200);
-				var data = JSON.parse(res);
-				if (data.codigo === 1){
-					recargarTable()
-          $("#mensajeModal").modal('hide')
-					Swal.fire({
-						position: 'center',
-						icon: 'success',
-						title: data.msg,
-						showConfirmButton: false,
-						timer: 2500
-					})
-				} 
-			}
-		});
-	} */
-
 	function generarPassword() {
 		$.ajax({
 			url: '<?php echo base_url('Funciones/generarPassword'); ?>',

@@ -50,6 +50,8 @@ class Cat_UsuarioInternos extends CI_Controller{
     $usuarios_interno['data'] = $this->Cat_UsuarioInternos_model->get();
     $this->output->set_output( json_encode( $usuarios_interno ) );
 	}
+
+  //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUAIOS_INTERNOS
   function addUsuarioInterno(){
     $this->form_validation->set_rules('nombre', 'nombre', 'required|trim');
     $this->form_validation->set_rules('paterno', 'paterno', 'required|trim');
@@ -103,7 +105,9 @@ class Cat_UsuarioInternos extends CI_Controller{
     }
     echo json_encode($msj);
   }
-  
+//__________________________________________________________________________________
+
+
   /*function status(){
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
