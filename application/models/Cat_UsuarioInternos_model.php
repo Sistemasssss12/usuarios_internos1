@@ -31,7 +31,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }
   }
 
-  function existe($nombre,$id){
+  function verificarUsuarioExistente($nombre,$id){
     $this->db
     ->select('id')
     ->from('usuario')

@@ -44,12 +44,44 @@ class Cat_UsuarioInternos extends CI_Controller{
     ->view('catalogos/usuarios_interno',$datos)
     ->view('adminpanel/footer');
   }
+
   function get(){
 		$usuarios_interno['recordsTotal'] = $this->Cat_UsuarioInternos_model->getTotal();
     $usuarios_interno['recordsFiltered'] = $this->Cat_UsuarioInternos_model->getTotal();
     $usuarios_interno['data'] = $this->Cat_UsuarioInternos_model->get();
     $this->output->set_output( json_encode( $usuarios_interno ) );
 	}
+
+
+  public function editarUsuario() {
+
+
+
+
+    $id = $this->input->post('id');
+    $nombre = $this->input->post('nombre');
+    $paterno = $this->input->post('paterno');
+    $id_rol = $this->input->post('id_rol');
+    $correo = $this->input->post('correo');
+
+    // Realizar lógica para actualizar el usuario en la base de datos
+    // utilizar modelo o el acceso a la base de datos directamente
+
+    //$this->load->model('Cat_UsuarioInternos_model'); -->QUITAR
+    $data = array(
+        'nombre' => $nombre,
+        'paterno' => $paterno,
+        'id_rol' => $id_rol,
+        'correo' => $correo
+    );
+    $this->Cat_UsuarioInternos_model->edit($id, $data);
+
+    $response = array(
+        'codigo' => 1, 
+        'msg' => 'Usuario actualizado correctamente'
+    );
+    echo json_encode($response);
+} 
 
   //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUAIOS_INTERNOS
   function addUsuarioInterno(){
@@ -96,7 +128,8 @@ class Cat_UsuarioInternos extends CI_Controller{
         'password' => $password,
       
       );
-     //var_dump($UsuariosInternos);
+
+    
       $this->Cat_UsuarioInternos_model->addUsuarioInterno($UsuariosInternos);
       $msj = array(
         'codigo' => 1,
@@ -105,50 +138,24 @@ class Cat_UsuarioInternos extends CI_Controller{
     }
     echo json_encode($msj);
   }
+
+  
 //__________________________________________________________________________________
 
 
-  /*function status(){
+  function status(){
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
     $idUsuario = $this->input->post('id');
     $accion = $this->input->post('accion');
-    /*if($accion == "desactivar"){
-      $data = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'status' => 0
-      );
-      $this->cat_UsuarioInternos_model->edit($data, $idUsuario);
-      //$this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
-      //$this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente); --QUITAR
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Cliente inactivado correctamente'
-      );
-    }*/
-   /* if($accion == "activar"){
-      $data = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'status' => 1
-      );
-      $this->cat_cliente_model->edit($data, $idUsuario);
-      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idUsuario);
-      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idUsuario);
-
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Cliente activado correctamente'
-      );
-    } _______________________QUITAR__________________*/
-    /*if($accion == "eliminar"){
+    
+    if($accion == "eliminar"){
       $data = array(
         'edicion' => $date,
         'id_usuario' => $id_usuario,
         'eliminado' => 1
       );
-      $this->cat_UsuarioInternos_model->edit($data, $idUsuario);
+      //$this->cat_UsuarioInternos_model->edit($data, $idUsuario);
       $this->cat_UsuarioInternos_model->editUsuarioInterno($data, $idUsuario);
       $this->cat_UsuarioInternos_model->editUsuarioInterno($data, $idUsuario);
       $msj = array(
@@ -156,92 +163,10 @@ class Cat_UsuarioInternos extends CI_Controller{
         'msg' => 'Usuario eliminado correctamente'
       );
     }
-    /*if($accion == "bloquear"){
-      $usuario = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'bloqueado' => $this->input->post('opcion_motivo')
-      );
-      $this->cat_UsuarioInternos_model->edit($usuario, $idUsuario);
+  
+    echo json_encode($msj); 
+  }  
 
-      if($this->input->post('bloquear_subclientes') === 'SI'){
-        $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idUsuario);
-        if($data['subclientes']){
-          foreach($data['subclientes'] as $row){
-            $subcliente = array(
-              'edicion' => $date,
-              'id_usuario' => $id_usuario,
-              'bloqueado' => $this->input->post('opcion_motivo')
-            );
-            $this->cat_subclientes_model->editar($subcliente, $row->id);
-            unset($subcliente);
-          }
-        }
-      }
-      
-      $dataBloqueos = array(
-        'status' => 0
-      );
-      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idUsuario);
-
-      $data_bloqueo = array(
-        'creacion' => $date,
-        'id_usuario' => $id_usuario,
-        'descripcion' => $this->input->post('opcion_descripcion'),
-        'id_cliente' => $idUsuario,
-        'bloqueo_subclientes' => $this->input->post('bloquear_subclientes'),
-        'tipo' => 'BLOQUEO',
-        'mensaje' => $this->input->post('mensaje_comentario'),
-      );
-      $this->cat_cliente_model->addHistorialBloqueos($data_bloqueo);
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Cliente bloqueado correctamente'
-      );
-    }*/
-   /* if($accion == "desbloquear"){
-      $cliente = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'bloqueado' => 'NO'
-      );
-      $this->cat_cliente_model->edit($cliente, $idUsuario);
-
-      $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idUsuario);
-      if($data['subclientes']){
-        foreach($data['subclientes'] as $row){
-          $subcliente = array(
-            'edicion' => $date,
-            'id_usuario' => $id_usuario,
-            'bloqueado' => 'NO'
-          );
-          $this->cat_subclientes_model->editar($subcliente, $row->id);
-          unset($subcliente);
-        }
-      }
-      
-      $dataBloqueos = array(
-        'status' => 0
-      );
-      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idUsuario);
-
-      $data_bloqueo = array(
-        'creacion' => $date,
-        'id_usuario' => $id_usuario,
-        'descripcion' => $this->input->post('opcion_descripcion'),
-        'id_cliente' => $idUsuario,
-        'bloqueo_subclientes' => 'NO',
-        'tipo' => 'DESBLOQUEO',
-        'status' => 0,
-      );
-      $this->Cat_UsuarioInternos_model->addHistorialBloqueos($data_bloqueo);
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Cliente desbloqueado correctamente'
-      );
-    }*
-    echo json_encode($msj);
-  } */  
   function getActivos(){
     $res = $this->Cat_UsuarioInternos_model->getActivos();
     if($res){
