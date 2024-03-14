@@ -52,36 +52,65 @@ class Cat_UsuarioInternos extends CI_Controller{
     $this->output->set_output( json_encode( $usuarios_interno ) );
 	}
 
+/************************************EDITAR USUARIO INTERNO*****************************************/
+function editarUsuarioControlador()
+{
+    $this->form_validation->set_rules('nombre', 'Nombre|trim');
+    $this->form_validation->set_rules('paterno', 'paterno|trim');
 
-  public function editarUsuario() {
+    $this->form_validation->set_rules('correo', 'Correo', 'required|trim|valid_email|is_unique[usuario.correo]');
+
+    $this->form_validation->set_message('required', 'El campo {field} es obligatorio');
+    $this->form_validation->set_message('required', 'El campo {field} es obligatorio');
+
+    $id_usuario = $this->session->userdata('id');
+      date_default_timezone_set('America/Mexico_City');
+      $date = date('Y-m-d H:i:s');
+      $nombre = $this->input->post('nombre');
+      $paterno = $this->input->post('paterno');
+      $materno = $this->input->post('materno');
+      $id_rol = $this->input->post('id_rol');
+      $correo = $this->input->post('correo');
+      $uncode_password = $this->input->post('password');
+      $base = 'k*jJlrsH:cY]O^Z^/J2)Pz{)qz:+yCa]^+V0S98Zf$sV[c@hKKG07Q{utg%OlODS';
+      $password = md5($base.$uncode_password);
+      $idUsuario = $this->input->post('idUsuarioInterno');
 
 
 
-
-    $id = $this->input->post('id');
-    $nombre = $this->input->post('nombre');
-    $paterno = $this->input->post('paterno');
-    $id_rol = $this->input->post('id_rol');
-    $correo = $this->input->post('correo');
-
-    // Realizar lógica para actualizar el usuario en la base de datos
-    // utilizar modelo o el acceso a la base de datos directamente
-
-    //$this->load->model('Cat_UsuarioInternos_model'); -->QUITAR
-    $data = array(
+      $UsuariosInternos = array(
+        'edicion' => $date,
+        'id_usuario' => $id_usuario ,
         'nombre' => $nombre,
         'paterno' => $paterno,
         'id_rol' => $id_rol,
-        'correo' => $correo
-    );
-    $this->Cat_UsuarioInternos_model->edit($id, $data);
+        'correo' => $correo,
+         
+      
+      );
+      $existe = $this->Cat_UsuarioInternos_model->check($idUsuario);
+      
 
-    $response = array(
-        'codigo' => 1, 
-        'msg' => 'Usuario actualizado correctamente'
-    );
-    echo json_encode($response);
-} 
+      if($existe > 0){
+        $this->Cat_UsuarioInternos_model->editUsuario($idUsuario, $UsuariosInternos);
+        $msj = array(
+          'codigo' => 1,
+          'msg' => 'success'
+        );
+      
+        echo json_encode($msj);
+
+      }else {
+        $msj = array(
+            'codigo' => 0,
+            'msg' => 'No se pudo encontrar el usuario para editar'
+        );
+        echo json_encode($msj);
+    }
+    
+}
+
+
 
   //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUAIOS_INTERNOS
   function addUsuarioInterno(){
@@ -104,6 +133,7 @@ class Cat_UsuarioInternos extends CI_Controller{
       );
     } 
     else {
+      
       $id_usuario = $this->session->userdata('id');
       date_default_timezone_set('America/Mexico_City');
       $date = date('Y-m-d H:i:s');
@@ -131,10 +161,10 @@ class Cat_UsuarioInternos extends CI_Controller{
 
     
       $this->Cat_UsuarioInternos_model->addUsuarioInterno($UsuariosInternos);
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'success'
-      );
+         $msj = array(
+          'codigo' => 1,
+          'msg' => 'success'
+           );
     }
     echo json_encode($msj);
   }
@@ -150,14 +180,15 @@ class Cat_UsuarioInternos extends CI_Controller{
     $accion = $this->input->post('accion');
     
     if($accion == "eliminar"){
-      $data = array(
+      $datos = array(
         'edicion' => $date,
-        'id_usuario' => $id_usuario,
+        'idusuario' => $id_usuario,
         'eliminado' => 1
       );
       //$this->cat_UsuarioInternos_model->edit($data, $idUsuario);
-      $this->cat_UsuarioInternos_model->editUsuarioInterno($data, $idUsuario);
-      $this->cat_UsuarioInternos_model->editUsuarioInterno($data, $idUsuario);
+      $this->Cat_UsuarioInternos_model->editUsuario($datos, $idUsuario);
+      $this->Cat_UsuarioInternos_model->editUsuario($datos, $idUsuario);
+      
       $msj = array(
         'codigo' => 1,
         'msg' => 'Usuario eliminado correctamente'
@@ -166,6 +197,7 @@ class Cat_UsuarioInternos extends CI_Controller{
   
     echo json_encode($msj); 
   }  
+
 
   function getActivos(){
     $res = $this->Cat_UsuarioInternos_model->getActivos();

@@ -93,7 +93,7 @@ class Cat_Cliente extends CI_Controller{
             'msg' => 'success'
           );
         }
-        else{
+        else{ /******SE CREA UN NUEVO CLIENTE*************/
           $cliente = array(
             'creacion' => $date,
             'edicion' => $date,
@@ -120,7 +120,7 @@ class Cat_Cliente extends CI_Controller{
             'codigo' => 1,
             'msg' => 'success'
           );
-        }
+        } /****************/
       }
       else{
         $msj = array(

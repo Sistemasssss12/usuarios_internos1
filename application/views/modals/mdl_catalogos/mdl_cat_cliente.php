@@ -52,6 +52,25 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="mensajePrueba" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="">probando modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 id="mensaje"></h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" id="btnConfirmar">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="accesosClienteModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -70,6 +89,7 @@
     </div>
   </div>
 </div> 
+
 <div class="modal fade" id="nuevoAccesoClienteModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -153,6 +173,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="bloquearClienteModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -172,6 +193,8 @@
     </div>
   </div>
 </div>  
+
+
 <script>
   $("#newModal").on("hidden.bs.modal", function() {
     $("#newModal input").val("");

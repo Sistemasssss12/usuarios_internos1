@@ -130,23 +130,34 @@
 					}
 				},
 				{
-					title: 'Acciones',
-					data: 'id',
-					bSortable: false,
-					"width": "10%",
-					mRender: function(data, type, full) {
-            let editar = '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
-            let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar cliente" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
-            let acceso = '<a href="javascript:void(0)" data-toggle="tooltip" title="Ver accesos" id="acceso" class="fa-tooltip icono_datatable icono_azul_claro"><i class="fas fa-sign-in-alt"></i></a>';
+				  title: 'Acciones',
+        data: 'id',
+        bSortable: false,
+        "width": "10%",
+        mRender: function(data, type, full) {
+          console.log(full )
 
-            let accion = (full.status == 0)? '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' : '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> ';
-            
-            let bloqueo = (full.bloqueado === 'NO')? ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear cliente" id="bloquear_cliente" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' : ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear cliente" id="desbloquear_cliente" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> ';
-						
-            return editar + accion + eliminar + acceso + bloqueo;
-					}
-				}
-			],
+          let editar =
+            '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar Usuario" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
+
+          
+          let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar usuario" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
+          let acceso =
+            '<a href="javascript:void(0)" data-toggle="tooltip" title="Ver accesos" id="acceso" class="fa-tooltip icono_datatable icono_azul_claro"><i class="fas fa-sign-in-alt"></i></a>';
+
+          let accion = (full.status == 0) ?
+            '<a href="javascript:void(0)" data-toggle="tooltip" title="Activar" id="activar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-ban"></i></a> ' :
+            '<a href="javascript:void(0)" data-toggle="tooltip" title="Desactivar" id="desactivar" class="fa-tooltip icono_datatable icono_verde"><i class="far fa-check-circle"></i></a> ';
+
+          let bloqueo = (full.bloqueado === 'NO') ?
+            ' <a href="javascript:void(0)" data-toggle="tooltip" title="Bloquear usuario" id="bloquear_usuario" class="fa-tooltip icono_datatable icono_verde"><i class="fas fa-user-check"></i></a> ' :
+            ' <a href="javascript:void(0)" data-toggle="tooltip" title="Desbloquear usuario" id="desbloquear_usuario" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-user-lock"></i></a> ';
+
+          return editar + accion + eliminar + acceso + bloqueo;
+        }
+      }
+    ],
+
 			fnDrawCallback: function(oSettings) {
 				$('a[data-toggle="tooltip"]').tooltip({
 					trigger: "hover"

@@ -37,7 +37,7 @@
 var url = '<?php echo base_url('Cat_UsuarioInternos/get'); ?>';
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
-  $('#newModal').on('shown.bs.modal', function() {
+  $('#nuevoAccesoUsuariosInternos').on('shown.bs.modal', function() {
     $(this).find('input[type=text],select,textarea').filter(':visible:first').focus();
   });
 
@@ -122,6 +122,7 @@ $(document).ready(function() {
           return tiempo;
         }
       },
+    
 
       {
         title: 'Acciones',
@@ -129,12 +130,14 @@ $(document).ready(function() {
         bSortable: false,
         "width": "10%",
         mRender: function(data, type, full) {
+          
 
           let editar =
             '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar Usuario" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
 
-          let eliminar =
-            '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar Usuario" id="eliminar" class="fa-tooltip icono_datatable icono_rojo"><i class="fas fa-trash"></i></a> ';
+          
+          let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar usuario" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
+        
 
 
           return editar + eliminar;
@@ -152,24 +155,29 @@ $(document).ready(function() {
 
     rowCallback: function(row, data) {
       $("a#editar", row).bind('click', () => {
-        editarUsuario(data.id, data.nombre, data.paterno, data.id_rol, data.correo);
-        $("#idusuario").val(data.id,);
+        $("#idUsuarioInterno").val(data.id, );
         $("#titulo_nuevo_modal").text("Editar Usuario");
         $("#nombre").val(data.nombre);
         $("#paterno").val(data.paterno);
         $("#id_rol").val(data.id_rol);
         $("#correo").val(data.correo);
+       
+
+        $("#btnGuardar").text("Guardar Cambios");
+        $("#btnGuardar").off("click").on("click", function() {
+          editarUsuarios();
+        });
+
         $("#nuevoAccesoUsuariosInternos").modal("show");
-        
 
       });
-        
+      
      
-
-      $("a#eliminar", row).bind('click', () => {
-        mostrarMensajeConfirmacion('eliminar usuario', data.nombre, data.id);
-      });
-    },
+				$("a#eliminar", row).bind('click', () => {
+          mostrarMensajeConfirmacion('eliminar usuario',data.nombre,data.id)
+				});
+        
+			},
 
     /****************************************************************/
     "language": {
@@ -188,71 +196,62 @@ $(document).ready(function() {
     }
   });
 
-  function editarUsuario(id, nombre, paterno, id_rol, correo) {
-    $("#idusuario").val(id);
-    $("#titulo_nuevo_modal").text("Editar Usuario");
-    $("#nombre").val(nombre);
-    $("#paterno").val(paterno);
-    $("#id_rol").val(id_rol);
-    $("#correo").val(correo);
-    $("#nuevoAccesoUsuariosInternos").modal("show");
-  }
 });
+
 /****************************FUNCION*******EDITAR******************************* */
 
 function mostrarMensajeConfirmacion(accion, valor1, valor2) {
+  
 
+  
   if (accion == "eliminar usuario") {
     $('#titulo_mensaje').text('Eliminar usuario');
-    $('#mensaje').html('¿Desea eliminar el usuario <b>' + valor1 + '</b>?');
-    $('#btnConfirmar').attr("onclick", "accionCliente('eliminar'," + valor2 + ")");
-    $('#mensajeModal').modal('show');
+    $('#mensaje').html('¿Desea eliminar al usuario <b>' + valor1 + '</b>?');
+   // $('#btnConfirmar').attr("onclick", "accionUsuario('eliminar'," + valor2 + ")");
+    $('#mensajeModal1').modal('show');
   }
-  /*if(accion == "eliminar usuario cliente"){
-			$('#titulo_mensaje').text('Eliminar usuario');
-			$('#mensaje').html('¿Desea eliminar al usuario <b>'+valor1+'</b>?');
-			$('#btnConfirmar').attr("onclick","controlAcceso('eliminar',"+valor2+")");
-      $("#accesosClienteModal").modal('hide')
-			$('#mensajeModal').modal('show');
-		} */
 
 }
 
-function accionCliente(accion, id) {
-    let opcion_motivo = $('#mensajeModal #opcion_motivo').val()
-    let opcion_descripcion = $( "#mensajeModal #opcion_motivo option:selected" ).text();
-    //let mensaje_comentario = $('#mensajeModal #mensaje_comentario').val()
-    let bloquear_subclientes = $("#mensajeModal #bloquear_subclientes").is(":checked")? 'SI':'NO';
-		$.ajax({
-			url: '<?php echo base_url('Cat_UsuarioInternos/status'); ?>',
-			type: 'post',
-			data: {
-				'id': id, 'accion': accion, 'opcion_motivo':opcion_motivo, 'mensaje_comentario':mensaje_comentario,
-        'opcion_descripcion':opcion_descripcion, 'bloquear_subclientes':bloquear_subclientes
-			},
-			beforeSend: function() {
-				$('.loader').css("display", "block");
-			},
-			success: function(res) {
-				setTimeout(function(){
-						$('.loader').fadeOut();
-				},200);
-				var data = JSON.parse(res);
-				if (data.codigo === 1){
-					$("#mensajeModal").modal('hide')
-					recargarTable()
-					Swal.fire({
-						position: 'center',
-						icon: 'success',
-						title: data.msg,
-						showConfirmButton: false,
-						timer: 2500
-					})
-				} 
-			}
-		});
-	}
-
+/*function accionUsuario(accion, id) {
+  let opcion_motivo = $('#mensajeModal1 #opcion_motivo').val()
+  let opcion_descripcion = $("#mensajeModal1 #opcion_motivo option:selected").text();
+  let mensaje_comentario = $('#mensajeModal1 #mensaje_comentario').val()
+  let bloquear_subusuarios = $("#mensajeModal1 #bloquear_subusuarios").is(":checked") ? 'SI' : 'NO';
+  $.ajax({
+    url: '< ?php echo base_url('Cat_UsuarioInternos/status'); ?>',
+    type: 'post',
+    data: {
+      'id': id,
+      'accion': accion,
+      'opcion_motivo': opcion_motivo,
+      'mensaje_comentario': mensaje_comentario,
+      'opcion_descripcion': opcion_descripcion,
+      'bloquear_subusuarios': bloquear_subusuarios
+    },
+    beforeSend: function() {
+      $('.loader').css("display", "block");
+    },
+    success: function(res) {
+      setTimeout(function() {
+        $('.loader').fadeOut();
+      }, 200);
+      var data = JSON.parse(res);
+      if (data.codigo === 1) {
+        $("#mensajeModal1").modal('hide')
+        recargarTable()
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: data.msg,
+          showConfirmButton: false,
+          timer: 2500
+        })
+      }
+    }
+  });
+}
+*/
 /*--------------LLAMADO DEL BOTON REGISTRO USUARIO INTERNOS----------------------------*/
 function BotonRegistroUsuarioInterno() {
   $.ajax({
@@ -266,15 +265,12 @@ function BotonRegistroUsuarioInterno() {
         $('.loader').fadeOut();
       }, 200);
 
-      /*if(res != 0){
-        $('#nombre').empty();
-        var dato = JSON.parse(res);
-        $('#nombre').append('<option value="">Selecciona</option>');
-        for(let i = 0; i < dato.length; i++){
-          $('#nombre').append('<option value="'+dato[i]['id']+'">'+dato[i]['nombre']+' '+dato[i]['paterno']+'</option>');
-        }*/ //EN SU MOMENTO SE UTILIZÓ PARA LLAMAR AL SELECT
+      $("#btnGuardar").text("Guardar");
+      $("#btnGuardar").off("click").on("click", function() {
+        registroUsuariosInternos(); // Llama a la función con el ID del usuario
+      });
       $('#nuevoAccesoUsuariosInternos').modal('show');
-      //} 
+
     }
   });
 }
@@ -305,13 +301,92 @@ function registroUsuariosInternos() {
         })
 
         $('#formAccesoUsuariosinternos')[0]
-      .reset(); //se limpian nnuevamente los campos de registro después de guardar
+          .reset(); //se limpian nnuevamente los campos de registro después de guardar
       } else {
         $("#nuevoAccesoUsuariosInternos #msj_error").css('display', 'block').html(data.msg);
       }
     }
   });
 }
+
+/***********************************************************************************/
+
+
+function editarUsuarios() {
+  let datos = $('#formAccesoUsuariosinternos').serializeArray();
+
+  //datos.push({name: 'correo_actual', value: $("#editar").data('correo')});
+
+  $.ajax({
+    url: '<?php echo base_url('Cat_UsuarioInternos/editarUsuarioControlador'); ?>',
+    type: 'POST',
+    data: datos,
+    beforeSend: function() {
+      $('.loader').css("display", "block");
+    },
+    success: function(res) {
+    
+
+      setTimeout(function() {
+        $('.loader').fadeOut();
+      }, 200);
+
+      var data = JSON.parse(res);
+      if (data.codigo === 1) {
+        $("#nuevoAccesoUsuariosInternos").modal('hide');
+        recargarTable();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Usuario editado correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        });
+
+        $('#formAccesoUsuariosinternos')[0]
+      .reset(); // Se limpian nuevamente los campos de registro después de guardar
+      } else {
+        $("#nuevoAccesoUsuariosInternos #msj_error").css('display', 'block').html(data.msg);
+      }
+    },
+    error: function(err) {
+      console.error('Error en la petición AJAX:', err.responseText);
+    }
+
+  });
+}
+
+function controlAcceso(accion, idUsuarioCliente) {
+		$("tr#" + idUsuarioCliente).hide();
+		$.ajax({
+			url: '<?php echo base_url('Cat_Cliente/controlAcceso'); ?>',
+			type: 'post',
+			data: {
+				'idUsuarioCliente': idUsuarioCliente,
+				'accion': accion
+			},
+			beforeSend: function() {
+				$('.loader').css("display", "block");
+			},
+			success: function(res) {
+				setTimeout(function(){
+						$('.loader').fadeOut();
+				},200);
+				var data = JSON.parse(res);
+				if (data.codigo === 1){
+					recargarTable()
+          $("#mensajeModal1").modal('hide')
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: data.msg,
+						showConfirmButton: false,
+						timer: 2500
+					})
+				} 
+			}
+		});
+	}
 
 /*----------------------------------------------------------*/
 function generarPassword() {

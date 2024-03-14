@@ -60,7 +60,7 @@
                 </div>
 
                 
-                <input type="text" class="form-control" name="idUsuarioInterno" id="idUsuarioInterno" style="display: none;">
+                <input type="hidden" class="form-control" name="idUsuarioInterno" id="idUsuarioInterno" style="">
 
 
 
@@ -83,7 +83,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button id="btnGuardar" type="button" class="btn btn-success" onclick="registroUsuariosInternos()">Guardar</button>
+        <button id="btnGuardar" type="button" class="btn btn-success" >Guardar</button>
       </div>
   </div>
 </div>

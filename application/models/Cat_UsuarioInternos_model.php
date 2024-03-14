@@ -31,12 +31,13 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }
   }
 
-  function verificarUsuarioExistente($nombre,$id){
+  function verificarUsuarioExistente($correo,$id){
     $this->db
     ->select('id')
     ->from('usuario')
-    ->or_where('nombre', $nombre)
-    ->where_not_in('id',$id);
+    
+    ->where('correo', $correo)
+    ->where('id',$id);
     
     $query = $this->db->get();
     return $query->num_rows();
@@ -57,12 +58,21 @@ class Cat_UsuarioInternos_model extends CI_Model{
     return $this->db->insert_id();
   }
   
-  function edit($usuario, $id){
+
+  function editUsuario($id, $datos) {
+   // echo $id.' no hay ' .$datos;
     $this->db
-    ->where('id', $id)
-    ->update('usuario', $usuario);
-  }
+        ->where('id', $id)
+        ->update('usuario', $datos);
+    }
   
+    function deleteAccesoUsuarioCliente($idUsuarioCliente){
+      $this->db
+      ->where('id', $idUsuarioCliente)
+      ->delete('usuario_cliente');
+    }
+
+    
     function getById($idusuario){
     $this->db
     ->select('*')

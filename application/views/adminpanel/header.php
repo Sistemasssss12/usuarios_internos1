@@ -107,12 +107,17 @@
 					</a>
 					<div id="collapseClientes" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           	<div class="bg-white py-2 collapse-inner rounded">
+
 							<?php
+							 
 									if($permisos){
 										foreach($permisos as $p){ 
 											echo "<a class='collapse-item contraer' data-toggle='tooltip' data-placement='right' title='".$p->nombreCliente."' href='".site_url("$p->url")."'>".$p->nombreCliente."</a>";
 										} 
 									} 
+									else {
+										$permisos = ''; 
+									}
 							?>  
 						</div>
         	</div>
