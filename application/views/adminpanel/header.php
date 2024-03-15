@@ -99,6 +99,7 @@
 
 			<!-- Clientes -->
 			<?php 
+			$permisos = ''; 
 			if(in_array(2, $submenus)){ ?>
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="true" aria-controls="collapseClientes">

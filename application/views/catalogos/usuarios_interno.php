@@ -5,10 +5,20 @@
   <!-- Page Heading -->
   <div class="align-items-center mb-4">
     <div class="row">
+
+      <!-- <div class="col-sm-12 col-md-2">
+				<a href="#" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#newModal">
+					<span class="icon text-white-50">
+            <i class="fas fa-user-tie"></i>
+					</span>
+					--<span class="text">Agregar cliente</span> -
+				</a> 
+			</div> -->
+
       <div class="col-sm-12 col-md-2">
         <a href="#" class="btn btn-primary btn-icon-split" onclick="BotonRegistroUsuarioInterno()">
           <span class="icon text-white-50">
-            <i class="fas fa-sign-in-alt"></i>
+            <i class="fas fa-user-tie"></i>
           </span>
           <span class="text">Registro de usuarios internos</span>
         </a>
@@ -33,6 +43,8 @@
   <input type="hidden" id="idusuario">
 </div>
 <!-- /.content-wrapper -->
+
+
 <script>
 var url = '<?php echo base_url('Cat_UsuarioInternos/get'); ?>';
 $(document).ready(function() {
@@ -122,7 +134,7 @@ $(document).ready(function() {
           return tiempo;
         }
       },
-    
+
 
       {
         title: 'Acciones',
@@ -130,15 +142,11 @@ $(document).ready(function() {
         bSortable: false,
         "width": "10%",
         mRender: function(data, type, full) {
-          
-
+            
           let editar =
             '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar Usuario" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
-
-          
-          let eliminar = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar usuario" id="eliminar" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
-        
-
+          let eliminar =
+            '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar usuario" onclick="eliminarUsuario(' +data+ ')" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
 
           return editar + eliminar;
         }
@@ -161,7 +169,7 @@ $(document).ready(function() {
         $("#paterno").val(data.paterno);
         $("#id_rol").val(data.id_rol);
         $("#correo").val(data.correo);
-       
+
 
         $("#btnGuardar").text("Guardar Cambios");
         $("#btnGuardar").off("click").on("click", function() {
@@ -171,13 +179,13 @@ $(document).ready(function() {
         $("#nuevoAccesoUsuariosInternos").modal("show");
 
       });
-      
-     
-				$("a#eliminar", row).bind('click', () => {
-          mostrarMensajeConfirmacion('eliminar usuario',data.nombre,data.id)
-				});
-        
-			},
+
+
+      $("a#eliminar", row).bind('click', () => {
+        mostrarMensajeConfirmacion('eliminar usuario', data.nombre, data.id)
+      });
+
+    },
 
     /****************************************************************/
     "language": {
@@ -201,17 +209,21 @@ $(document).ready(function() {
 /****************************FUNCION*******EDITAR******************************* */
 
 function mostrarMensajeConfirmacion(accion, valor1, valor2) {
-  
 
-  
+
   if (accion == "eliminar usuario") {
     $('#titulo_mensaje').text('Eliminar usuario');
     $('#mensaje').html('¿Desea eliminar al usuario <b>' + valor1 + '</b>?');
-   // $('#btnConfirmar').attr("onclick", "accionUsuario('eliminar'," + valor2 + ")");
-    $('#mensajeModal1').modal('show');
+    $('#btnConfirmar').attr("onclick", "accionUsuario('eliminar'," + valor2 + ")");
+    $('#mensajeModal').modal('show');
   }
 
 }
+
+
+
+/*********************************************************************************/
+
 
 /*function accionUsuario(accion, id) {
   let opcion_motivo = $('#mensajeModal1 #opcion_motivo').val()
@@ -325,7 +337,7 @@ function editarUsuarios() {
       $('.loader').css("display", "block");
     },
     success: function(res) {
-    
+
 
       setTimeout(function() {
         $('.loader').fadeOut();
@@ -344,7 +356,7 @@ function editarUsuarios() {
         });
 
         $('#formAccesoUsuariosinternos')[0]
-      .reset(); // Se limpian nuevamente los campos de registro después de guardar
+          .reset(); // Se limpian nuevamente los campos de registro después de guardar
       } else {
         $("#nuevoAccesoUsuariosInternos #msj_error").css('display', 'block').html(data.msg);
       }
@@ -356,37 +368,54 @@ function editarUsuarios() {
   });
 }
 
-function controlAcceso(accion, idUsuarioCliente) {
-		$("tr#" + idUsuarioCliente).hide();
-		$.ajax({
-			url: '<?php echo base_url('Cat_Cliente/controlAcceso'); ?>',
-			type: 'post',
-			data: {
-				'idUsuarioCliente': idUsuarioCliente,
-				'accion': accion
-			},
-			beforeSend: function() {
-				$('.loader').css("display", "block");
-			},
-			success: function(res) {
-				setTimeout(function(){
-						$('.loader').fadeOut();
-				},200);
-				var data = JSON.parse(res);
-				if (data.codigo === 1){
-					recargarTable()
-          $("#mensajeModal1").modal('hide')
-					Swal.fire({
-						position: 'center',
-						icon: 'success',
-						title: data.msg,
-						showConfirmButton: false,
-						timer: 2500
-					})
-				} 
-			}
-		});
-	}
+
+
+/*********************************Función para eliminar un usuario***/
+
+function eliminarUsuario(idUsuario) {
+  
+  $.ajax({
+
+    
+    url: '<?php echo base_url('Cat_UsuarioInternos/status'); ?>',
+    type: 'post',
+    data: {
+      'id': idUsuario,
+      'accion': 'eliminar'
+    },
+    beforeSend: function() {
+      $('.loader').css("display", "block");
+    },
+    success: function(res) {
+      setTimeout(function() {
+        $('.loader').fadeOut();
+      }, 200);
+      var data = JSON.parse(res);
+      if (data.codigo === 1) {
+        recargarTable(); // Recarga la tabla después de eliminar el usuario
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Usuario eliminado correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        });
+      } else {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Error al eliminar usuario',
+          text: data.msg,
+          showConfirmButton: false,
+          timer: 2500
+        });
+      }
+    },
+    error: function(err) {
+      console.error('Error en la petición AJAX:', err.responseText);
+    }
+  });
+}
 
 /*----------------------------------------------------------*/
 function generarPassword() {

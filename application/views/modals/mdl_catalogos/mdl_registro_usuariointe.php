@@ -60,7 +60,7 @@
                 </div>
 
                 
-                <input type="hidden" class="form-control" name="idUsuarioInterno" id="idUsuarioInterno" style="">
+                <input type="hidden" class="form-control" name="idUsuarioInterno" id="idUsuarioInterno" >
 
 
 
@@ -69,12 +69,13 @@
                    <input type="text" class="form-control" name="password" id="password" maxlength="8" readonly>
                     <br>
                  </div>
+
                </div>
             </form>
          </div>
             <div class="row">
                <div class="col-md-12">
-                 <p>* Copia la contraseña para enviarla al cliente, ya que al no hacerlo se tendrá que generar una nueva</p>
+                 <p>* Copia la contraseña para enviarla, ya que al no hacerlo se tendrá que generar una nueva</p>
                 </div>
              </div>
 
@@ -89,6 +90,25 @@
 </div>
 
 <!-------------------------------------------------------->
+<div class="modal fade" id="mensajeModal" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="titulo_mensaje"></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 id="mensaje"></h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" id="btnConfirmar">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script>

@@ -44,6 +44,7 @@ class Cat_UsuarioInternos extends CI_Controller{
     ->view('catalogos/usuarios_interno',$datos)
     ->view('adminpanel/footer');
   }
+  
 
   function get(){
 		$usuarios_interno['recordsTotal'] = $this->Cat_UsuarioInternos_model->getTotal();
@@ -112,7 +113,7 @@ function editarUsuarioControlador()
 
 
 
-  //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUAIOS_INTERNOS
+  //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUARIOS_INTERNOS
   function addUsuarioInterno(){
     $this->form_validation->set_rules('nombre', 'nombre', 'required|trim');
     $this->form_validation->set_rules('paterno', 'paterno', 'required|trim');
@@ -161,6 +162,7 @@ function editarUsuarioControlador()
 
     
       $this->Cat_UsuarioInternos_model->addUsuarioInterno($UsuariosInternos);
+
          $msj = array(
           'codigo' => 1,
           'msg' => 'success'
@@ -172,32 +174,143 @@ function editarUsuarioControlador()
   
 //__________________________________________________________________________________
 
-
   function status(){
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
-    $idUsuario = $this->input->post('id');
+    $idCliente = $this->input->post('id');
     $accion = $this->input->post('accion');
-    
-    if($accion == "eliminar"){
-      $datos = array(
+    if($accion == "desactivar"){
+      $data = array(
         'edicion' => $date,
-        'idusuario' => $id_usuario,
-        'eliminado' => 1
+        'id_usuario' => $id_usuario,
+        'status' => 0
       );
-      //$this->cat_UsuarioInternos_model->edit($data, $idUsuario);
-      $this->Cat_UsuarioInternos_model->editUsuario($datos, $idUsuario);
-      $this->Cat_UsuarioInternos_model->editUsuario($datos, $idUsuario);
-      
+      $this->cat_cliente_model->edit($data, $idCliente);
+      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
+      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente);
       $msj = array(
         'codigo' => 1,
-        'msg' => 'Usuario eliminado correctamente'
+        'msg' => 'Cliente inactivado correctamente'
       );
     }
-  
-    echo json_encode($msj); 
-  }  
+    if($accion == "activar"){
+      $data = array(
+        'edicion' => $date,
+        'id_usuario' => $id_usuario,
+        'status' => 1
+      );
+      $this->cat_cliente_model->edit($data, $idCliente);
+      $this->cat_cliente_model->editAccesoUsuarioCliente($data, $idCliente);
+      $this->cat_cliente_model->editAccesoUsuarioSubcliente($data, $idCliente);
 
+      $msj = array(
+        'codigo' => 1,
+        'msg' => 'Cliente activado correctamente'
+      );
+    }
+    if($accion == "eliminar"){
+      $usuario = array(
+        'edicion' => $date,
+        'id_usuario' => $id_usuario,
+        'eliminado' => 1
+      );
+     // echo "id Cliente :  ".$idCliente."   Datos  usuario:   ";
+      //var_dump($usuario);
+
+      $this->Cat_UsuarioInternos_model->editUsuario($idCliente, $usuario);
+     
+      $msj = array(
+        'codigo' => 1,
+        'msg' => 'Cliente eliminado correctamente'
+      );
+    }
+    if($accion == "bloquear"){
+      $cliente = array(
+        'edicion' => $date,
+        'id_usuario' => $id_usuario,
+        'bloqueado' => $this->input->post('opcion_motivo')
+      );
+      $this->cat_cliente_model->edit($cliente, $idCliente);
+
+      if($this->input->post('bloquear_subclientes') === 'SI'){
+        $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idCliente);
+        if($data['subclientes']){
+          foreach($data['subclientes'] as $row){
+            $subcliente = array(
+              'edicion' => $date,
+              'id_usuario' => $id_usuario,
+              'bloqueado' => $this->input->post('opcion_motivo')
+            );
+            $this->cat_subclientes_model->editar($subcliente, $row->id);
+            unset($subcliente);
+          }
+        }
+      }
+      
+      $dataBloqueos = array(
+        'status' => 0
+      );
+      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idCliente);
+
+      $data_bloqueo = array(
+        'creacion' => $date,
+        'id_usuario' => $id_usuario,
+        'descripcion' => $this->input->post('opcion_descripcion'),
+        'id_cliente' => $idCliente,
+        'bloqueo_subclientes' => $this->input->post('bloquear_subclientes'),
+        'tipo' => 'BLOQUEO',
+        'mensaje' => $this->input->post('mensaje_comentario'),
+      );
+      $this->cat_cliente_model->addHistorialBloqueos($data_bloqueo);
+      $msj = array(
+        'codigo' => 1,
+        'msg' => 'Cliente bloqueado correctamente'
+      );
+    }
+    if($accion == "desbloquear"){
+      $cliente = array(
+        'edicion' => $date,
+        'id_usuario' => $id_usuario,
+        'bloqueado' => 'NO'
+      );
+      $this->cat_cliente_model->edit($cliente, $idCliente);
+
+      $data['subclientes'] = $this->cat_subclientes_model->getSubclientesByIdCliente($idCliente);
+      if($data['subclientes']){
+        foreach($data['subclientes'] as $row){
+          $subcliente = array(
+            'edicion' => $date,
+            'id_usuario' => $id_usuario,
+            'bloqueado' => 'NO'
+          );
+          $this->cat_subclientes_model->editar($subcliente, $row->id);
+          unset($subcliente);
+        }
+      }
+      
+      $dataBloqueos = array(
+        'status' => 0
+      );
+      $this->cat_cliente_model->editHistorialBloqueos($dataBloqueos, $idCliente);
+
+      $data_bloqueo = array(
+        'creacion' => $date,
+        'id_usuario' => $id_usuario,
+        'descripcion' => $this->input->post('opcion_descripcion'),
+        'id_cliente' => $idCliente,
+        'bloqueo_subclientes' => 'NO',
+        'tipo' => 'DESBLOQUEO',
+        'status' => 0,
+      );
+      $this->cat_cliente_model->addHistorialBloqueos($data_bloqueo);
+      $msj = array(
+        'codigo' => 1,
+        'msg' => 'Cliente desbloqueado correctamente'
+      );
+    }
+    echo json_encode($msj);
+  }
+  
 
   function getActivos(){
     $res = $this->Cat_UsuarioInternos_model->getActivos();

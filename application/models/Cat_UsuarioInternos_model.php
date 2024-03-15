@@ -59,17 +59,17 @@ class Cat_UsuarioInternos_model extends CI_Model{
   }
   
 
-  function editUsuario($id, $datos) {
-   // echo $id.' no hay ' .$datos;
+  function editUsuario($id, $usuario) {
+   //echo $id.' no hay ' .$datos;
     $this->db
         ->where('id', $id)
-        ->update('usuario', $datos);
+        ->update('usuario', $usuario);
     }
   
-    function deleteAccesoUsuarioCliente($idUsuarioCliente){
+    function eliminarUsuario($id, $usuario){
       $this->db
-      ->where('id', $idUsuarioCliente)
-      ->delete('usuario_cliente');
+      ->where('id', $id)
+      ->update('usuario');
     }
 
     
@@ -83,7 +83,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     return $query->row();
   }
   
-  function getAccesos($id_usuario){
+  /*function getAccesos($id_usuario){
     $this->db
     ->select("u.*,CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario, CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario_cliente, uc.correo as correo_usuario, uc.creacion as alta, uc.id as idUsuarioCliente, uc.id_rol")
     ->from("usuario as u")
@@ -98,7 +98,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }else{
       return FALSE;
     }
-  } 
+  } */
   function editAccesoUsuarioCliente($usuario, $idusuario){
     $this->db
     ->where('id_usuario', $idusuario)
