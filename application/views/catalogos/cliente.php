@@ -171,12 +171,14 @@
 					$("#clave").val(data.clave);
 					$("#newModal").modal("show");
 				});
+
 				$("a#activar", row).bind('click', () => {
           mostrarMensajeConfirmacion('activar cliente',data.nombre,data.id)
 				});
 				$("a#desactivar", row).bind('click', () => {
           mostrarMensajeConfirmacion('desactivar cliente',data.nombre,data.id)
 				});
+
         $("a#bloquear_cliente", row).bind('click', () => {
           mostrarMensajeConfirmacion('bloquear cliente',data.nombre,data.id)
 				});
@@ -188,6 +190,7 @@
 				});
 				$("a#acceso", row).bind('click', () => {
           $(".nombreCliente").text(data.nombre);
+					
 					$.ajax({
 						url: '<?php echo base_url('Cat_Cliente/getClientesAccesos'); ?>',
 						type: 'post',

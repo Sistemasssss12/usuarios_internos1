@@ -31,7 +31,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }
   }
 
-  function verificarUsuarioExistente($correo,$id){
+  /*function verificarUsuarioExistente($correo,$id){
     $this->db
     ->select('id')
     ->from('usuario')
@@ -41,7 +41,7 @@ class Cat_UsuarioInternos_model extends CI_Model{
     
     $query = $this->db->get();
     return $query->num_rows();
-  }
+  }*/
 
   function check($id){
     $this->db
@@ -66,11 +66,11 @@ class Cat_UsuarioInternos_model extends CI_Model{
         ->update('usuario', $usuario);
     }
   
-    function eliminarUsuario($id, $usuario){
+    /*function eliminarUsuario($id, $usuario){
       $this->db
       ->where('id', $id)
       ->update('usuario');
-    }
+    } */
 
     
     function getById($idusuario){
@@ -83,28 +83,13 @@ class Cat_UsuarioInternos_model extends CI_Model{
     return $query->row();
   }
   
-  /*function getAccesos($id_usuario){
-    $this->db
-    ->select("u.*,CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario, CONCAT(u.nombre,' ',u.paterno',uc.materno) as usuario_cliente, uc.correo as correo_usuario, uc.creacion as alta, uc.id as idUsuarioCliente, uc.id_rol")
-    ->from("usuario as u")
-    ->join("usuario_cliente as uc","uc.id_Usuario = c.id")
-    ->join("usuario as u","u.id = uc.id_usuario")
-    ->where("u.id", $id_usuario)
-    ->order_by("uc.id", 'desc');
-
-    $query = $this->db->get();
-    if($query->num_rows() > 0){
-      return $query->result();
-    }else{
-      return FALSE;
-    }
-  } */
-  function editAccesoUsuarioCliente($usuario, $idusuario){
+  
+  /*function editAccesoUsuarioCliente($usuario, $idusuario){
     $this->db
     ->where('id_usuario', $idusuario)
     ->update('usuario_cliente', $usuario);
   } 
-  
+  */
   function addUsuarioInterno($usuario) {
     $this->db->insert("usuario", $usuario);
 
@@ -114,10 +99,10 @@ class Cat_UsuarioInternos_model extends CI_Model{
     return $insert_id; // Puedes devolver el ID o cualquier otra cosa que necesites
 }
 
-  function updateUsuarioInterno($usuario,$id){
+  /*function updateUsuarioInterno($usuario,$id){
     $this->db->update("usuario", $usuario)
      ->where('id',$id);
-  }
+  } */
   
   function getActivos(){
     $this->db

@@ -6,15 +6,6 @@
   <div class="align-items-center mb-4">
     <div class="row">
 
-      <!-- <div class="col-sm-12 col-md-2">
-				<a href="#" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#newModal">
-					<span class="icon text-white-50">
-            <i class="fas fa-user-tie"></i>
-					</span>
-					--<span class="text">Agregar cliente</span> -
-				</a> 
-			</div> -->
-
       <div class="col-sm-12 col-md-2">
         <a href="#" class="btn btn-primary btn-icon-split" onclick="BotonRegistroUsuarioInterno()">
           <span class="icon text-white-50">
@@ -37,6 +28,26 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal de Confirmación -->
+  <div class="modal fade" id="mensajeModal" tabindex="-1" role="dialog" aria-labelledby="mensajeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="titulo_mensaje"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="mensaje"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmar">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
   <?php echo $modals; ?>
   <div class="loader" style="display: none;"></div>
@@ -145,8 +156,10 @@ $(document).ready(function() {
             
           let editar =
             '<a id="editar" href="javascript:void(0)" data-toggle="tooltip" title="Editar Usuario" class="fa-tooltip icono_datatable icono_azul_oscuro"><i class="fas fa-edit"></i></a> ';
+
+
           let eliminar =
-            '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar usuario" onclick="eliminarUsuario(' +data+ ')" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
+          '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar usuario" onclick="mostrarMensajeConfirmacion(\'eliminar usuario\', \'' + full.nombre + '\', \'' + data + '\')" class="fa-tooltip icono_datatable icono_gris"><i class="fas fa-trash"></i></a> ';
 
           return editar + eliminar;
         }
@@ -207,18 +220,15 @@ $(document).ready(function() {
 });
 
 /****************************FUNCION*******EDITAR******************************* */
-
-function mostrarMensajeConfirmacion(accion, valor1, valor2) {
-
-
-  if (accion == "eliminar usuario") {
-    $('#titulo_mensaje').text('Eliminar usuario');
-    $('#mensaje').html('¿Desea eliminar al usuario <b>' + valor1 + '</b>?');
-    $('#btnConfirmar').attr("onclick", "accionUsuario('eliminar'," + valor2 + ")");
-    $('#mensajeModal').modal('show');
-  }
-
-}
+    function mostrarMensajeConfirmacion(accion, valor1, valor2) {
+            if (accion == "eliminar usuario") {
+                $('#titulo_mensaje').text('Eliminar usuario');
+                $('#mensaje').html('¿Desea eliminar al usuario <b>' + valor1 + '</b>?');
+                $('#btnConfirmar').attr("onclick", "eliminarUsuario(" + valor2 + ")");
+                $('#btnConfirmar').attr("data-dismiss", "modal"); 
+                $('#mensajeModal').modal('show');
+            }
+        }
 
 
 
@@ -373,49 +383,51 @@ function editarUsuarios() {
 /*********************************Función para eliminar un usuario***/
 
 function eliminarUsuario(idUsuario) {
-  
-  $.ajax({
+            $.ajax({
+                url: '<?php echo base_url('Cat_UsuarioInternos/status'); ?>',
+                type: 'post',
+                data: {
+                    'id': idUsuario,
+                    'accion': 'eliminar'
+                },
+                beforeSend: function () {
+                    $('.loader').css("display", "block");
+                },
+                success: function (res) {
+                    setTimeout(function () {
+                        $('.loader').fadeOut();
+                    }, 200);
+                    var data = JSON.parse(res);
+                    if (data.codigo === 1) {
+                       
+                        recargarTable();
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Usuario eliminado correctamente',
+                            showConfirmButton: false,
+                            timer: 2500
+                        });
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error al eliminar usuario',
+                            text: data.msg,
+                            showConfirmButton: false,
+                            timer: 2500
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.error('Error en la petición AJAX:', err.responseText);
+                }
+            });
+        }
 
-    
-    url: '<?php echo base_url('Cat_UsuarioInternos/status'); ?>',
-    type: 'post',
-    data: {
-      'id': idUsuario,
-      'accion': 'eliminar'
-    },
-    beforeSend: function() {
-      $('.loader').css("display", "block");
-    },
-    success: function(res) {
-      setTimeout(function() {
-        $('.loader').fadeOut();
-      }, 200);
-      var data = JSON.parse(res);
-      if (data.codigo === 1) {
-        recargarTable(); // Recarga la tabla después de eliminar el usuario
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Usuario eliminado correctamente',
-          showConfirmButton: false,
-          timer: 2500
-        });
-      } else {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Error al eliminar usuario',
-          text: data.msg,
-          showConfirmButton: false,
-          timer: 2500
-        });
-      }
-    },
-    error: function(err) {
-      console.error('Error en la petición AJAX:', err.responseText);
-    }
-  });
-}
+            function recargarTable() {
+            $("#tabla").DataTable().ajax.reload();
+             }
 
 /*----------------------------------------------------------*/
 function generarPassword() {
