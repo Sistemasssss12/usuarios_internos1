@@ -195,6 +195,78 @@
 </div>  
 
 
+<div class="modal fade" id="ModalVisibilidadClientes" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Selección de clientes y usuarios internos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form id="formVisibilidadClientes">
+
+          <div class="row">
+            <div class="col-md-12">
+              <label>Cliente *</label>
+              <select name="id_clientePermisos" id="id_clientePermisos" class="form-control"></select>
+              <br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label>Selecciona quien podrá visualizar al cliente seleccionado *</label>
+              <select id="id_rol_Usuario" name="id_rol_Usuario[]" class="form-control" onchange="mostrarSeleccionados('usuario')"></select>
+              <!--<select  id="id_rol_Usuario" name="id_rol_Usuario" class="form-control" onchange="mostrarSeleccionados('usuario')"> </select> -->
+              <br>
+            </div>
+          </div>
+          <!-- Div flexible para mostrar los clientes y usuarios seleccionados -->
+          <div  id="espacio_para_agregado" class="col-12 d-flex flex-column mb-3">
+          </div>
+
+          <div class="text-center">
+            <table class="table table-striped">
+                <thead>
+                   <tbody>
+                      <tr>
+                        <th class="text-center"> ESPACIO</th>
+                       </tr>
+                     </tbody> 
+                </thead>
+            </table>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <label>Paquete Antidoping </label>
+              <select name=" " id=" " class="form-control"></select>
+              <br>
+            </div>
+          </div>
+
+        </form>
+         
+        <div id="mensajeExito" class="alert alert-success" style="display: none;"></div>
+
+        <div class="row">
+        </div>
+
+        <div id="msj_error" class="alert alert-danger hidden"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" onclick="CrearVisibilidadCliente()">Guardar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
 <script>
   $("#newModal").on("hidden.bs.modal", function() {
     $("#newModal input").val("");
@@ -211,4 +283,5 @@
   $("#accesosClienteModal").on("hidden.bs.modal", function() {
     $("#accesosClienteModal #div_accesos").empty();
   });
+
 </script>

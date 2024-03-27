@@ -10,7 +10,7 @@ class Dashboard extends CI_Controller{
 	public function index(){
 		if($this->session->userdata('logueado') && $this->session->userdata('tipo') == 1){
 			$data['permisos'] = $this->usuario_model->getPermisos($this->session->userdata('id'));
-			//
+			//var_dump($data['permisos'] );
 			$data['submodulos'] = $this->rol_model->getMenu($this->session->userdata('idrol'));
 			foreach($data['submodulos'] as $row) {
 				$items[] = $row->id_submodulo;

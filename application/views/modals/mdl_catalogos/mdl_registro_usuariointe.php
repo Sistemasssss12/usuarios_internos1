@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"  id="titulo_nuevo_modal">Registro de usuarios internos</h5>
+        <h5 class="modal-title"  id="titulo_nuevo_modal">Registro de usuarios internos *</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -34,6 +34,7 @@
             <div class="col-12">
               <label>Tipo de rol *</label>
               <select class="form-control" id="id_rol" name="id_rol">
+               <option value="">Selecciona un rol</option>
                 <option value="1">Administrador</option>
                 <option value="2">Analista</option>
                 <option value="4">Reclutadora</option>
@@ -53,18 +54,15 @@
             </div>
           </div>
               <div class="row">
-                 <div class="col-md-3">
+                 <div class="col-md-3"  id="divGenerarPassword">
                    <label>Da click</label>
                       <button type="button" class="btn btn-primary" onclick="generarPassword()">Generar contraseña</button>
                       <br>
                 </div>
 
-                
                 <input type="hidden" class="form-control" name="idUsuarioInterno" id="idUsuarioInterno" >
 
-
-
-                <div class="col-md-6">
+                <div class="col-md-6" id="labelOcultar">
                  <label>Contraseña *</label>
                    <input type="text" class="form-control" name="password" id="password" maxlength="8" readonly>
                     <br>
@@ -73,7 +71,7 @@
                </div>
             </form>
          </div>
-            <div class="row">
+            <div class="row" id="ocultar-en-editar">
                <div class="col-md-12">
                  <p>* Copia la contraseña para enviarla, ya que al no hacerlo se tendrá que generar una nueva</p>
                 </div>

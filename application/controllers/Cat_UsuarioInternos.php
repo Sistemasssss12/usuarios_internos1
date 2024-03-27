@@ -45,7 +45,6 @@ class Cat_UsuarioInternos extends CI_Controller{
     ->view('adminpanel/footer');
   }
   
-
   function get(){
 		$usuarios_interno['recordsTotal'] = $this->Cat_UsuarioInternos_model->getTotal();
     $usuarios_interno['recordsFiltered'] = $this->Cat_UsuarioInternos_model->getTotal();
@@ -56,14 +55,12 @@ class Cat_UsuarioInternos extends CI_Controller{
 /************************************EDITAR USUARIO INTERNO*****************************************/
 function editarUsuarioControlador()
 {
-    $this->form_validation->set_rules('nombre', 'Nombre|trim');
-    $this->form_validation->set_rules('paterno', 'paterno|trim');
+  $this->form_validation->set_rules('nombre', 'Nombre', 'required|trim');
+  $this->form_validation->set_rules('paterno', 'Paterno', 'required|trim');
+  $this->form_validation->set_rules('correo', 'Correo', 'required|trim|valid_email');
 
-    $this->form_validation->set_rules('correo', 'Correo', 'required|trim|valid_email|is_unique[usuario.correo]');
-
-    $this->form_validation->set_message('required', 'El campo {field} es obligatorio');
-    $this->form_validation->set_message('required', 'El campo {field} es obligatorio');
-
+  $this->form_validation->set_message('required', 'El campo {field} es obligatorio');
+  
     $id_usuario = $this->session->userdata('id');
       date_default_timezone_set('America/Mexico_City');
       $date = date('Y-m-d H:i:s');
@@ -72,27 +69,36 @@ function editarUsuarioControlador()
       $materno = $this->input->post('materno');
       $id_rol = $this->input->post('id_rol');
       $correo = $this->input->post('correo');
-      $uncode_password = $this->input->post('password');
-      $base = 'k*jJlrsH:cY]O^Z^/J2)Pz{)qz:+yCa]^+V0S98Zf$sV[c@hKKG07Q{utg%OlODS';
-      $password = md5($base.$uncode_password);
+     // $uncode_password = $this->input->post('password');
+     // $base = 'k*jJlrsH:cY]O^Z^/J2)Pz{)qz:+yCa]^+V0S98Zf$sV[c@hKKG07Q{utg%OlODS';
+     // $password = md5($base.$uncode_password);
       $idUsuario = $this->input->post('idUsuarioInterno');
-
-
 
       $UsuariosInternos = array(
         'edicion' => $date,
-        'id_usuario' => $id_usuario ,
+        'id_usuario' => $id_usuario,
         'nombre' => $nombre,
         'paterno' => $paterno,
         'id_rol' => $id_rol,
         'correo' => $correo,
-         
-      
+             
       );
       $existe = $this->Cat_UsuarioInternos_model->check($idUsuario);
       
 
       if($existe > 0){
+
+        $existeCorreo =  $this->Cat_UsuarioInternos_model->correoExiste($correo, $idUsuario);
+
+          if ($existeCorreo !== 0) {
+            $msj = array(
+              'codigo' => 2,
+              'msg' => 'El correo proporcionado ya existe'
+            );
+            echo json_encode($msj);
+            return; // Detener el flujo del código ya que hay un error
+          }
+
         $this->Cat_UsuarioInternos_model->editUsuario($idUsuario, $UsuariosInternos);
         $msj = array(
           'codigo' => 1,
@@ -103,24 +109,23 @@ function editarUsuarioControlador()
 
       }else {
         $msj = array(
-            'codigo' => 0,
+            'codigo' => 0, 
             'msg' => 'No se pudo encontrar el usuario para editar'
         );
         echo json_encode($msj);
     }
-    
+  
 }
 
-
-
-  //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUARIOS_INTERNOS
+ //---------LIGADA A LA FUNCION DE registroUsuariosInternos DEL CATALOGO USUARIOS_INTERNOS
   function addUsuarioInterno(){
-    $this->form_validation->set_rules('nombre', 'nombre', 'required|trim');
-    $this->form_validation->set_rules('paterno', 'paterno', 'required|trim');
-    $this->form_validation->set_rules('materno', 'materno|trim');
+    $this->form_validation->set_rules('nombre', 'nombre', 'required');
+    $this->form_validation->set_rules('paterno', 'paterno', 'required');
+    $this->form_validation->set_rules('materno', 'materno');
+    $this->form_validation->set_rules('id_rol', 'id_rol', 'required');
   
-    $this->form_validation->set_rules('correo', 'Correo', 'required|trim|valid_email|is_unique[usuario.correo]');
-    $this->form_validation->set_rules('password', 'Contraseña', 'required|trim');
+    $this->form_validation->set_rules('correo', 'Correo', 'required|valid_email|is_unique[usuario.correo]');
+    $this->form_validation->set_rules('password', 'Contraseña', 'required');
 
     $this->form_validation->set_message('required','El campo %s es obligatorio');
     $this->form_validation->set_message('is_unique','El %s ya esta registrado');
@@ -171,67 +176,56 @@ function editarUsuarioControlador()
     echo json_encode($msj);
   }
 
-  
-//__________________________________________________________________________________
-
-  function status(){
-    $msj = array();
+  /*********************************************************************************/
+  function status() {
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
     $idUsInterno = $this->input->post('id');
     $accion = $this->input->post('accion');
 
-    if($accion == "activar"){
-      $data = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'status' => 1
-      );
-      $this->Cat_UsuarioInternos_model->editUsuario($idUsInterno, $usuario);
-    
+    if ($accion == "activar") {
+        $usuario = array(
+            'edicion' => $date,
+            'id_usuario' => $id_usuario,
+            'status' => 1 // Cambia el estado a activo
+        );
+        $this->Cat_UsuarioInternos_model->editUsuario($idUsInterno, $usuario);
 
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Usuario activado correctamente'
-      );
+        $msj = array(
+            'codigo' => 1,
+            'msg' => 'Usuario activado correctamente'
+        );
+    } elseif ($accion == "desactivar") {
+        $usuario = array(
+            'edicion' => $date,
+            'id_usuario' => $id_usuario,
+            'status' => 0 // Cambia el estado a inactivo
+        );
+        $this->Cat_UsuarioInternos_model->editUsuario($idUsInterno, $usuario);
+
+        $msj = array(
+            'codigo' => 1,
+            'msg' => 'Usuario desactivado correctamente'
+        );
+    } elseif ($accion == "eliminar") {
+        $usuario = array(
+            'edicion' => $date,
+            'id_usuario' => $id_usuario,
+            'eliminado' => 1
+        );
+
+        $this->Cat_UsuarioInternos_model->editUsuario($idUsInterno, $usuario);
+
+        $msj = array(
+            'codigo' => 1,
+            'msg' => 'Usuario eliminado correctamente'
+        );
     }
 
-    elseif($accion == "desactivar"){
-      $usuario = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'status' => 0
-      );
-      $this->Cat_UsuarioInternos_model->editUsuario($idUsInterno, $usuario);
- 
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Usuario inactivado correctamente'
-      );
-    }
-
-    if($accion == "eliminar"){
-      $usuario = array(
-        'edicion' => $date,
-        'id_usuario' => $id_usuario,
-        'eliminado' => 1
-      );
-     // echo "id Cliente :  ".$idCliente."   Datos  usuario:   ";
-      //var_dump($usuario);
-
-      $this->Cat_UsuarioInternos_model->editUsuario($idUsInterno, $usuario);
-     
-      $msj = array(
-        'codigo' => 1,
-        'msg' => 'Usuario eliminado correctamente'
-      );
-    }
-   
     echo json_encode($msj);
-  }
-  
-
-  function getActivos(){
+}
+//__________________________________________________________________________________
+   function getActivos(){
     $res = $this->Cat_UsuarioInternos_model->getActivos();
     if($res){
       echo json_encode($res);

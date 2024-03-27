@@ -53,6 +53,7 @@ class Cat_Cliente extends CI_Controller{
     $cliente['data'] = $this->cat_cliente_model->get();
     $this->output->set_output( json_encode( $cliente ) );
 	}
+
   function set(){
     $this->form_validation->set_rules('nombre', 'Nombre', 'required|trim');
     $this->form_validation->set_rules('clave', 'Clave', 'required|trim|max_length[3]');
@@ -265,6 +266,7 @@ class Cat_Cliente extends CI_Controller{
     }
     echo json_encode($msj);
   }
+
   function getActivos(){
     $res = $this->cat_cliente_model->getActivos();
     if($res){
@@ -274,6 +276,78 @@ class Cat_Cliente extends CI_Controller{
       echo $res = 0;
     }
   }
+
+  /**********************************************************/
+
+  public function get_Visibilidad() {
+    $data = $this->cat_cliente_model->getVisibilidad();
+    echo json_encode($data);
+}
+
+/**************************************************************/
+public function usuarios_del_cotenedor() {
+  $cliente_id = $this->input->post('cliente'); // Obtener el ID del cliente seleccionado
+  $usuarios_seleccionados = $this->input->post('usuarios'); // Obtener los usuarios seleccionados
+
+  // Consultar los nombres de los usuarios seleccionados
+  $this->db->select("u.id as usuario_id, u.nombre as usuario_nombre, u.paterno as usuario_paterno");
+  $this->db->from('usuario as u');
+  $this->db->where_in('u.id', $usuarios_seleccionados); // Filtrar por los IDs de los usuarios seleccionados
+  $query = $this->db->get();
+  $usuarios = $query->result();
+
+  // Crear un arreglo con los nombres de los usuarios
+  $usuarios_nombres = array();
+  foreach ($usuarios as $usuario) {
+      $usuarios_nombres[] = $usuario->usuario_nombre . ' ' . $usuario->usuario_paterno;
+  }
+
+  // Construir un arreglo con el cliente y los nombres de los usuarios
+  $datos = array(
+      'cliente' => array(
+          'id' => $cliente_id,
+          'nombre' => $this->input->post('cliente_nombre') // Obtener el nombre del cliente (si es necesario)
+      ),
+      'usuarios' => $usuarios_nombres
+  );
+
+  // Retornar los datos en formato JSON
+  echo json_encode($datos);
+}
+
+
+/*public function usuarios_del_cotenedor() {
+  $cliente_id = $this->input->post('cliente'); // Obtener el ID del cliente seleccionado
+  $usuarios_seleccionados = $this->input->post('usuarios'); // Obtener los usuarios seleccionados
+
+  
+
+  // Luego, retornar los usuarios seleccionados en formato JSON
+  echo json_encode($usuarios_seleccionados);
+}*/
+/******************************SEGUNDA OPCION****************************************/
+/*public function usuarios_del_cotenedor(){
+  $cliente_id = $this->input->post('cliente'); // Obtener el ID del cliente seleccionado
+  
+  // Obtener los IDs de los usuarios asociados al cliente seleccionado desde tu modelo
+  $usuarios_ids = $this->cat_cliente_model->getUsuariosPorCliente($cliente_id);
+
+  // Convertir los IDs de los usuarios en una cadena separada por comas
+  $usuarios_ids_array = array();
+  foreach ($usuarios_ids as $usuario) {
+      $usuarios_ids_array[] = $usuario->usuario_id;
+  }
+  $usuarios_ids_string = implode(',', $usuarios_ids_array);
+
+  // Consultar los nombres de los usuarios basados en los IDs obtenidos
+  $usuarios_nombres = $this->cat_cliente_model->getNombresUsuarios($usuarios_ids_string);
+
+  // Retornar los nombres de los usuarios como una respuesta
+  echo json_encode($usuarios_nombres);
+}*/
+  
+/*************************************************************/
+
   function addUsuario(){
     $this->form_validation->set_rules('nombre_cliente', 'Nombre', 'required|trim');
     $this->form_validation->set_rules('paterno_cliente', 'Primer apellido', 'required|trim');
@@ -341,6 +415,7 @@ class Cat_Cliente extends CI_Controller{
     }
     echo json_encode($msj);
   }
+  
   function getClientesAccesos(){
     $id_cliente = $this->input->post('id_cliente');
     $res = $this->cat_cliente_model->getAccesos($id_cliente);

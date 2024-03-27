@@ -20,7 +20,8 @@ class Cat_UsuarioInternos_model extends CI_Model{
         ->from('usuario as u')
         ->join('rol as r', 'r.id = u.id_rol')  //JOIN con la tabla 'rol'
         ->where('u.eliminado', 0)
-        ->where('u.status', 1);
+        ->order_by('u.creacion','ASC')
+        ->group_by('u.id');
 
 
     $query = $this->db->get();
@@ -31,17 +32,18 @@ class Cat_UsuarioInternos_model extends CI_Model{
     }
   }
 
-  /*function verificarUsuarioExistente($correo,$id){
-    $this->db
-    ->select('id')
-    ->from('usuario')
-    
-    ->where('correo', $correo)
-    ->where('id',$id);
-    
+  public function correoExiste($correo, $idDatos = null) {
+    $this->db->select('id')
+             ->from('usuario')
+             ->where('correo', $correo);
+
+    if ($idDatos !== null) {
+        $this->db->where_not_in('id', $idDatos);
+    }
+
     $query = $this->db->get();
     return $query->num_rows();
-  }*/
+}
 
   function check($id){
     $this->db
@@ -59,20 +61,16 @@ class Cat_UsuarioInternos_model extends CI_Model{
   }
   
 
+  
   function editUsuario($id, $usuario) {
    //echo $id.' no hay ' .$datos;
     $this->db
         ->where('id', $id)
         ->update('usuario', $usuario);
-    }
+        
+    } 
   
-    /*function eliminarUsuario($id, $usuario){
-      $this->db
-      ->where('id', $id)
-      ->update('usuario');
-    } */
-
-    
+        
     function getById($idusuario){
     $this->db
     ->select('*')
@@ -84,12 +82,6 @@ class Cat_UsuarioInternos_model extends CI_Model{
   }
   
   
-  /*function editAccesoUsuarioCliente($usuario, $idusuario){
-    $this->db
-    ->where('id_usuario', $idusuario)
-    ->update('usuario_cliente', $usuario);
-  } 
-  */
   function addUsuarioInterno($usuario) {
     $this->db->insert("usuario", $usuario);
 
@@ -99,10 +91,6 @@ class Cat_UsuarioInternos_model extends CI_Model{
     return $insert_id; // Puedes devolver el ID o cualquier otra cosa que necesites
 }
 
-  /*function updateUsuarioInterno($usuario,$id){
-    $this->db->update("usuario", $usuario)
-     ->where('id',$id);
-  } */
   
   function getActivos(){
     $this->db

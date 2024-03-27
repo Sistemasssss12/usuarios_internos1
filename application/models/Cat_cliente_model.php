@@ -126,7 +126,7 @@ class Cat_cliente_model extends CI_Model{
   
   function getActivos(){
     $this->db
-    ->select("c.*")
+    ->select("c.*") 
     ->from('cliente as c')
     ->where('c.status', 1)
     ->where('c.eliminado', 0)
@@ -139,6 +139,60 @@ class Cat_cliente_model extends CI_Model{
       return FALSE;
     }
   }
+/*********************************************************************************/
+public function getVisibilidad() {
+  $this->db
+      ->select("c.id as cliente_id, c.nombre as cliente_nombre")
+      ->from('cliente as c')
+      ->where('c.status', 1)
+      ->where('c.eliminado', 0)
+      ->order_by('c.nombre', 'ASC');
+
+  $query = $this->db->get();
+  $clientes = $query->result();
+
+  // Restablecer la consulta para obtener los datos de usuarios con los IDs seleccionados
+  $this->db->reset_query();
+  
+  $this->db
+      ->select("u.id as usuario_id, u.nombre as usuario_nombre, u.paterno as usuario_paterno")
+      ->from('usuario as u')
+      ->where_in('u.id_rol', array(1, 2, 6, 9)) // Filtrar por roles específicos
+      ->order_by('u.nombre', 'ASC')
+      ->order_by('u.paterno', 'ASC'); // Ordenar por nombre y paterno
+
+  $query = $this->db->get();
+  $usuarios = $query->result();
+
+  return array('clientes' => $clientes, 'usuarios' => $usuarios);
+}
+
+/*function getVisibilidad() {
+    $this->db
+        ->select("c.id as cliente_id, c.nombre as cliente_nombre")
+        ->from('cliente as c')
+        ->where('c.status', 1)
+        ->where('c.eliminado', 0)
+        ->order_by('c.nombre', 'ASC');
+
+    $query = $this->db->get();
+    $clientes = $query->result();
+
+    $this->db->reset_query(); /*se restablece la consulta para obtener los datos de usuarios* ESTA FUNCIONANDO BIEN 
+
+    $this->db
+        ->select("u.id as usuario_id, u.nombre as usuario_nombre, u.paterno as usuario_paterno")
+        ->from('usuario as u')
+        ->where_in('u.id_rol',array(1, 2, 6, 9))
+        ->order_by('u.nombre','u.paterno', 'ASC');
+
+    $query = $this->db->get();
+    $usuarios = $query->result();
+
+    return array('clientes' => $clientes, 'usuarios' => $usuarios);
+}*/
+  
+/**************************************************************************************/
 
   function getUsuariosClientePorCandidato($id_candidato){
     $this->db

@@ -99,7 +99,7 @@
 
 			<!-- Clientes -->
 			<?php 
-			$permisos = ''; 
+		
 			if(in_array(2, $submenus)){ ?>
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="true" aria-controls="collapseClientes">
@@ -108,7 +108,7 @@
 					</a>
 					<div id="collapseClientes" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           	<div class="bg-white py-2 collapse-inner rounded">
-
+ 
 							<?php
 							 
 									if($permisos){
