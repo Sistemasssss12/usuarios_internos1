@@ -277,75 +277,37 @@ class Cat_Cliente extends CI_Controller{
     }
   }
 
-  /**********************************************************/
+  /*******************************************************************************/
 
   public function get_Visibilidad() {
     $data = $this->cat_cliente_model->getVisibilidad();
-    echo json_encode($data);
+
+   echo json_encode($data);
 }
 
-/**************************************************************/
-public function usuarios_del_cotenedor() {
-  $cliente_id = $this->input->post('cliente'); // Obtener el ID del cliente seleccionado
-  $usuarios_seleccionados = $this->input->post('usuarios'); // Obtener los usuarios seleccionados
-
-  // Consultar los nombres de los usuarios seleccionados
-  $this->db->select("u.id as usuario_id, u.nombre as usuario_nombre, u.paterno as usuario_paterno");
-  $this->db->from('usuario as u');
-  $this->db->where_in('u.id', $usuarios_seleccionados); // Filtrar por los IDs de los usuarios seleccionados
-  $query = $this->db->get();
-  $usuarios = $query->result();
-
-  // Crear un arreglo con los nombres de los usuarios
-  $usuarios_nombres = array();
-  foreach ($usuarios as $usuario) {
-      $usuarios_nombres[] = $usuario->usuario_nombre . ' ' . $usuario->usuario_paterno;
+/***********************************************************************************/
+public function boton_Guardar_1() {
+  $cliente_id = $this->input->post('id_clientePermisos'); // Obtener el ID del cliente seleccionado
+  $usuarios_seleccionados = $this->input->post('usuarios_seleccionados'); // Obtener los usuarios seleccionados
+  
+  echo "ID del cliente seleccionado: " . $cliente_id . "<br>";
+  if ($usuarios_seleccionados !== null) {
+      echo "IDs de los usuarios seleccionados: ";
+      foreach ($usuarios_seleccionados as $usuario) {
+          echo $usuario . " ";
+      }
+  } else {
+      echo "No se han seleccionado usuarios.";
   }
-
-  // Construir un arreglo con el cliente y los nombres de los usuarios
-  $datos = array(
-      'cliente' => array(
-          'id' => $cliente_id,
-          'nombre' => $this->input->post('cliente_nombre') // Obtener el nombre del cliente (si es necesario)
-      ),
-      'usuarios' => $usuarios_nombres
-  );
-
-  // Retornar los datos en formato JSON
-  echo json_encode($datos);
 }
+ 
+/*************************************************************/
 
+public function select_antidoping(){
+  $paquete = $this->cat_cliente_model->getPaquetesAntidoping();
 
-/*public function usuarios_del_cotenedor() {
-  $cliente_id = $this->input->post('cliente'); // Obtener el ID del cliente seleccionado
-  $usuarios_seleccionados = $this->input->post('usuarios'); // Obtener los usuarios seleccionados
-
-  
-
-  // Luego, retornar los usuarios seleccionados en formato JSON
-  echo json_encode($usuarios_seleccionados);
-}*/
-/******************************SEGUNDA OPCION****************************************/
-/*public function usuarios_del_cotenedor(){
-  $cliente_id = $this->input->post('cliente'); // Obtener el ID del cliente seleccionado
-  
-  // Obtener los IDs de los usuarios asociados al cliente seleccionado desde tu modelo
-  $usuarios_ids = $this->cat_cliente_model->getUsuariosPorCliente($cliente_id);
-
-  // Convertir los IDs de los usuarios en una cadena separada por comas
-  $usuarios_ids_array = array();
-  foreach ($usuarios_ids as $usuario) {
-      $usuarios_ids_array[] = $usuario->usuario_id;
-  }
-  $usuarios_ids_string = implode(',', $usuarios_ids_array);
-
-  // Consultar los nombres de los usuarios basados en los IDs obtenidos
-  $usuarios_nombres = $this->cat_cliente_model->getNombresUsuarios($usuarios_ids_string);
-
-  // Retornar los nombres de los usuarios como una respuesta
-  echo json_encode($usuarios_nombres);
-}*/
-  
+  echo json_encode($paquete);
+}
 /*************************************************************/
 
   function addUsuario(){

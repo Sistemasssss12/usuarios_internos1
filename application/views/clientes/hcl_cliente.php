@@ -1350,6 +1350,7 @@
           $('#ref_academicas_registro').val(0);
 				}
 			});
+
 			$('#extra_registro').change(function(){
 				var id = $(this).val();
 				if(id != ''){
@@ -1357,10 +1358,12 @@
 						var txt = $( "#extra_registro option:selected" ).text();
 						extras.push(id);
 						//$("#extra_registro option[value='"+id+"']").remove();
-						$('#div_docs_extras').append($('<div id="div_extra'+id+'" class="extra_agregado mb-1 d-flex justify-content-start"><h5 class="mr-5">Document added: <b>'+txt+'</b></h5><button type="button" class="btn btn-danger btn-sm" onclick="eliminarExtra('+id+',\''+txt+'\')">X</button></div>'));
+						$('#div_docs_extras').append($('<div id="div_extra'+id+'" class="extra_agregado mb-1 d-flex justify-content-start">'
+						'<h5 class="mr-5">Document added: <b>'+txt+'</b></h5><button type="button" class="btn btn-danger btn-sm" onclick="eliminarExtra('+id+',\''+txt+'\')">X</button></div>'));
 					}
 				}
 			})
+
 			$("#previos").change(function(){
 				var previo = $(this).val();
 				if(previo != 0){
@@ -1385,6 +1388,7 @@
 				}
 			});
 		});
+		
 		function eliminarExtra(id_tipo_documento, txt){
 			for( var i = 0; i < extras.length; i++){ 
 				if ( extras[i] == id_tipo_documento) { 
@@ -1394,6 +1398,7 @@
 			$("#div_extra"+id_tipo_documento).remove();
 			$('#extra_registro').append($('<option></option>').attr('value',id_tipo_documento).text(txt));
 		}
+
 		function nuevoRegistro(){
 			$.ajax({
 				url: '<?php echo base_url('Candidato/getSeccionesPrevias'); ?>',

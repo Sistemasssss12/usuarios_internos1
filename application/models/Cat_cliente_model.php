@@ -123,7 +123,6 @@ class Cat_cliente_model extends CI_Model{
 
   
   
-  
   function getActivos(){
     $this->db
     ->select("c.*") 
@@ -139,6 +138,23 @@ class Cat_cliente_model extends CI_Model{
       return FALSE;
     }
   }
+/***********************************************************************************/
+function getPaquetesAntidoping(){
+  $this->db
+    ->select("doping_paq.id, doping_paq.nombre, doping_paq.conjunto")
+    ->from('antidoping_paquete as doping_paq')
+    ->where('status', 1)
+    ->where('eliminado', 0)
+    ->order_by('id','ASC');
+
+  $query = $this->db->get();
+  if($query->num_rows() > 0){
+      return $query->result();
+  }else{
+      return FALSE;
+  }
+}
+
 /*********************************************************************************/
 public function getVisibilidad() {
   $this->db
@@ -157,9 +173,11 @@ public function getVisibilidad() {
   $this->db
       ->select("u.id as usuario_id, u.nombre as usuario_nombre, u.paterno as usuario_paterno")
       ->from('usuario as u')
+      ->where('u.status', 1)
+      ->where('u.eliminado', 0)
       ->where_in('u.id_rol', array(1, 2, 6, 9)) // Filtrar por roles específicos
       ->order_by('u.nombre', 'ASC')
-      ->order_by('u.paterno', 'ASC'); // Ordenar por nombre y paterno
+      ->order_by('u.paterno', 'ASC'); 
 
   $query = $this->db->get();
   $usuarios = $query->result();
@@ -167,31 +185,6 @@ public function getVisibilidad() {
   return array('clientes' => $clientes, 'usuarios' => $usuarios);
 }
 
-/*function getVisibilidad() {
-    $this->db
-        ->select("c.id as cliente_id, c.nombre as cliente_nombre")
-        ->from('cliente as c')
-        ->where('c.status', 1)
-        ->where('c.eliminado', 0)
-        ->order_by('c.nombre', 'ASC');
-
-    $query = $this->db->get();
-    $clientes = $query->result();
-
-    $this->db->reset_query(); /*se restablece la consulta para obtener los datos de usuarios* ESTA FUNCIONANDO BIEN 
-
-    $this->db
-        ->select("u.id as usuario_id, u.nombre as usuario_nombre, u.paterno as usuario_paterno")
-        ->from('usuario as u')
-        ->where_in('u.id_rol',array(1, 2, 6, 9))
-        ->order_by('u.nombre','u.paterno', 'ASC');
-
-    $query = $this->db->get();
-    $usuarios = $query->result();
-
-    return array('clientes' => $clientes, 'usuarios' => $usuarios);
-}*/
-  
 /**************************************************************************************/
 
   function getUsuariosClientePorCandidato($id_candidato){

@@ -12,14 +12,16 @@
           <div class="row">
             <div class="col-md-12">
               <label>Nombre del cliente *</label>
-              <input type="text" class="form-control" name="nombre" id="nombre" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control" name="nombre" id="nombre"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label>Clave *</label>
-              <input type="text" class="form-control" name="clave" id="clave" maxlength="3" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control" name="clave" id="clave" maxlength="3"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
           </div>
@@ -32,7 +34,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 <div class="modal fade" id="mensajeModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -88,7 +90,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 
 <div class="modal fade" id="nuevoAccesoClienteModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -111,12 +113,14 @@
           <div class="row">
             <div class="col-md-4">
               <label>Nombre *</label>
-              <input type="text" class="form-control" name="nombre_cliente" id="nombre_cliente" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control" name="nombre_cliente" id="nombre_cliente"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
             <div class="col-md-4">
               <label>Primer apellido *</label>
-              <input type="text" class="form-control" name="paterno_cliente" id="paterno_cliente" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control" name="paterno_cliente" id="paterno_cliente"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
           </div>
@@ -192,7 +196,7 @@
       </div>
     </div>
   </div>
-</div>  
+</div>
 
 
 <div class="modal fade" id="ModalVisibilidadClientes" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -207,7 +211,6 @@
       <div class="modal-body">
 
         <form id="formVisibilidadClientes">
-
           <div class="row">
             <div class="col-md-12">
               <label>Cliente *</label>
@@ -218,70 +221,112 @@
           <div class="row">
             <div class="col-12">
               <label>Selecciona quien podrá visualizar al cliente seleccionado *</label>
-              <select id="id_rol_Usuario" name="id_rol_Usuario[]" class="form-control" onchange="mostrarSeleccionados('usuario')"></select>
-              <!--<select  id="id_rol_Usuario" name="id_rol_Usuario" class="form-control" onchange="mostrarSeleccionados('usuario')"> </select> -->
+              <select id="id_rol_Usuario" name="id_rol_Usuario[]" class="form-control"
+                onchange="mostrarSeleccionados('usuario')"></select>
               <br>
             </div>
           </div>
           <!-- Div flexible para mostrar los clientes y usuarios seleccionados -->
-          <div  id="espacio_para_agregado" class="col-12 d-flex flex-column mb-3">
+          <div class="row">
+            <div id="espacio_para_agregado" class="col-12 d-flex flex-column mb-3">
+            </div>
           </div>
 
           <div class="text-center">
             <table class="table table-striped">
-                <thead>
-                   <tbody>
-                      <tr>
-                        <th class="text-center"> ESPACIO</th>
-                       </tr>
-                     </tbody> 
-                </thead>
+              <thead>
+              <tbody>
+                <tr>
+                  <th class="text-center">¿Agregar paquete de doping?</th>
+                </tr>
+              </tbody>
+              </thead>
             </table>
           </div>
 
           <div class="row">
             <div class="col-md-12">
-              <label>Paquete Antidoping </label>
-              <select name=" " id=" " class="form-control"></select>
-              <br>
+              <div class="form-check form-check-inline" >
+                <input type="checkbox" id="toggleAntidoping" class="form-check-input">
+                <label class="form-check-label" for="toggleAntidoping"><strong>N/A</strong></label>
+              </div>
+              
+              <div>
+                <br>
+              </div>
+
+              <div>
+                <label>En caso de sí, elija el paquete de antidoping</label>
+                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control" disabled></select>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <br>
+          </div>
+
+          <div class="text-center">
+            <table class="table table-striped">
+              <thead>
+              <tbody>
+                <tr>
+                  <th class="text-center">¿ Agregar psicométrias ?</th>
+                </tr>
+              </tbody>
+              </thead>
+            </table>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="togglePsicometria" class="form-check-input">
+                <label class="form-check-label" for="togglePsicometria"><strong>NO</strong></label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input type="checkbox" id="enable_TogglePsicometria" class="form-check-input">
+                <label class="form-check-label" for="enable_TogglePsicometria"><strong>SI</strong></label>
+              </div>
+
             </div>
           </div>
 
         </form>
-         
+
         <div id="mensajeExito" class="alert alert-success" style="display: none;"></div>
 
-        <div class="row">
-        </div>
+        <div id="mensaje" class="alert alert-info" style="display: none;"></div>
 
         <div id="msj_error" class="alert alert-danger hidden"></div>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="CrearVisibilidadCliente()">Guardar</button>
+        <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
       </div>
-      
+
     </div>
   </div>
 </div>
 
 
 <script>
-  $("#newModal").on("hidden.bs.modal", function() {
-    $("#newModal input").val("");
-    $("#newModal #msj_error").css('display', 'none');
-    $("#titulo_nuevo_modal").text("Nuevo cliente");
-  });
-  $("#accesoModal").on("hidden.bs.modal", function() {
-    $("#accesoModal input, #accesoModal select").val("");
-    $("#accesoModal #privacidad").val(0);
-    $("#accesoModal input").removeClass("requerido");
-    $("#accesoModal #msj_error").css('display', 'none');
-    $("#idCliente").val("");
-  });
-  $("#accesosClienteModal").on("hidden.bs.modal", function() {
-    $("#accesosClienteModal #div_accesos").empty();
-  });
-
+$("#newModal").on("hidden.bs.modal", function() {
+  $("#newModal input").val("");
+  $("#newModal #msj_error").css('display', 'none');
+  $("#titulo_nuevo_modal").text("Nuevo cliente");
+});
+$("#accesoModal").on("hidden.bs.modal", function() {
+  $("#accesoModal input, #accesoModal select").val("");
+  $("#accesoModal #privacidad").val(0);
+  $("#accesoModal input").removeClass("requerido");
+  $("#accesoModal #msj_error").css('display', 'none');
+  $("#idCliente").val("");
+});
+$("#accesosClienteModal").on("hidden.bs.modal", function() {
+  $("#accesosClienteModal #div_accesos").empty();
+});
 </script>
