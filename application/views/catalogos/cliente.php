@@ -398,10 +398,10 @@ function mostrarMensajeConfirmacion(accion, valor1, valor2) {
       '<div class="row mt-3"><div class="col-12"><label>Motivo de bloqueo *</label><select class="form-control" id="opcion_motivo" name="opcion_motivo"><option value="">Selecciona</option>' +
       tipos_bloqueo_php +
       '</select></div></div><div class="row mt-3"><div class="col-12"><label>Mensaje para presentar en panel del cliente *</label><textarea class="form-control" rows="5" id="mensaje_comentario" name="mensaje_comentario">¡Lo sentimos! Su acceso ha sido interrumpido por falta de pago. Favor de comunicarse al teléfono 33 3454 2877.</textarea></div></div>'
-      );
+    );
     $('#mensaje').append(
       '<div class="row mt-3"><div class="col-12"><label class="container_checkbox">Bloquear también subclientes/proveedores<input type="checkbox" id="bloquear_subclientes" name="bloquear_subclientes"><span class="checkmark"></span></label></div></div>'
-      );
+    );
     $('#btnConfirmar').attr("onclick", "accionCliente('bloquear'," + valor2 + ")");
     $('#mensajeModal').modal('show');
   }
@@ -547,142 +547,149 @@ function controlAcceso(accion, idUsuarioCliente) {
 /*******************LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
 
 function BotonVisibilidadCliente() {
-
-$(document).ready(function() {
-    // AJAX para guardar los datos al hacer clic en el botón "Guardar"
-    $('#btnGuardar').on('click', function() {
-        $.ajax({
-            url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
-            type: 'post',
-            data: {
-                id_clientePermisos: $('#id_clientePermisos').val(),
-                usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
-                    return $(this).attr('data-valor');
-                }).get()
-            },
-            success: function(response) {
-                console.log(response);
-                $('#mensajeExito').html('Los datos se guardaron correctamente.').show();
-                setTimeout(function() {
-                    $('#ModalVisibilidadClientes').modal('hide');
-                    $('#mensajeExito').hide().html('');
-                    $('#id_clientePermisos').val('');
-                    $('#id_rol_Usuario').val('');
-                    $('#espacio_para_agregado').empty();
-                }, 2000); 
-            }
-        });
-    });
-    // AJAX para obtener la visibilidad de clientes y usuarios
+  // AJAX para guardar los datos al hacer clic en el botón "Guardar"
+  $('#btnGuardar').on('click', function() {
+    var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0; // Obtener el valor del switch
+    var antidopingValue = $('#seleccion_antidoping').val(); // Obtener el valor del select del antidoping
     $.ajax({
-        url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
-        type: 'get',
-        beforeSend: function() {
-            $('.loader').css("display", "block");
-        },
-        success: function(res) {
-            setTimeout(function() {
-                $('.loader').fadeOut();
-            }, 200);
+      url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
+      type: 'post',
+      data: {
+        id_clientePermisos: $('#id_clientePermisos').val(),
+        usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
+          return $(this).attr('data-valor');
+        }).get(),
+        antidoping_seleccionado: antidopingValue, // Campo para el antidoping seleccionado
+        togglePsicometria: toggleSwitchValue, // Valor del switch
+      },
+      success: function(response) {
+        console.log(response);
+        $('#mensajeExito').html('Los datos se guardaron correctamente.').show();
+        setTimeout(function() {
+          $('#ModalVisibilidadClientes').modal('hide');
+          $('#mensajeExito').hide().html('');
+          $('#id_clientePermisos').val('');
+          $('#id_rol_Usuario').val('');
+          $('#espacio_para_agregado').empty();
+          $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
+          $('#seleccion_antidoping').val(''); // Limpiar el select del antidoping
+        }, 2000);
+      }
+    });
+  });
 
-            if (res) {
-                $('#id_clientePermisos').empty();
-                $('#id_rol_Usuario').empty();
-                var datos = JSON.parse(res);
-                $('#id_clientePermisos').append('<option value="">Selecciona</option>');
-                $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
+  // AJAX para obtener la visibilidad de clientes y usuarios
+  $.ajax({
+    url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
+    type: 'get',
+    beforeSend: function() {
+      $('.loader').css("display", "block");
+    },
+    success: function(res) {
+      setTimeout(function() {
+        $('.loader').fadeOut();
+      }, 200);
 
-                for (var i = 0; i < datos.clientes.length; i++) {
-                    $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos.clientes[i]['cliente_nombre'] + '</option>');
-                }
+      if (res) {
+        $('#id_clientePermisos').empty();
+        $('#id_rol_Usuario').empty();
+        var datos = JSON.parse(res);
+        $('#id_clientePermisos').append('<option value="">Selecciona</option>');
+        $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
 
-                for (var i = 0; i < datos.usuarios.length; i++) {
-                    $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos.usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
-                }
+        for (var i = 0; i < datos.clientes.length; i++) {
+          $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
+            .clientes[i]['cliente_nombre'] + '</option>');
+        }
 
-                $('#ModalVisibilidadClientes').modal('show');
-               }
-            }
-       });
-   });
+        for (var i = 0; i < datos.usuarios.length; i++) {
+          $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
+            .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
+        }
+
+        $('#ModalVisibilidadClientes').modal('show');
+      }
+    }
+  });
 }
 /*****************Función para mostrar los clientes o usuarios seleccionados en el div flexible del modal***********/
 function mostrarSeleccionados(tipo) {
-    var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById('id_rol_Usuario');
-    var selectedOptions = selectElement.selectedOptions;
-    var espacioDiv = document.getElementById('espacio_para_agregado');
-    var usuariosSeleccionados = [];
-    var clienteSeleccionado = $('#id_clientePermisos').val();
-    console.log('ID del cliente seleccionado:', clienteSeleccionado);
+  var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById(
+    'id_rol_Usuario');
+  var selectedOptions = selectElement.selectedOptions;
+  var espacioDiv = document.getElementById('espacio_para_agregado');
+  var usuariosSeleccionados = [];
+  var clienteSeleccionado = $('#id_clientePermisos').val();
+  console.log('ID del cliente seleccionado:', clienteSeleccionado);
 
-    if (tipo === 'cliente') {
-        // Desmarcar todas las selecciones excepto la última
-        for (var i = 0; i < selectedOptions.length - 1; i++) {
-            selectedOptions[i].selected = false;
-        }
+  if (tipo === 'cliente') {
+    // Desmarcar todas las selecciones excepto la última
+    for (var i = 0; i < selectedOptions.length - 1; i++) {
+      selectedOptions[i].selected = false;
     }
+  }
 
-    for (var i = 0; i < selectedOptions.length; i++) {
-        var selectedOption = selectedOptions[i];
-        var optionValue = selectedOption.value; // Obtener el valor de la opción seleccionada
-        usuariosSeleccionados.push(optionValue); // Agrega el valor al arreglo de usuarios seleccionados
+  for (var i = 0; i < selectedOptions.length; i++) {
+    var selectedOption = selectedOptions[i];
+    var optionValue = selectedOption.value; // Obtener el valor de la opción seleccionada
+    usuariosSeleccionados.push(optionValue); // Agrega el valor al arreglo de usuarios seleccionados
 
-        var usuarioDiv = document.createElement('div');
-        usuarioDiv.className = 'usuario-seleccionado';
-        usuarioDiv.setAttribute('data-valor', optionValue); // Agrega el valor como atributo de datos
+    var usuarioDiv = document.createElement('div');
+    usuarioDiv.className = 'usuario-seleccionado';
+    usuarioDiv.setAttribute('data-valor', optionValue); 
 
-        // Contiene el nombre del usuario seleccionado
-        var textoSeleccionado = document.createTextNode(selectedOption.textContent);
-        usuarioDiv.appendChild(textoSeleccionado);
+    // Contiene el nombre del usuario seleccionado
+    var textoSeleccionado = document.createTextNode(selectedOption.textContent);
+    usuarioDiv.appendChild(textoSeleccionado);
 
-        espacioDiv.appendChild(usuarioDiv);
+    espacioDiv.appendChild(usuarioDiv);
 
-        var botonEliminar = document.createElement('button');
-        botonEliminar.textContent = 'Eliminar';
-        botonEliminar.className = 'btn btn-danger btn-sm ml-2';
-        // Usar una función auxiliar para manejar el evento onclick
-        botonEliminar.onclick = createEliminarHandler(espacioDiv, selectedOption, usuariosSeleccionados, optionValue);
+    var botonEliminar = document.createElement('button');
+    botonEliminar.textContent = 'Eliminar';
+    botonEliminar.className = 'btn btn-danger btn-sm ml-2';
+    // Usar una función auxiliar para manejar el evento onclick
+    botonEliminar.onclick = createEliminarHandler(espacioDiv, selectedOption, usuariosSeleccionados, optionValue);
 
-        usuarioDiv.appendChild(botonEliminar);
+    usuarioDiv.appendChild(botonEliminar);
 
-        espacioDiv.appendChild(usuarioDiv);
-    }
+    espacioDiv.appendChild(usuarioDiv);
+  }
 
-    console.log('IDs de los usuarios seleccionados:', usuariosSeleccionados);
+  console.log('IDs de los usuarios seleccionados:', usuariosSeleccionados);
 }
 
 // Función auxiliar para crear un manejador de evento onclick
 function createEliminarHandler(espacioDiv, selectedOption, usuariosSeleccionados, optionText) {
-    return function() {
-        // Eliminar el div del usuario seleccionado también al ser eliminado
-        espacioDiv.removeChild(this.parentNode);
+  return function() {
+    // Eliminar el div del usuario seleccionado también al ser eliminado
+    espacioDiv.removeChild(this.parentNode);
 
-        selectedOption.selected = false;
+    selectedOption.selected = false;
 
-        // Eliminar el valor del usuario del array cuando sea eliminado de la selección
-        var index = usuariosSeleccionados.indexOf(optionText);
-        if (index !== -1) {
-            usuariosSeleccionados.splice(index, 1);
-        }
+    // Eliminar el valor del usuario del array cuando sea eliminado de la selección
+    var index = usuariosSeleccionados.indexOf(optionText);
+    if (index !== -1) {
+      usuariosSeleccionados.splice(index, 1);
+    }
 
-        console.log('Usuarios seleccionados después de eliminar:', usuariosSeleccionados);
-    };
+    console.log('Usuarios seleccionados después de eliminar:', usuariosSeleccionados);
+  };
 }
 /******************************Función para cargar los datos del select de paquete antidoping************************************************************************/
 $(function() {
   function cargarPaqueteAntidoping() {
     $.ajax({
-      url: 'select_antidoping', 
+      url: 'select_antidoping',
       type: 'GET',
       success: function(response) {
         try {
           var paquetes = JSON.parse(response);
-          $('#seleccion_antidoping').empty().append('<option value="">Selecciona</option>');
+          $('#seleccion_antidoping').empty().append('<option value="">N/A</option>');
           $.each(paquetes, function(index, paquete) {
-            $('#seleccion_antidoping').append('<option value="' + paquete.id + '">' + paquete.nombre + ' - ' + paquete.conjunto + '</option>');
+            $('#seleccion_antidoping').append('<option value="' + paquete.id + '">' + paquete.nombre +
+              ' - ' + paquete.conjunto + '</option>');
           });
-        } 
-        catch (error) {
+        } catch (error) {
           console.error('Error al procesar la respuesta JSON:', error);
         }
       },
@@ -714,41 +721,37 @@ $(function() {
 
 /*********************************SECCION DE PSCICOMETRIAS***************************************************************/
 
-
-const togglePsicometriaCheckbox = document.getElementById("togglePsicometria");
-    const enableTogglePsicometriaCheckbox = document.getElementById("enable_TogglePsicometria");
-
-    togglePsicometriaCheckbox.addEventListener("click", function() {
-        if (togglePsicometriaCheckbox.checked) {
-            enableTogglePsicometriaCheckbox.checked = false;
-            console.log(0);
-        }
-    });
-
-    enableTogglePsicometriaCheckbox.addEventListener("click", function() {
-        if (enableTogglePsicometriaCheckbox.checked) {
-            togglePsicometriaCheckbox.checked = false;
-            console.log(1);
-        }
-    });
-/*******************************************************************************************************/
-function generarPassword() {
-  $.ajax({
-    url: '<?php echo base_url('Funciones/generarPassword'); ?>',
-    type: 'post',
-    beforeSend: function() {
-      $('.loader').css("display", "block");
-    },
-    success: function(res) {
-      setTimeout(function() {
-        $('.loader').fadeOut();
-      }, 200);
-      $("#password").val(res)
-    }
+$(document).ready(function() {
+  // Cambiar el valor del switch cuando se haga clic en los labels
+  $('label[for="toggleSwitch"]').click(function() {
+    var estado = $(this).text().trim() === "SI" ? 1 : 0; // Si el texto del label es "SI", estado es 1, de lo contrario 0
+    $('#toggleSwitch').prop('checked', estado); // Actualizar el estado del switch
   });
-}
 
-function recargarTable() {
-  $("#tabla").DataTable().ajax.reload();
-}
+  // Cambiar el valor del select del antidoping cuando se seleccione una opción
+  $('#seleccion_antidoping').change(function() {
+    var opcionSeleccionada = $(this).val();
+    console.log('ID del último paquete antidoping seleccionado:', opcionSeleccionada);
+  });
+});
+/*******************************************************************************************************/
+      function generarPassword() {
+        $.ajax({
+          url: '<?php echo base_url('Funciones/generarPassword'); ?>',
+          type: 'post',
+          beforeSend: function() {
+            $('.loader').css("display", "block");
+          },
+          success: function(res) {
+            setTimeout(function() {
+              $('.loader').fadeOut();
+            }, 200);
+            $("#password").val(res)
+          }
+        });
+      }
+
+      function recargarTable() {
+        $("#tabla").DataTable().ajax.reload();
+      }
 </script>

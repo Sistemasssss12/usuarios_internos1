@@ -246,11 +246,11 @@
 
           <div class="row">
             <div class="col-md-12">
-              <div class="form-check form-check-inline" >
+              <div class="form-check form-check-inline">
                 <input type="checkbox" id="toggleAntidoping" class="form-check-input">
                 <label class="form-check-label" for="toggleAntidoping"><strong>N/A</strong></label>
               </div>
-              
+
               <div>
                 <br>
               </div>
@@ -277,20 +277,12 @@
               </thead>
             </table>
           </div>
-
+          
           <div class="row">
             <div class="col-md-12">
-
-              <div class="form-check form-check-inline">
-                <input type="checkbox" id="togglePsicometria" class="form-check-input">
-                <label class="form-check-label" for="togglePsicometria"><strong>NO</strong></label>
-              </div>
-
-              <div class="form-check form-check-inline">
-                <input type="checkbox" id="enable_TogglePsicometria" class="form-check-input">
-                <label class="form-check-label" for="enable_TogglePsicometria"><strong>SI</strong></label>
-              </div>
-
+              <label for="toggleSwitch">Seleccionar:</label>
+              <input type="checkbox" id="toggleSwitch" class="form-check-input" data-toggle="switch" checked>
+              <label class="form-check-label" for="toggleSwitch"><strong>SI</strong></label>
             </div>
           </div>
 

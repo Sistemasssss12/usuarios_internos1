@@ -285,22 +285,6 @@ class Cat_Cliente extends CI_Controller{
    echo json_encode($data);
 }
 
-/***********************************************************************************/
-public function boton_Guardar_1() {
-  $cliente_id = $this->input->post('id_clientePermisos'); // Obtener el ID del cliente seleccionado
-  $usuarios_seleccionados = $this->input->post('usuarios_seleccionados'); // Obtener los usuarios seleccionados
-  
-  echo "ID del cliente seleccionado: " . $cliente_id . "<br>";
-  if ($usuarios_seleccionados !== null) {
-      echo "IDs de los usuarios seleccionados: ";
-      foreach ($usuarios_seleccionados as $usuario) {
-          echo $usuario . " ";
-      }
-  } else {
-      echo "No se han seleccionado usuarios.";
-  }
-}
- 
 /*************************************************************/
 
 public function select_antidoping(){
@@ -308,6 +292,35 @@ public function select_antidoping(){
 
   echo json_encode($paquete);
 }
+
+/***********************************************************************************/
+public function boton_Guardar_1() {
+
+  $cliente_id = $this->input->post('id_clientePermisos');
+
+  $usuarios_seleccionados = $this->input->post('usuarios_seleccionados');
+
+  $togglePsicometria = $this->input->post('togglePsicometria');
+
+  $antidoping_seleccionado = $this->input->post('antidoping_seleccionado');
+
+  echo "ID del cliente seleccionado: " . $cliente_id . "<br>";
+
+  // Mostrar los IDs de los usuarios seleccionados
+  if (!empty($usuarios_seleccionados)) {
+    echo "IDs de los usuarios seleccionados: ";
+    foreach ($usuarios_seleccionados as $usuario) {
+      echo $usuario . " ";
+    }
+  } else {
+    echo "No se han seleccionado usuarios.";
+  }
+  echo "<br>Antidoping seleccionado: " . $antidoping_seleccionado . "<br>";
+  
+  // Mostrar el valor del switch para psicometria
+  echo "<br>Estado de psicometria: " . $togglePsicometria . "<br>";
+}
+
 /*************************************************************/
 
   function addUsuario(){
