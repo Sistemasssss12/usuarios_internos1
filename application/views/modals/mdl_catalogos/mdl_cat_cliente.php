@@ -204,9 +204,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Selección de clientes y usuarios internos</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
 
@@ -248,7 +245,7 @@
             <div class="col-md-12">
               <div class="form-check form-check-inline">
                 <input type="checkbox" id="toggleAntidoping" class="form-check-input">
-                <label class="form-check-label" for="toggleAntidoping"><strong>N/A</strong></label>
+                <label class="form-check-label" for="toggleAntidoping"><strong>NO</strong></label>
               </div>
 
               <div>
@@ -277,7 +274,7 @@
               </thead>
             </table>
           </div>
-          
+
           <div class="row">
             <div class="col-md-12">
               <label for="toggleSwitch">Seleccionar:</label>
@@ -293,10 +290,12 @@
         <div id="mensaje" class="alert alert-info" style="display: none;"></div>
 
         <div id="msj_error" class="alert alert-danger hidden"></div>
+        
+        <div id="errorModal" class="alert alert-danger" style="display: none;"></div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button  id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
       </div>
 

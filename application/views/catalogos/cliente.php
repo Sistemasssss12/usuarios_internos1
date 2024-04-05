@@ -545,12 +545,24 @@ function controlAcceso(accion, idUsuarioCliente) {
 }
 
 /*******************LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
-
 function BotonVisibilidadCliente() {
   // AJAX para guardar los datos al hacer clic en el botón "Guardar"
   $('#btnGuardar').on('click', function() {
-    var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0; // Obtener el valor del switch
-    var antidopingValue = $('#seleccion_antidoping').val(); // Obtener el valor del select del antidoping
+    // Verificar si se ha seleccionado un cliente
+    if ($('#id_clientePermisos').val() === '') {
+      
+      alert('Por favor, seleccione un cliente.');
+      return; // Salir de la función si no se ha seleccionado un cliente
+    }
+
+    if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
+      
+      alert('Por favor, seleccione al menos un usuario.');
+      return; // Salir de la función si no se ha seleccionado ningún usuario
+    }
+
+    var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0; 
+    var antidopingValue = $('#seleccion_antidoping').val(); 
     $.ajax({
       url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
       type: 'post',
@@ -559,7 +571,7 @@ function BotonVisibilidadCliente() {
         usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
           return $(this).attr('data-valor');
         }).get(),
-        antidoping_seleccionado: antidopingValue, // Campo para el antidoping seleccionado
+        antidoping_seleccionado: antidopingValue,
         togglePsicometria: toggleSwitchValue, // Valor del switch
       },
       success: function(response) {
@@ -578,7 +590,12 @@ function BotonVisibilidadCliente() {
     });
   });
 
-  // AJAX para obtener la visibilidad de clientes y usuarios
+  // Función para limpiar datos al hacer clic en el botón "Cerrar"
+  $('#btnCerrar').on('click', function() {
+    $('#id_clientePermisos').val(''); // Limpiar select del cliente
+    $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
+  });
+
   $.ajax({
     url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
     type: 'get',
@@ -623,7 +640,7 @@ function mostrarSeleccionados(tipo) {
   console.log('ID del cliente seleccionado:', clienteSeleccionado);
 
   if (tipo === 'cliente') {
-    // Desmarcar todas las selecciones excepto la última
+  
     for (var i = 0; i < selectedOptions.length - 1; i++) {
       selectedOptions[i].selected = false;
     }
@@ -658,7 +675,6 @@ function mostrarSeleccionados(tipo) {
   console.log('IDs de los usuarios seleccionados:', usuariosSeleccionados);
 }
 
-// Función auxiliar para crear un manejador de evento onclick
 function createEliminarHandler(espacioDiv, selectedOption, usuariosSeleccionados, optionText) {
   return function() {
     // Eliminar el div del usuario seleccionado también al ser eliminado
@@ -720,20 +736,18 @@ $(function() {
 });
 
 /*********************************SECCION DE PSCICOMETRIAS***************************************************************/
-
 $(document).ready(function() {
-  // Cambiar el valor del switch cuando se haga clic en los labels
+  
   $('label[for="toggleSwitch"]').click(function() {
     var estado = $(this).text().trim() === "SI" ? 1 : 0; // Si el texto del label es "SI", estado es 1, de lo contrario 0
     $('#toggleSwitch').prop('checked', estado); // Actualizar el estado del switch
   });
 
-  // Cambiar el valor del select del antidoping cuando se seleccione una opción
   $('#seleccion_antidoping').change(function() {
     var opcionSeleccionada = $(this).val();
     console.log('ID del último paquete antidoping seleccionado:', opcionSeleccionada);
   });
-});
+}); 
 /*******************************************************************************************************/
       function generarPassword() {
         $.ajax({
