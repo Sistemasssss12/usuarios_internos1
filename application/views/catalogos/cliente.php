@@ -544,21 +544,19 @@ function controlAcceso(accion, idUsuarioCliente) {
   });
 }
 
-/*******************LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
+/**************Función para mostrar el modal y cargar los datos*****LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
 function BotonVisibilidadCliente() {
-  // AJAX para guardar los datos al hacer clic en el botón "Guardar"
+
   $('#btnGuardar').on('click', function() {
     // Verificar si se ha seleccionado un cliente
     if ($('#id_clientePermisos').val() === '') {
-      
-      alert('Por favor, seleccione un cliente.');
-      return; // Salir de la función si no se ha seleccionado un cliente
+      $('#errorModal').html('Por favor, seleccione un cliente.').show();
+      return; 
     }
 
     if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
-      
-      alert('Por favor, seleccione al menos un usuario.');
-      return; // Salir de la función si no se ha seleccionado ningún usuario
+      $('#errorModal').html('Por favor, seleccione al menos un usuario.').show();
+      return; 
     }
 
     var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0; 
@@ -577,6 +575,7 @@ function BotonVisibilidadCliente() {
       success: function(response) {
         console.log(response);
         $('#mensajeExito').html('Los datos se guardaron correctamente.').show();
+         $('#errorModal').hide().html(''); // Ocultar mensaje de error
         setTimeout(function() {
           $('#ModalVisibilidadClientes').modal('hide');
           $('#mensajeExito').hide().html('');
@@ -590,7 +589,6 @@ function BotonVisibilidadCliente() {
     });
   });
 
-  // Función para limpiar datos al hacer clic en el botón "Cerrar"
   $('#btnCerrar').on('click', function() {
     $('#id_clientePermisos').val(''); // Limpiar select del cliente
     $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
@@ -623,12 +621,13 @@ function BotonVisibilidadCliente() {
           $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
             .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
         }
+        $('#errorModal').hide().html('');
 
         $('#ModalVisibilidadClientes').modal('show');
       }
     }
   });
-}
+} 
 /*****************Función para mostrar los clientes o usuarios seleccionados en el div flexible del modal***********/
 function mostrarSeleccionados(tipo) {
   var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById(
