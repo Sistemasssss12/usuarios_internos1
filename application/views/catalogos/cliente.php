@@ -544,10 +544,9 @@ function controlAcceso(accion, idUsuarioCliente) {
   });
 }
 
-/**************Función para mostrar el modal y cargar los datos*****LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
-function BotonVisibilidadCliente() {
 
-$('#btnGuardar').on('click', function() {
+function GuardarPermisosClientes(){
+  
   // Verificar si se ha seleccionado un cliente
   if ($('#id_clientePermisos').val() === '') {
     $('#errorModal').html('Por favor, seleccione un cliente.').show();
@@ -574,37 +573,51 @@ $('#btnGuardar').on('click', function() {
       antidoping_seleccionado: antidopingValue,
       togglePsicometria: toggleSwitchValue, // Valor del switch
     },
-    success: function() {
-      Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: 'Los datos se guardaron correctamente.',
-        timer: 1800, // Duración del mini modal en milisegundos
-        timerProgressBar: true, // Muestra una barra de progreso
-      });
-
+    beforeSend: function() {
+      $('.loader').css("display", "block");
+    },
+    success: function(res) {
       setTimeout(function() {
+        $('.loader').fadeOut();
+      }, 200);
+      var data = JSON.parse(res);
+      if (data.codigo === 1) {
+        recargarTable()
+        
+
+        $("#ModalVisibilidadClientes").modal('hide')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: data.msg,
+          showConfirmButton: false,
+          timer: 2500
+        })
         $('#ModalVisibilidadClientes').modal('hide');
         $('#mensajeExito').hide().html('');
         $('#id_clientePermisos').val('');
         $('#id_rol_Usuario').val('');
         $('#espacio_para_agregado').empty();
         $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
-        $('#seleccion_antidoping').val(''); // Limpiar el select del antidoping
-      }, 1800);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      // En caso de error, muestra un mensaje de fallo
-      $('#errorModal').html('Ha ocurrido un error al intentar guardar los datos.').show();
+        $('#seleccion_antidoping').val(''); 
+      
+      }
     }
   });
-});
+
 //Se limpiaran los datos de los select seleccionados si se da en el boton cerrar del modal  sin guardar
 $('#btnCerrar').on('click', function() {
   $('#id_clientePermisos').val(''); // Limpiar select del cliente
   $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
   $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
 });
+
+}
+
+/**************Función para mostrar el modal y cargar los datos*****LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
+function BotonVisibilidadCliente() {
+
+
 
 $.ajax({
   url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',

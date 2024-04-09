@@ -292,7 +292,7 @@
 
        <div class="modal-footer" class="modal fade" id="mensajeModal" role="dialog" data-backdrop="static" data-keyboard="false">
         <button  id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
+        <button id="btnGuardar" type="button" class="btn btn-success" onclick="GuardarPermisosClientes()">Guardar</button>
       </div>
 
     </div>

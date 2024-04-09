@@ -305,7 +305,7 @@ public function boton_Guardar_1() {
 
       echo validation_errors();
 
-      
+
   } else {
       $cliente_id = $this->input->post('id_clientePermisos');
       $usuarios_seleccionados = $this->input->post('usuarios_seleccionados');
@@ -322,22 +322,26 @@ public function boton_Guardar_1() {
               // Llamar al método del modelo para insertar los datos
               $resultado = $this->cat_cliente_model->guardarAccesosClientes($permisos);
 
-              if ($resultado) {
-                //  echo "
-                $msj = array(
-                  'codigo' => 1,
-                  'msg' => "Datos insertados correctamente para el usuario con ID: " . $usuario . "<br>"
-                );
-              } else {
-                $msj = array(
-                  'codigo' => 0,
-                  'msg' => "Error al insertar datos para el usuario con ID: " . $usuario . "<br>"
-                );
-                  //echo ;
-              }
+             
+          }
+          if ($resultado) {
+            //  echo "
+            $msj = array(
+              'codigo' => 1,
+              'msg' => "Datos insertados correctamente para el usuario con ID: " . $usuario . "<br>"
+            );
+          } else {
+            $msj = array(
+              'codigo' => 0,
+              'msg' => "Error al insertar datos para el usuario con ID: " . $usuario . "<br>"
+            );
+              //echo ;
           }
       } else {
-          echo "No se encontró ningún permiso para el cliente con ID " . $cliente_id;
+        $msj = array(
+          'codigo' => 0,
+          'msg' => "Error  no se  guardaron los permisos  <br>"
+        );
       }
   }
   echo json_encode($msj);
