@@ -138,6 +138,43 @@ class Cat_cliente_model extends CI_Model{
       return FALSE;
     }
   }
+
+
+
+
+
+  // obtener  el id  de la  tabla  permisos  con respecto al id  del cliente 
+  function getIdPermisocliente($id_cliente) {
+    $this->db
+        ->select("id") 
+        ->from('permiso')
+        ->where('id_cliente', $id_cliente)
+        ->limit(1); // Limita la consulta a un solo resultado
+    $query = $this->db->get();
+    if ($query->num_rows() > 0) {
+        $row = $query->row(); // Obtiene el primer resultado
+        return $row->id; // Devuelve el valor del ID directamente
+    } else {
+        return FALSE;
+    }
+}
+/********Insertar datos en la tabla usuario_permiso para ver clientes**************************************************************/    
+
+    
+  public function guardarAccesosClientes($datos) {
+
+      $this->db->insert('usuario_permiso', $datos);
+      
+      if ($this->db->affected_rows() > 0) {
+          return true; 
+      } else {
+          return false; 
+      }
+  }
+  
+  
+
+
 /***********************************************************************************/
 function getPaquetesAntidoping(){
   $this->db

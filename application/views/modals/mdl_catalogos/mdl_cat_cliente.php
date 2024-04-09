@@ -241,19 +241,14 @@
           </div>
 
           <div class="row">
-            <div class="col-md-12">
-              <div class="form-check form-check-inline">
-                <input type="checkbox" id="toggleAntidoping" class="form-check-input">
-                <label class="form-check-label" for="toggleAntidoping"><strong>NO</strong></label>
-              </div>
-
+            <div class="col-md-12">  
               <div>
                 <br>
               </div>
 
               <div>
                 <label>En caso de sí, elija el paquete de antidoping</label>
-                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control" disabled></select>
+                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control" ></select>
               </div>
             </div>
           </div>
@@ -277,8 +272,10 @@
           <div class="row">
             <div class="col-md-12">
               <label for="toggleSwitch">Seleccionar:</label>
-              <input type="checkbox" id="toggleSwitch" class="form-check-input" data-toggle="switch" checked>
+              <div class="form-check form-check-inline">
+              <input type="checkbox" id="toggleSwitch" class="form-check-input" data-toggle="switch">
               <label class="form-check-label" for="toggleSwitch"><strong>SI</strong></label>
+              </div>
             </div>
           </div>
 
@@ -293,7 +290,7 @@
         <div id="errorModal" class="alert alert-danger" style="display: none;"></div>
       </div>
 
-      <div class="modal-footer">
+       <div class="modal-footer" class="modal fade" id="mensajeModal" role="dialog" data-backdrop="static" data-keyboard="false">
         <button  id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
       </div>

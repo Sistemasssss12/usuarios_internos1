@@ -547,99 +547,234 @@ function controlAcceso(accion, idUsuarioCliente) {
 /**************Función para mostrar el modal y cargar los datos*****LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
 function BotonVisibilidadCliente() {
 
-  $('#btnGuardar').on('click', function() {
-    // Verificar si se ha seleccionado un cliente
-    if ($('#id_clientePermisos').val() === '') {
-      $('#errorModal').html('Por favor, seleccione un cliente.').show();
-      return; 
-    }
+$('#btnGuardar').on('click', function() {
+  // Verificar si se ha seleccionado un cliente
+  if ($('#id_clientePermisos').val() === '') {
+    $('#errorModal').html('Por favor, seleccione un cliente.').show();
+    return;
+  }
 
-    if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
-      $('#errorModal').html('Por favor, seleccione al menos un usuario.').show();
-      return; 
-    }
+  if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
+    $('#errorModal').html('Por favor, seleccione al menos un usuario.').show();
+    return;
+  }
 
-    var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0; 
-    var antidopingValue = $('#seleccion_antidoping').val(); 
-    $.ajax({
-      url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
-      type: 'post',
-      data: {
-        id_clientePermisos: $('#id_clientePermisos').val(),
-        usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
-          return $(this).attr('data-valor');
-        }).get(),
-        antidoping_seleccionado: antidopingValue,
-        togglePsicometria: toggleSwitchValue, // Valor del switch
-      },
-      success: function(response) {
-        console.log(response);
-        $('#mensajeExito').html('Los datos se guardaron correctamente.').show();
-         $('#errorModal').hide().html(''); // Ocultar mensaje de error
-        setTimeout(function() {
-          $('#ModalVisibilidadClientes').modal('hide');
-          $('#mensajeExito').hide().html('');
-          $('#id_clientePermisos').val('');
-          $('#id_rol_Usuario').val('');
-          $('#espacio_para_agregado').empty();
-          $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
-          $('#seleccion_antidoping').val(''); // Limpiar el select del antidoping
-        }, 2000);
-      }
-    });
-  });
+  $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
 
-  $('#btnCerrar').on('click', function() {
-    $('#id_clientePermisos').val(''); // Limpiar select del cliente
-    $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
-  });
-
+  var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0;
+  var antidopingValue = $('#seleccion_antidoping').val();
   $.ajax({
-    url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
-    type: 'get',
-    beforeSend: function() {
-      $('.loader').css("display", "block");
+    url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
+    type: 'post',
+    data: {
+      id_clientePermisos: $('#id_clientePermisos').val(),
+      usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
+        return $(this).attr('data-valor');
+      }).get(),
+      antidoping_seleccionado: antidopingValue,
+      togglePsicometria: toggleSwitchValue, // Valor del switch
     },
-    success: function(res) {
+    success: function() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Los datos se guardaron correctamente.',
+        timer: 1800, // Duración del mini modal en milisegundos
+        timerProgressBar: true, // Muestra una barra de progreso
+      });
+
       setTimeout(function() {
-        $('.loader').fadeOut();
-      }, 200);
-
-      if (res) {
-        $('#id_clientePermisos').empty();
-        $('#id_rol_Usuario').empty();
-        var datos = JSON.parse(res);
-        $('#id_clientePermisos').append('<option value="">Selecciona</option>');
-        $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
-
-        for (var i = 0; i < datos.clientes.length; i++) {
-          $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
-            .clientes[i]['cliente_nombre'] + '</option>');
-        }
-
-        for (var i = 0; i < datos.usuarios.length; i++) {
-          $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
-            .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
-        }
-        $('#errorModal').hide().html('');
-
-        $('#ModalVisibilidadClientes').modal('show');
-      }
+        $('#ModalVisibilidadClientes').modal('hide');
+        $('#mensajeExito').hide().html('');
+        $('#id_clientePermisos').val('');
+        $('#id_rol_Usuario').val('');
+        $('#espacio_para_agregado').empty();
+        $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
+        $('#seleccion_antidoping').val(''); // Limpiar el select del antidoping
+      }, 1800);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // En caso de error, muestra un mensaje de fallo
+      $('#errorModal').html('Ha ocurrido un error al intentar guardar los datos.').show();
     }
   });
-} 
+});
+//Se limpiaran los datos de los select seleccionados si se da en el boton cerrar del modal  sin guardar
+$('#btnCerrar').on('click', function() {
+  $('#id_clientePermisos').val(''); // Limpiar select del cliente
+  $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
+  $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
+});
+
+$.ajax({
+  url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
+  type: 'get',
+  beforeSend: function() {
+    $('.loader').css("display", "block");
+  },
+  success: function(res) {
+    setTimeout(function() {
+      $('.loader').fadeOut();
+    }, 200);
+    var data = JSON.parse(res);
+    if (data.codigo === 1) {
+      recargarTable();
+      $("#mensajeModal").modal('hide');
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: data.msg,
+        showConfirmButton: false,
+        timer: 2500
+      });
+    }
+
+    if (res) {
+      $('#id_clientePermisos').empty();
+      $('#id_rol_Usuario').empty();
+      var datos = JSON.parse(res);
+      $('#id_clientePermisos').append('<option value="">Selecciona</option>');
+      $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
+
+      for (var i = 0; i < datos.clientes.length; i++) {
+        $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
+          .clientes[i]['cliente_nombre'] + '</option>');
+      }
+
+      for (var i = 0; i < datos.usuarios.length; i++) {
+        $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
+          .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
+      }
+      $('#errorModal').hide().html('');
+
+      
+      $('#ModalVisibilidadClientes').modal('show');
+    }
+  }
+});
+}
+
+/*function BotonVisibilidadCliente() {
+
+$('#btnGuardar').on('click', function() {
+ 
+  if ($('#id_clientePermisos').val() === '') {
+    $('#errorModal').html('Por favor, seleccione un cliente.').show();
+    return;
+  }
+
+  if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
+    $('#errorModal').html('Por favor, seleccione al menos un usuario.').show();
+    return;
+  }
+
+  var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0;
+  var antidopingValue = $('#seleccion_antidoping').val();
+  $.ajax({
+    url: '< ?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
+    type: 'post',
+    data: {
+      id_clientePermisos: $('#id_clientePermisos').val(),
+      usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
+        return $(this).attr('data-valor');
+      }).get(),
+      antidoping_seleccionado: antidopingValue,
+      togglePsicometria: toggleSwitchValue, // Valor del switch
+    },
+    success: function() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Los datos se guardaron correctamente.',
+        timer: 1800, // Duración del mini modal en milisegundos
+        timerProgressBar: true, // Muestra una barra de progreso
+      });
+
+      setTimeout(function() {
+        $('#ModalVisibilidadClientes').modal('hide');
+        $('#mensajeExito').hide().html('');
+        $('#id_clientePermisos').val('');
+        $('#id_rol_Usuario').val('');
+        $('#espacio_para_agregado').empty();
+        $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
+        $('#seleccion_antidoping').val(''); // Limpiar el select del antidoping
+      }, 2000);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // En caso de error, muestra un mensaje de fallo
+      $('#errorModal').html('Ha ocurrido un error al intentar guardar los datos.').show();
+    }
+  });
+});
+
+$('#btnCerrar').on('click', function() {
+  $('#id_clientePermisos').val(''); // Limpiar select del cliente
+  $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
+});
+
+$.ajax({
+  url: '< ?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
+  type: 'get',
+  beforeSend: function() {
+    $('.loader').css("display", "block");
+  },
+  success: function(res) {
+    setTimeout(function() {
+      $('.loader').fadeOut();
+    }, 200);
+    var data = JSON.parse(res);
+    if (data.codigo === 1) {
+      recargarTable();
+      $("#mensajeModal").modal('hide');
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: data.msg,
+        showConfirmButton: false,
+        timer: 2500
+      });
+    }
+
+    if (res) {
+      $('#id_clientePermisos').empty();
+      $('#id_rol_Usuario').empty();
+      var datos = JSON.parse(res);
+      $('#id_clientePermisos').append('<option value="">Selecciona</option>');
+      $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
+
+      for (var i = 0; i < datos.clientes.length; i++) {
+        $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
+          .clientes[i]['cliente_nombre'] + '</option>');
+      }
+
+      for (var i = 0; i < datos.usuarios.length; i++) {
+        $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
+          .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
+      }
+      $('#errorModal').hide().html('');
+
+      $('#ModalVisibilidadClientes').modal('show');
+    }
+  }
+});
+}*/
+
 /*****************Función para mostrar los clientes o usuarios seleccionados en el div flexible del modal***********/
 function mostrarSeleccionados(tipo) {
-  var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById(
-    'id_rol_Usuario');
+  var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById('id_rol_Usuario');
   var selectedOptions = selectElement.selectedOptions;
   var espacioDiv = document.getElementById('espacio_para_agregado');
   var usuariosSeleccionados = [];
   var clienteSeleccionado = $('#id_clientePermisos').val();
   console.log('ID del cliente seleccionado:', clienteSeleccionado);
 
+  // Recoger los usuarios ya seleccionados en el espacioDiv
+  var usuariosDiv = espacioDiv.querySelectorAll('.usuario-seleccionado');
+  usuariosDiv.forEach(function(usuarioDiv) {
+    usuariosSeleccionados.push(usuarioDiv.getAttribute('data-valor'));
+  });
+
   if (tipo === 'cliente') {
-  
     for (var i = 0; i < selectedOptions.length - 1; i++) {
       selectedOptions[i].selected = false;
     }
@@ -647,14 +782,20 @@ function mostrarSeleccionados(tipo) {
 
   for (var i = 0; i < selectedOptions.length; i++) {
     var selectedOption = selectedOptions[i];
-    var optionValue = selectedOption.value; // Obtener el valor de la opción seleccionada
-    usuariosSeleccionados.push(optionValue); // Agrega el valor al arreglo de usuarios seleccionados
+    var optionValue = selectedOption.value;
+
+    // Verificar si el usuario ya ha sido seleccionado
+    if (usuariosSeleccionados.includes(optionValue)) {
+      alert('Este usuario ya ha sido seleccionado.');
+      continue; // Saltar al siguiente usuario
+    }
+
+    usuariosSeleccionados.push(optionValue);
 
     var usuarioDiv = document.createElement('div');
     usuarioDiv.className = 'usuario-seleccionado';
-    usuarioDiv.setAttribute('data-valor', optionValue); 
+    usuarioDiv.setAttribute('data-valor', optionValue);
 
-    // Contiene el nombre del usuario seleccionado
     var textoSeleccionado = document.createTextNode(selectedOption.textContent);
     usuarioDiv.appendChild(textoSeleccionado);
 
@@ -663,12 +804,9 @@ function mostrarSeleccionados(tipo) {
     var botonEliminar = document.createElement('button');
     botonEliminar.textContent = 'Eliminar';
     botonEliminar.className = 'btn btn-danger btn-sm ml-2';
-    // Usar una función auxiliar para manejar el evento onclick
-    botonEliminar.onclick = createEliminarHandler(espacioDiv, selectedOption, usuariosSeleccionados, optionValue);
+    botonEliminar.onclick = createEliminarHandler(espacioDiv, usuarioDiv, usuariosSeleccionados, optionValue);
 
     usuarioDiv.appendChild(botonEliminar);
-
-    espacioDiv.appendChild(usuarioDiv);
   }
 
   console.log('IDs de los usuarios seleccionados:', usuariosSeleccionados);
@@ -699,7 +837,7 @@ $(function() {
       success: function(response) {
         try {
           var paquetes = JSON.parse(response);
-          $('#seleccion_antidoping').empty().append('<option value="">N/A</option>');
+          $('#seleccion_antidoping').empty().append('<option value="0">N/A</option>');
           $.each(paquetes, function(index, paquete) {
             $('#seleccion_antidoping').append('<option value="' + paquete.id + '">' + paquete.nombre +
               ' - ' + paquete.conjunto + '</option>');
@@ -736,9 +874,10 @@ $(function() {
 
 /*********************************SECCION DE PSCICOMETRIAS***************************************************************/
 $(document).ready(function() {
-  
+
   $('label[for="toggleSwitch"]').click(function() {
-    var estado = $(this).text().trim() === "SI" ? 1 : 0; // Si el texto del label es "SI", estado es 1, de lo contrario 0
+    var estado = $(this).text().trim() === "SI" ? 1 :
+    0; // Si el texto del label es "SI", estado es 1, de lo contrario 0
     $('#toggleSwitch').prop('checked', estado); // Actualizar el estado del switch
   });
 
@@ -746,25 +885,25 @@ $(document).ready(function() {
     var opcionSeleccionada = $(this).val();
     console.log('ID del último paquete antidoping seleccionado:', opcionSeleccionada);
   });
-}); 
+});
 /*******************************************************************************************************/
-      function generarPassword() {
-        $.ajax({
-          url: '<?php echo base_url('Funciones/generarPassword'); ?>',
-          type: 'post',
-          beforeSend: function() {
-            $('.loader').css("display", "block");
-          },
-          success: function(res) {
-            setTimeout(function() {
-              $('.loader').fadeOut();
-            }, 200);
-            $("#password").val(res)
-          }
-        });
-      }
+function generarPassword() {
+  $.ajax({
+    url: '<?php echo base_url('Funciones/generarPassword'); ?>',
+    type: 'post',
+    beforeSend: function() {
+      $('.loader').css("display", "block");
+    },
+    success: function(res) {
+      setTimeout(function() {
+        $('.loader').fadeOut();
+      }, 200);
+      $("#password").val(res)
+    }
+  });
+}
 
-      function recargarTable() {
-        $("#tabla").DataTable().ajax.reload();
-      }
+function recargarTable() {
+  $("#tabla").DataTable().ajax.reload();
+}
 </script>

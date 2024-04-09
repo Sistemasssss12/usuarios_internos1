@@ -295,6 +295,55 @@ public function select_antidoping(){
 
 /***********************************************************************************/
 public function boton_Guardar_1() {
+  $this->form_validation->set_rules('id_clientePermisos', 'Cliente', 'required');
+  $this->form_validation->set_rules('usuarios_seleccionados[]', 'Usuarios', 'required');
+
+  $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+
+  if ($this->form_validation->run() == FALSE) {
+
+
+      echo validation_errors();
+
+      
+  } else {
+      $cliente_id = $this->input->post('id_clientePermisos');
+      $usuarios_seleccionados = $this->input->post('usuarios_seleccionados');
+
+      $idPermisoCliente = $this->cat_cliente_model->getIdPermisocliente($cliente_id);
+
+      if ($idPermisoCliente !== FALSE) {
+          foreach ($usuarios_seleccionados as $usuario) {
+              $permisos = array(
+                  'id_usuario'=> $usuario,
+                  'id_permiso'=> $idPermisoCliente
+              );
+
+              // Llamar al método del modelo para insertar los datos
+              $resultado = $this->cat_cliente_model->guardarAccesosClientes($permisos);
+
+              if ($resultado) {
+                //  echo "
+                $msj = array(
+                  'codigo' => 1,
+                  'msg' => "Datos insertados correctamente para el usuario con ID: " . $usuario . "<br>"
+                );
+              } else {
+                $msj = array(
+                  'codigo' => 0,
+                  'msg' => "Error al insertar datos para el usuario con ID: " . $usuario . "<br>"
+                );
+                  //echo ;
+              }
+          }
+      } else {
+          echo "No se encontró ningún permiso para el cliente con ID " . $cliente_id;
+      }
+  }
+  echo json_encode($msj);
+}
+
+/*public function boton_Guardar_1() {
   
   $this->form_validation->set_rules('id_clientePermisos', 'Cliente', 'required');
   $this->form_validation->set_rules('usuarios_seleccionados[]', 'Usuarios', 'required');
@@ -326,7 +375,7 @@ public function boton_Guardar_1() {
       // Mostrar el valor del switch para psicometria
       echo "<br>Estado de psicometria: " . $togglePsicometria . "<br>";
   }
-}
+}*/
 /*************************************************************/
 
   function addUsuario(){
