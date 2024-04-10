@@ -543,25 +543,30 @@ function controlAcceso(accion, idUsuarioCliente) {
     }
   });
 }
+/*******************************FUNCION PARA GUARDAR****************************************************************/
+function GuardarPermisosClientes() {
+  // Ocultar mensaje de error al no seleccionar un cliente
+  $('#id_clientePermisos').on('change', function() {
+    $('#errorModal').hide();
+  });
 
-
-function GuardarPermisosClientes(){
-  
-  // Verificar si se ha seleccionado un cliente
   if ($('#id_clientePermisos').val() === '') {
     $('#errorModal').html('Por favor, seleccione un cliente.').show();
     return;
   }
+
+  $('#id_rol_Usuario').on('change', function() { //quitar el mensaje de selecciona al menos un usuario
+    $('#errorModal').hide();
+  });
 
   if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
     $('#errorModal').html('Por favor, seleccione al menos un usuario.').show();
     return;
   }
 
-  $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
-
   var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0;
   var antidopingValue = $('#seleccion_antidoping').val();
+  //SE ENVIARAN LOS DATOS 
   $.ajax({
     url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
     type: 'post',
@@ -583,7 +588,6 @@ function GuardarPermisosClientes(){
       var data = JSON.parse(res);
       if (data.codigo === 1) {
         recargarTable()
-        
 
         $("#ModalVisibilidadClientes").modal('hide')
         Swal.fire({
@@ -591,190 +595,129 @@ function GuardarPermisosClientes(){
           icon: 'success',
           title: data.msg,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2000
         })
         $('#ModalVisibilidadClientes').modal('hide');
         $('#mensajeExito').hide().html('');
         $('#id_clientePermisos').val('');
         $('#id_rol_Usuario').val('');
         $('#espacio_para_agregado').empty();
-        $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
-        $('#seleccion_antidoping').val(''); 
-      
+        $('#toggleSwitch').prop('checked', false);
+        $('#seleccion_antidoping').val('');
+
+        // Ocultar el mensaje de error después de haber ocultado el modal y realizado otras operaciones
+        $('#errorModal').hide();
       }
     }
   });
 
-//Se limpiaran los datos de los select seleccionados si se da en el boton cerrar del modal  sin guardar
-$('#btnCerrar').on('click', function() {
-  $('#id_clientePermisos').val(''); // Limpiar select del cliente
-  $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
-  $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
-});
+  // Limpiar los datos de los select seleccionados si se da clic en el botón cerrar del modal sin guardar
+  $('#btnCerrar').on('click', function() {
+    $('#id_clientePermisos').val(''); // Limpiar select del cliente
+    $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
+    $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
+  });
 
+  // Ocultar mensaje de error al cerrar el modal
+  $('#ModalVisibilidadClientes').on('hidden.bs.modal', function() {
+    $('#errorModal').hide();
+  });
 }
 
 /**************Función para mostrar el modal y cargar los datos*****LLAMADO DEL BOTON "DAR VISIBILIDAD DE LOS CLIENTES A LOS USUARIOS INTERNOS"***********************/
 function BotonVisibilidadCliente() {
-
-
-
-$.ajax({
-  url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
-  type: 'get',
-  beforeSend: function() {
-    $('.loader').css("display", "block");
-  },
-  success: function(res) {
-    setTimeout(function() {
-      $('.loader').fadeOut();
-    }, 200);
-    var data = JSON.parse(res);
-    if (data.codigo === 1) {
-      recargarTable();
-      $("#mensajeModal").modal('hide');
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: data.msg,
-        showConfirmButton: false,
-        timer: 2500
-      });
-    }
-
-    if (res) {
-      $('#id_clientePermisos').empty();
-      $('#id_rol_Usuario').empty();
-      var datos = JSON.parse(res);
-      $('#id_clientePermisos').append('<option value="">Selecciona</option>');
-      $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
-
-      for (var i = 0; i < datos.clientes.length; i++) {
-        $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
-          .clientes[i]['cliente_nombre'] + '</option>');
-      }
-
-      for (var i = 0; i < datos.usuarios.length; i++) {
-        $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
-          .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
-      }
-      $('#errorModal').hide().html('');
-
-      
-      $('#ModalVisibilidadClientes').modal('show');
-    }
-  }
-});
-}
-
-/*function BotonVisibilidadCliente() {
-
-$('#btnGuardar').on('click', function() {
- 
-  if ($('#id_clientePermisos').val() === '') {
-    $('#errorModal').html('Por favor, seleccione un cliente.').show();
-    return;
-  }
-
-  if ($('#espacio_para_agregado .usuario-seleccionado').length === 0) {
-    $('#errorModal').html('Por favor, seleccione al menos un usuario.').show();
-    return;
-  }
-
-  var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0;
-  var antidopingValue = $('#seleccion_antidoping').val();
   $.ajax({
-    url: '< ?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
-    type: 'post',
-    data: {
-      id_clientePermisos: $('#id_clientePermisos').val(),
-      usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
-        return $(this).attr('data-valor');
-      }).get(),
-      antidoping_seleccionado: antidopingValue,
-      togglePsicometria: toggleSwitchValue, // Valor del switch
+    url: '<?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
+    type: 'get',
+    beforeSend: function() {
+      $('.loader').css("display", "block");
     },
-    success: function() {
-      Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: 'Los datos se guardaron correctamente.',
-        timer: 1800, // Duración del mini modal en milisegundos
-        timerProgressBar: true, // Muestra una barra de progreso
-      });
-
+    success: function(res) {
       setTimeout(function() {
-        $('#ModalVisibilidadClientes').modal('hide');
-        $('#mensajeExito').hide().html('');
-        $('#id_clientePermisos').val('');
-        $('#id_rol_Usuario').val('');
-        $('#espacio_para_agregado').empty();
-        $('#toggleSwitch').prop('checked', true); // Restablecer el estado del switch
-        $('#seleccion_antidoping').val(''); // Limpiar el select del antidoping
-      }, 2000);
+        $('.loader').fadeOut();
+      }, 200);
+      var data = JSON.parse(res);
+      if (data.codigo === 1) {
+        recargarTable();
+        $("#mensajeModal").modal('hide');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: data.msg,
+          showConfirmButton: false,
+          timer: 2000
+        });
+      }
+
+      if (res) {
+        $('#id_clientePermisos').empty();
+        $('#id_rol_Usuario').empty();
+        var datos = JSON.parse(res);
+        $('#id_clientePermisos').append('<option value="">Selecciona</option>');
+        $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
+
+        for (var i = 0; i < datos.clientes.length; i++) {
+          $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
+            .clientes[i]['cliente_nombre'] + '</option>');
+        }
+
+        for (var i = 0; i < datos.usuarios.length; i++) {
+          $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
+            .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
+        }
+        $('#errorModal').hide().html('');
+
+        $('#ModalVisibilidadClientes').modal('show');
+
+
+
+        // Agregar evento para cargar subclientes y proyectos al cambiar el cliente seleccionado
+        $('#id_clientePermisos').change(function() {
+          var cliente_id = $(this).val();
+          $.ajax({
+            url: '<?php echo base_url('Cat_Cliente/get_Proyecto_Y_SubClients'); ?>',
+            type: 'post',
+            data: {
+              'cliente_id': cliente_id
+            },
+            success: function(response) {
+            console.log(response);
+            var data = JSON.parse(response);
+            if (data.success) {
+                $('#subcliente').empty().append('<option value="0">N/A</option>');
+                for (var i = 0; i < data.data.subclientes.length; i++) {
+                    $('#subcliente').append('<option value="' + data.data.subclientes[i]['id'] +
+                        '">' + data.data.subclientes[i]['nombre'] + '</option>');
+                }
+
+                $('#proyecto').empty().append('<option value="0">N/A</option>');
+                for (var i = 0; i < data.data.subclientes.length; i++) {
+                    $('#subcliente').append('<option value="' + data.data.proyectos[i]['id'] +
+                        '">' + data.data.proyectos[i]['nombre'] + '</option>');
+                }
+                // Puedes acceder a otros datos aquí si es necesario, por ejemplo, proyectos: data.data.proyectos
+            } else {
+                // Manejar el caso de error aquí
+            }
+            },
+            error: function(xhr, status, error) {
+
+            }
+          });
+        });
+      }
     },
-    error: function(jqXHR, textStatus, errorThrown) {
-      // En caso de error, muestra un mensaje de fallo
-      $('#errorModal').html('Ha ocurrido un error al intentar guardar los datos.').show();
+    error: function(xhr, status, error) {
+      // Manejar errores de conexión
     }
   });
-});
+}
 
-$('#btnCerrar').on('click', function() {
-  $('#id_clientePermisos').val(''); // Limpiar select del cliente
-  $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
-});
 
-$.ajax({
-  url: '< ?php echo base_url('Cat_Cliente/get_Visibilidad'); ?>',
-  type: 'get',
-  beforeSend: function() {
-    $('.loader').css("display", "block");
-  },
-  success: function(res) {
-    setTimeout(function() {
-      $('.loader').fadeOut();
-    }, 200);
-    var data = JSON.parse(res);
-    if (data.codigo === 1) {
-      recargarTable();
-      $("#mensajeModal").modal('hide');
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: data.msg,
-        showConfirmButton: false,
-        timer: 2500
-      });
-    }
-
-    if (res) {
-      $('#id_clientePermisos').empty();
-      $('#id_rol_Usuario').empty();
-      var datos = JSON.parse(res);
-      $('#id_clientePermisos').append('<option value="">Selecciona</option>');
-      $('#id_rol_Usuario').append('<option value="">Selecciona</option>');
-
-      for (var i = 0; i < datos.clientes.length; i++) {
-        $('#id_clientePermisos').append('<option value="' + datos.clientes[i]['cliente_id'] + '">' + datos
-          .clientes[i]['cliente_nombre'] + '</option>');
-      }
-
-      for (var i = 0; i < datos.usuarios.length; i++) {
-        $('#id_rol_Usuario').append('<option value="' + datos.usuarios[i]['usuario_id'] + '">' + datos
-          .usuarios[i]['usuario_nombre'] + ' ' + datos.usuarios[i]['usuario_paterno'] + '</option>');
-      }
-      $('#errorModal').hide().html('');
-
-      $('#ModalVisibilidadClientes').modal('show');
-    }
-  }
-});
-}*/
-
-/*****************Función para mostrar los clientes o usuarios seleccionados en el div flexible del modal***********/
+/*****************Función para mostrar alos clientes o usuarios seleccionados en el div flexible del modal***********/
 function mostrarSeleccionados(tipo) {
-  var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById('id_rol_Usuario');
+  var selectElement = tipo === 'cliente' ? document.getElementById('id_clientePermisos') : document.getElementById(
+    'id_rol_Usuario');
   var selectedOptions = selectElement.selectedOptions;
   var espacioDiv = document.getElementById('espacio_para_agregado');
   var usuariosSeleccionados = [];
@@ -890,14 +833,14 @@ $(document).ready(function() {
 
   $('label[for="toggleSwitch"]').click(function() {
     var estado = $(this).text().trim() === "SI" ? 1 :
-    0; // Si el texto del label es "SI", estado es 1, de lo contrario 0
+      0; // Si el texto del label es "SI", estado es 1, de lo contrario 0
     $('#toggleSwitch').prop('checked', estado); // Actualizar el estado del switch
   });
 
-  $('#seleccion_antidoping').change(function() {
+  /*$('#seleccion_antidoping').change(function() {
     var opcionSeleccionada = $(this).val();
     console.log('ID del último paquete antidoping seleccionado:', opcionSeleccionada);
-  });
+  });*/
 });
 /*******************************************************************************************************/
 function generarPassword() {

@@ -158,9 +158,7 @@ class Cat_cliente_model extends CI_Model{
         return FALSE;
     }
 }
-/********Insertar datos en la tabla usuario_permiso para ver clientes**************************************************************/    
-
-    
+/********Insertar datos en la tabla usuario_permiso para ver clientes**************************************************************/      
   public function guardarAccesosClientes($datos) {
 
       $this->db->insert('usuario_permiso', $datos);
@@ -171,9 +169,33 @@ class Cat_cliente_model extends CI_Model{
           return false; 
       }
   }
-  
-  
 
+/**************************************************************************************/
+public function get_Proyecto_Y_SubClients($id_cliente) {
+  $this->db
+      ->select("id, nombre") 
+      ->from('subcliente')
+      ->where('id_cliente', $id_cliente) 
+      ->where('status', 1) 
+      ->where('eliminado', 0); 
+
+  $query = $this->db->get();
+  $subcliente = $query->result();
+
+  // Restablecer la consulta para obtener los datos 
+  $this->db->reset_query();
+  
+  $this->db
+      ->select("id, nombre")
+      ->from('proyecto')
+      ->where('status', 1) 
+      ->where('eliminado', 0); 
+      
+  $query = $this->db->get();
+  $proyecto = $query->result();
+
+  return array('subclientes' => $subcliente, 'proyectos' => $proyecto);
+}
 
 /***********************************************************************************/
 function getPaquetesAntidoping(){
@@ -191,9 +213,8 @@ function getPaquetesAntidoping(){
       return FALSE;
   }
 }
-
 /*********************************************************************************/
-public function getVisibilidad() {
+public function  getVisibilidad() {
   $this->db
       ->select("c.id as cliente_id, c.nombre as cliente_nombre")
       ->from('cliente as c')
@@ -221,7 +242,6 @@ public function getVisibilidad() {
 
   return array('clientes' => $clientes, 'usuarios' => $usuarios);
 }
-
 /**************************************************************************************/
 
   function getUsuariosClientePorCandidato($id_candidato){

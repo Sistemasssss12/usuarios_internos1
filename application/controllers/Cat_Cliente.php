@@ -278,6 +278,15 @@ class Cat_Cliente extends CI_Controller{
   }
 
   /*******************************************************************************/
+  public function get_Proyecto_Y_SubClients() {
+  $cliente_id = $this->input->post('cliente_id');
+   
+    $data = $this->cat_cliente_model->get_Proyecto_Y_SubClients($cliente_id);
+
+    echo json_encode(array('success' => true, 'data' => $data)); // Devolver los datos con un indicador de éxito
+
+}
+  /*******************************************************************************/
 
   public function get_Visibilidad() {
     $data = $this->cat_cliente_model->getVisibilidad();
@@ -347,39 +356,6 @@ public function boton_Guardar_1() {
   echo json_encode($msj);
 }
 
-/*public function boton_Guardar_1() {
-  
-  $this->form_validation->set_rules('id_clientePermisos', 'Cliente', 'required');
-  $this->form_validation->set_rules('usuarios_seleccionados[]', 'Usuarios', 'required');
-
-  $this->form_validation->set_message('required', 'El campo %s es obligatorio');
-  $this->form_validation->set_message('required', 'El campo %s es obligatorio');
-
-  // Ejecutar las reglas de validación
-  if ($this->form_validation->run() == FALSE) {
-           echo validation_errors();
-  } else {
-      $cliente_id = $this->input->post('id_clientePermisos');
-      $usuarios_seleccionados = $this->input->post('usuarios_seleccionados');
-      $togglePsicometria = $this->input->post('togglePsicometria');
-      $antidoping_seleccionado = $this->input->post('antidoping_seleccionado');
-
-      echo "ID del cliente seleccionado: " . $cliente_id . "<br>";
-
-      if (!empty($usuarios_seleccionados)) {
-          echo "IDs de los usuarios seleccionados: ";
-          foreach ($usuarios_seleccionados as $usuario) {
-              echo $usuario . " ";
-          }
-      } else {
-          echo "No se han seleccionado usuarios.";
-      }
-      echo "<br>Antidoping seleccionado: " . $antidoping_seleccionado . "<br>";
-      
-      // Mostrar el valor del switch para psicometria
-      echo "<br>Estado de psicometria: " . $togglePsicometria . "<br>";
-  }
-}*/
 /*************************************************************/
 
   function addUsuario(){

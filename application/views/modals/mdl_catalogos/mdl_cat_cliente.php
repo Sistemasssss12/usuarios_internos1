@@ -239,6 +239,28 @@
               </thead>
             </table>
           </div>
+          <div class="row">
+            <div class="col-md-6">  
+              <div>
+                <br>
+              </div>
+
+              <div>
+                <label>Subcliente</label>
+                <select name="subcliente" id="subcliente" class="form-control" ></select>
+              </div>
+            </div>
+            <div class="col-md-6">  
+              <div>
+                <br>
+              </div>
+
+              <div>
+                <label>Proyecto</label>
+                <select name="proyecto" id="proyecto" class="form-control" ></select>
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-md-12">  
