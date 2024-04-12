@@ -54,8 +54,7 @@
   <div class="loader" style="display: none;"></div>
   <input type="hidden" id="idCliente">
   <input type="hidden" id="idUsuarioCliente">
-
-
+  
 </div>
 <!-- /.content-wrapper -->
 <script>
@@ -670,8 +669,6 @@ function BotonVisibilidadCliente() {
         $('#ModalVisibilidadClientes').modal('show');
 
 
-
-        // Agregar evento para cargar subclientes y proyectos al cambiar el cliente seleccionado
         $('#id_clientePermisos').change(function() {
           var cliente_id = $(this).val();
           $.ajax({
@@ -681,30 +678,59 @@ function BotonVisibilidadCliente() {
               'cliente_id': cliente_id
             },
             success: function(response) {
-            console.log(response);
-            var data = JSON.parse(response);
-            if (data.success) {
+              var data = JSON.parse(response);
+              if (data.success) {
                 $('#subcliente').empty().append('<option value="0">N/A</option>');
                 for (var i = 0; i < data.data.subclientes.length; i++) {
-                    $('#subcliente').append('<option value="' + data.data.subclientes[i]['id'] +
-                        '">' + data.data.subclientes[i]['nombre'] + '</option>');
+                  $('#subcliente').append('<option value="' + data.data.subclientes[i]['id'] + '">' +
+                    data.data.subclientes[i]['nombre'] + '</option>');
                 }
 
                 $('#proyecto').empty().append('<option value="0">N/A</option>');
-                for (var i = 0; i < data.data.subclientes.length; i++) {
-                    $('#subcliente').append('<option value="' + data.data.proyectos[i]['id'] +
-                        '">' + data.data.proyectos[i]['nombre'] + '</option>');
+                for (var i = 0; i < data.data.proyectos.length; i++) {
+                  $('#proyecto').append('<option value="' + data.data.proyectos[i]['id'] + '">' + data
+                    .data.proyectos[i]['nombre'] + '</option>');
                 }
-                // Puedes acceder a otros datos aquí si es necesario, por ejemplo, proyectos: data.data.proyectos
-            } else {
-                // Manejar el caso de error aquí
-            }
+
+              } else {
+                console.error("Error: El servidor devolvió una respuesta sin éxito.");
+              }
             },
             error: function(xhr, status, error) {
-
+              console.error("Error en la solicitud AJAX: " + error);
             }
           });
         });
+
+
+        $('#subcliente').change(function() {
+          var id_subcliente = $(this).val();
+          $.ajax({
+            url: '<?php echo base_url('Cat_Cliente/get_Proyecto'); ?>',
+            type: 'post',
+            data: {
+              'id_subcliente': id_subcliente
+            },
+            success: function(response) {
+              var data = JSON.parse(response);
+              if (data.success) {
+                $('#proyecto').empty().append('<option value="0">N/A</option>');
+                for (var i = 0; i < data.data.length; i++) {
+                  $('#proyecto').append('<option value="' + data.data[i]['id'] + '">' + data.data[i][
+                    'nombre'
+                  ] + '</option>');
+                }
+              } else {
+                console.error("Error: El servidor devolvió una respuesta sin éxito.");
+              }
+            },
+            error: function(xhr, status, error) {
+              console.error("Error en la solicitud AJAX: " + error);
+            }
+          });
+        });
+
+
       }
     },
     error: function(xhr, status, error) {
@@ -712,7 +738,44 @@ function BotonVisibilidadCliente() {
     }
   });
 }
+/******************************FUNCION PARA BUSCAR EL CLIENTE MEDIANTE ESCRITURA*****************************************************************/
 
+
+document.getElementById("search-button").addEventListener("click", function(event) {
+    buscarCliente(event); // Llamamos a la función buscarCliente con el evento
+});
+
+document.getElementById("cliente-search").addEventListener("keyup", function(event) {
+    buscarCliente(event); 
+});
+
+function buscarCliente(event) {
+    var input, filter, select, option, i;
+    input = document.getElementById("cliente-search");
+    filter = input.value.toUpperCase();
+    select = document.getElementById("id_clientePermisos");
+    option = select.getElementsByTagName("option");
+
+    if (filter === "") {
+        for (i = 0; i < option.length; i++) {
+            option[i].style.display = ""; 
+        }
+        return;
+    }
+
+    // Buscar cliente y mostrarlo en el select
+    for (i = 0; i < option.length; i++) {
+        txtValue = option[i].textContent || option[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            option[i].style.display = ""; // Mostrar la opción
+            // Disparar el evento change para activar la lógica de carga de subclientes y proyectos
+            select.value = option[i].value;
+            $(select).trigger("change");
+        } else {
+            option[i].style.display = "none"; 
+        }
+    }
+}
 
 /*****************Función para mostrar alos clientes o usuarios seleccionados en el div flexible del modal***********/
 function mostrarSeleccionados(tipo) {
@@ -863,3 +926,4 @@ function recargarTable() {
   $("#tabla").DataTable().ajax.reload();
 }
 </script>
+

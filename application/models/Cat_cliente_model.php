@@ -173,28 +173,46 @@ class Cat_cliente_model extends CI_Model{
 /**************************************************************************************/
 public function get_Proyecto_Y_SubClients($id_cliente) {
   $this->db
-      ->select("id, nombre") 
+      ->select("id, nombre")
       ->from('subcliente')
-      ->where('id_cliente', $id_cliente) 
-      ->where('status', 1) 
-      ->where('eliminado', 0); 
+      ->where('id_cliente', $id_cliente)
+      ->where('status', 1)
+      ->where('eliminado', 0);
 
   $query = $this->db->get();
   $subcliente = $query->result();
 
-  // Restablecer la consulta para obtener los datos 
   $this->db->reset_query();
-  
+
+  // Consulta de proyectos que contienen subclientes y proyectos que no contienen subclientes
   $this->db
       ->select("id, nombre")
       ->from('proyecto')
-      ->where('status', 1) 
-      ->where('eliminado', 0); 
+      ->where('id_cliente', $id_cliente)
+      ->where('status', 1)
+      ->where('eliminado', 0)
+      ->where('id_subcliente', 0);
       
   $query = $this->db->get();
-  $proyecto = $query->result();
+  $proyectos = $query->result();
 
-  return array('subclientes' => $subcliente, 'proyectos' => $proyecto);
+  return array('subclientes' => $subcliente, 'proyectos' => $proyectos);
+}
+
+
+function get_Proyectos($id_subcliente) {
+  // Consulta de proyectos que contienen subclientes y proyectos que no contienen subclientes
+  $this->db
+      ->select("id, nombre")
+      ->from('proyecto')
+      ->where('id_subcliente', $id_subcliente)
+      ->where('status', 1)
+      ->where('eliminado', 0);
+  
+  $query = $this->db->get();
+  $proyectos = $query->result();
+
+  return $proyectos; 
 }
 
 /***********************************************************************************/

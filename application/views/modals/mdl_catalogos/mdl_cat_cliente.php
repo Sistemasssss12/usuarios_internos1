@@ -207,13 +207,24 @@
       <div class="modal-body">
 
         <form id="formVisibilidadClientes">
+
           <div class="row">
             <div class="col-md-12">
               <label>Cliente *</label>
-              <select name="id_clientePermisos" id="id_clientePermisos" class="form-control"></select>
+              <div class="search-container">
+                <div>
+                  <input type="text" id="cliente-search" placeholder="Buscar cliente...">
+                  <button type="button" class="search-button" id="search-button">
+                    <span class="search-icon">&#128269;</span>
+                  </button>
+                </div>
+                <br>
+                <select name="id_clientePermisos" id="id_clientePermisos" class="form-control"></select>
+              </div>
               <br>
             </div>
           </div>
+          
           <div class="row">
             <div class="col-12">
               <label>Selecciona quien podrá visualizar al cliente seleccionado *</label>
@@ -240,37 +251,37 @@
             </table>
           </div>
           <div class="row">
-            <div class="col-md-6">  
+            <div class="col-md-6">
               <div>
                 <br>
               </div>
 
               <div>
                 <label>Subcliente</label>
-                <select name="subcliente" id="subcliente" class="form-control" ></select>
+                <select name="subcliente" id="subcliente" class="form-control"></select>
               </div>
             </div>
-            <div class="col-md-6">  
+            <div class="col-md-6">
               <div>
                 <br>
               </div>
 
               <div>
                 <label>Proyecto</label>
-                <select name="proyecto" id="proyecto" class="form-control" ></select>
+                <select name="proyecto" id="proyecto" class="form-control"></select>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-12">  
+            <div class="col-md-12">
               <div>
                 <br>
               </div>
 
               <div>
                 <label>En caso de sí, elija el paquete de antidoping</label>
-                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control" ></select>
+                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control"></select>
               </div>
             </div>
           </div>
@@ -295,8 +306,8 @@
             <div class="col-md-12">
               <label for="toggleSwitch">Seleccionar:</label>
               <div class="form-check form-check-inline">
-              <input type="checkbox" id="toggleSwitch" class="form-check-input" data-toggle="switch">
-              <label class="form-check-label" for="toggleSwitch"><strong>SI</strong></label>
+                <input type="checkbox" id="toggleSwitch" class="form-check-input" data-toggle="switch">
+                <label class="form-check-label" for="toggleSwitch"><strong>SI</strong></label>
               </div>
             </div>
           </div>
@@ -308,13 +319,15 @@
         <div id="mensaje" class="alert alert-info" style="display: none;"></div>
 
         <div id="msj_error" class="alert alert-danger hidden"></div>
-        
+
         <div id="errorModal" class="alert alert-danger" style="display: none;"></div>
       </div>
 
-       <div class="modal-footer" class="modal fade" id="mensajeModal" role="dialog" data-backdrop="static" data-keyboard="false">
-        <button  id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button id="btnGuardar" type="button" class="btn btn-success" onclick="GuardarPermisosClientes()">Guardar</button>
+      <div class="modal-footer" class="modal fade" id="mensajeModal" role="dialog" data-backdrop="static"
+        data-keyboard="false">
+        <button id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnGuardar" type="button" class="btn btn-success"
+          onclick="GuardarPermisosClientes()">Guardar</button>
       </div>
 
     </div>

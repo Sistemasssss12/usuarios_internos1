@@ -284,7 +284,15 @@ class Cat_Cliente extends CI_Controller{
     $data = $this->cat_cliente_model->get_Proyecto_Y_SubClients($cliente_id);
 
     echo json_encode(array('success' => true, 'data' => $data)); // Devolver los datos con un indicador de éxito
+}
 
+
+public function get_Proyecto() {
+  $id_subcliente = $this->input->post('id_subcliente');
+   
+    $data = $this->cat_cliente_model->get_Proyectos($id_subcliente);
+
+    echo json_encode(array('success' => true, 'data' => $data)); // Devolver los datos con un indicador de éxito
 }
   /*******************************************************************************/
 
@@ -337,7 +345,7 @@ public function boton_Guardar_1() {
             //  echo "
             $msj = array(
               'codigo' => 1,
-              'msg' => "Datos insertados correctamente para el usuario con ID: " . $usuario . "<br>"
+              'msg' => "Datos insertados correctamente  " .  "<br>"
             );
           } else {
             $msj = array(
