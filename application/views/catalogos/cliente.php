@@ -565,17 +565,29 @@ function GuardarPermisosClientes() {
 
   var toggleSwitchValue = $('#toggleSwitch').prop('checked') ? 1 : 0;
   var antidopingValue = $('#seleccion_antidoping').val();
-  //SE ENVIARAN LOS DATOS 
+
+  // Obtener datos del subcliente y el proyecto
+  var subclienteValue = $('#subcliente').val() || 0;
+  var proyectoValue = $('#proyecto').val() || 0;
+
+  console.log("ID del antidoping seleccionado:", antidopingValue);
+  console.log("ID del subcliente:", subclienteValue);
+  console.log("ID del proyecto:", proyectoValue);
+
+  //SE ENVIARAN LOS DATOS AL CONTROLADOR
   $.ajax({
     url: '<?php echo base_url('Cat_Cliente/boton_Guardar_1'); ?>',
     type: 'post',
+    
     data: {
       id_clientePermisos: $('#id_clientePermisos').val(),
       usuarios_seleccionados: $('#espacio_para_agregado .usuario-seleccionado').map(function() {
         return $(this).attr('data-valor');
       }).get(),
-      antidoping_seleccionado: antidopingValue,
-      togglePsicometria: toggleSwitchValue, // Valor del switch
+      paquete_antidoping: antidopingValue,
+      psicometria: toggleSwitchValue,
+      subcliente: subclienteValue, // Enviar el ID del subcliente
+      proyecto: proyectoValue, // Enviar el ID del proyecto
     },
     beforeSend: function() {
       $('.loader').css("display", "block");
@@ -586,16 +598,17 @@ function GuardarPermisosClientes() {
       }, 200);
       var data = JSON.parse(res);
       if (data.codigo === 1) {
-        recargarTable()
+        recargarTable();
 
-        $("#ModalVisibilidadClientes").modal('hide')
+        $("#ModalVisibilidadClientes").modal('hide');
         Swal.fire({
           position: 'center',
           icon: 'success',
           title: data.msg,
           showConfirmButton: false,
           timer: 2000
-        })
+        });
+
         $('#ModalVisibilidadClientes').modal('hide');
         $('#mensajeExito').hide().html('');
         $('#id_clientePermisos').val('');
@@ -603,21 +616,25 @@ function GuardarPermisosClientes() {
         $('#espacio_para_agregado').empty();
         $('#toggleSwitch').prop('checked', false);
         $('#seleccion_antidoping').val('');
+        $('#subcliente').val(''); // Limpiar el select de subcliente
+        $('#proyecto').val(''); 
 
         // Ocultar el mensaje de error después de haber ocultado el modal y realizado otras operaciones
         $('#errorModal').hide();
       }
     }
   });
-
   // Limpiar los datos de los select seleccionados si se da clic en el botón cerrar del modal sin guardar
   $('#btnCerrar').on('click', function() {
-    $('#id_clientePermisos').val(''); // Limpiar select del cliente
+    $('#id_clientePermisos').val(''); 
     $('#espacio_para_agregado').empty(); // Limpiar div de usuarios seleccionados
-    $('#errorModal').hide(); // Ocultar el mensaje de error si no hay problemas
+    $('#seleccion_antidoping').val('');
+    $('#subcliente').val(''); 
+    $('#proyecto').val(''); 
+    $('#errorModal').hide();
   });
 
-  // Ocultar mensaje de error al cerrar el modal
+  // Ocultar mensajes de campos obligatorios al cerrar el modal
   $('#ModalVisibilidadClientes').on('hidden.bs.modal', function() {
     $('#errorModal').hide();
   });
@@ -729,8 +746,6 @@ function BotonVisibilidadCliente() {
             }
           });
         });
-
-
       }
     },
     error: function(xhr, status, error) {
@@ -739,8 +754,6 @@ function BotonVisibilidadCliente() {
   });
 }
 /******************************FUNCION PARA BUSCAR EL CLIENTE MEDIANTE ESCRITURA*****************************************************************/
-
-
 document.getElementById("search-button").addEventListener("click", function(event) {
     buscarCliente(event); // Llamamos a la función buscarCliente con el evento
 });
@@ -858,7 +871,7 @@ $(function() {
           var paquetes = JSON.parse(response);
           $('#seleccion_antidoping').empty().append('<option value="0">N/A</option>');
           $.each(paquetes, function(index, paquete) {
-            $('#seleccion_antidoping').append('<option value="' + paquete.id + '">' + paquete.nombre +
+            $('#seleccion_antidoping').append('<option value="' + paquete.id + '">'  + paquete.nombre +
               ' - ' + paquete.conjunto + '</option>');
           });
         } catch (error) {

@@ -314,56 +314,86 @@ public function select_antidoping(){
 public function boton_Guardar_1() {
   $this->form_validation->set_rules('id_clientePermisos', 'Cliente', 'required');
   $this->form_validation->set_rules('usuarios_seleccionados[]', 'Usuarios', 'required');
-
   $this->form_validation->set_message('required', 'El campo %s es obligatorio');
 
   if ($this->form_validation->run() == FALSE) {
-
-
-      echo validation_errors();
-
-
+    echo validation_errors();
   } else {
-      $cliente_id = $this->input->post('id_clientePermisos');
-      $usuarios_seleccionados = $this->input->post('usuarios_seleccionados');
+    $psicometria = $this->input->post('psicometria');
+   
 
-      $idPermisoCliente = $this->cat_cliente_model->getIdPermisocliente($cliente_id);
 
-      if ($idPermisoCliente !== FALSE) {
-          foreach ($usuarios_seleccionados as $usuario) {
-              $permisos = array(
-                  'id_usuario'=> $usuario,
-                  'id_permiso'=> $idPermisoCliente
-              );
+    $id_usuario = $this->session->userdata('id');
+    date_default_timezone_set('America/Mexico_City');
+    $date = date('Y-m-d H:i:s');
+    // Obtener datos del formulario
+    $cliente_id = $this->input->post('id_clientePermisos');
+    $usuarios_seleccionados = $this->input->post('usuarios_seleccionados');
 
-              // Llamar al método del modelo para insertar los datos
-              $resultado = $this->cat_cliente_model->guardarAccesosClientes($permisos);
+    // Obtener ID de permiso del cliente
+    $idPermisoCliente = $this->cat_cliente_model->getIdPermisocliente($cliente_id);
 
-             
-          }
-          if ($resultado) {
-            //  echo "
-            $msj = array(
-              'codigo' => 1,
-              'msg' => "Datos insertados correctamente  " .  "<br>"
-            );
-          } else {
-            $msj = array(
-              'codigo' => 0,
-              'msg' => "Error al insertar datos para el usuario con ID: " . $usuario . "<br>"
-            );
-              //echo ;
-          }
+    if ($idPermisoCliente !== FALSE) {
+      // Iterar sobre los usuarios seleccionados
+      foreach ($usuarios_seleccionados as $usuario) {
+        $permisos = array(
+          'id_usuario'=> $usuario,
+          'id_permiso'=> $idPermisoCliente
+        );
+        $resultado = $this->cat_cliente_model->guardarAccesosClientes($permisos);
+      }
+
+      // Obtener datos adicionales del formulario
+      
+      $paquete_doping = $this->input->post('paquete_antidoping');
+      if ($paquete_doping > 0){
+        $id_subcliente = $this->input->post('subcliente');
+        $id_proyecto = $this->input->post('proyecto');
+        $datos_doping = array(
+          'creacion'=>$date,
+          'edicion'=>$date,
+          'id_usuario'=> $id_usuario,
+          'id_cliente'=> $cliente_id,
+          'id_subcliente'=> $id_subcliente, // Agregar el ID del subcliente
+          'id_proyecto'=> $id_proyecto,
+          'id_antidoping_paquete'=> $paquete_doping, // Agregar el ID del proyecto
+        );
+
+        // Guardar el paquete de antidoping seleccionado y otros datos
+        $resultado = $this->cat_cliente_model->guadarAntidoping_y_Proyecto($datos_doping);
+      }
+    if($psicometria > 0){
+       $psicometria = array(
+        'id_cliente'=>$cliente_id,
+        'psicometria'=>1,
+       );
+
+       $resultado = $this->cat_cliente_model->addPsicometria($psicometria);
+
+    }
+      
+      if ($resultado) {
+        $msj = array(
+          'codigo' => 1,
+          'msg' => "Datos insertados correctamente  " .  "<br>"
+        );
       } else {
         $msj = array(
           'codigo' => 0,
-          'msg' => "Error  no se  guardaron los permisos  <br>"
+          'msg' => "Error al insertar datos para el usuario con ID: " . $usuario . "<br>"
         );
       }
+    } else {
+      $msj = array(
+        'codigo' => 0,
+        'msg' => "Error: No se guardaron los permisos <br>"
+      );
+    }
   }
+
+  // Devolver resultado como JSON
   echo json_encode($msj);
 }
-
 /*************************************************************/
 
   function addUsuario(){

@@ -213,8 +213,8 @@
               <label>Cliente *</label>
               <div class="search-container">
                 <div>
-                  <input type="text" id="cliente-search" placeholder="Buscar cliente...">
-                  <button type="button" class="search-button" id="search-button">
+                  <input type="text" id="cliente-search" class="form-control" placeholder="Buscar cliente...">
+                  <button type="button" class="form-control" id="search-button">
                     <span class="search-icon">&#128269;</span>
                   </button>
                 </div>
@@ -250,6 +250,19 @@
               </thead>
             </table>
           </div>
+           
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+              </div>
+
+              <div>
+                <label>En caso de sí, elija el paquete de antidoping</label>
+                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control"></select>
+              </div>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-6">
               <div>
@@ -272,20 +285,6 @@
               </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div>
-                <br>
-              </div>
-
-              <div>
-                <label>En caso de sí, elija el paquete de antidoping</label>
-                <select name="paquete_antidoping" id="seleccion_antidoping" class="form-control"></select>
-              </div>
-            </div>
-          </div>
-
           <div>
             <br>
           </div>
@@ -311,8 +310,7 @@
               </div>
             </div>
           </div>
-
-        </form>
+       </form>
 
         <div id="mensajeExito" class="alert alert-success" style="display: none;"></div>
 

@@ -170,6 +170,42 @@ class Cat_cliente_model extends CI_Model{
       }
   }
 
+
+
+
+/********Guardar psicometria***************************************************/
+public function addPsicometria($datos) {
+
+ try{
+
+  $this->db->insert('cliente_control', $datos);
+  
+
+ }catch(exception $e){
+  return false.$e; 
+
+ }
+  if ($this->db->affected_rows() > 0) {
+      return true; 
+  } else {
+      return false; 
+  }
+}
+
+
+/********Guardar id de antidoping seleccionado ***************************************************/
+public function guadarAntidoping_y_Proyecto($paquete_antidoping_seleccionado,$datos_doping = null) {
+  $datos = $paquete_antidoping_seleccionado;
+ 
+
+  $this->db->insert('cliente_doping', $datos);
+  
+  if ($this->db->affected_rows() > 0) {
+      return true; 
+  } else {
+      return false; 
+  }
+}
 /**************************************************************************************/
 public function get_Proyecto_Y_SubClients($id_cliente) {
   $this->db
