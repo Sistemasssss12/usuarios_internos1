@@ -208,7 +208,7 @@
 
         <form id="formVisibilidadClientes">
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12">
               <label>Cliente *</label>
               <div class="search-container">
@@ -223,8 +223,23 @@
               </div>
               <br>
             </div>
+          </div>-->
+          <div class="row">
+            <div class="col-md-12">
+              <label for="cliente-search">Cliente *</label>
+              <div class="input-group">
+                <input type="text" id="cliente-search" class="form-control" placeholder="Buscar cliente...">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary btn-md" id="search-button">
+                    <span class="search-icon">&#128269;</span>
+                  </button>
+                </div>
+              </div>
+              <div>ó</div>
+              <select name="id_clientePermisos" id="id_clientePermisos" class="form-control mt-3"></select>
+            </div>
           </div>
-          
+           <br>
           <div class="row">
             <div class="col-12">
               <label>Selecciona quien podrá visualizar al cliente seleccionado *</label>
@@ -250,7 +265,7 @@
               </thead>
             </table>
           </div>
-           
+
           <div class="row">
             <div class="col-md-12">
               <div>
@@ -310,7 +325,7 @@
               </div>
             </div>
           </div>
-       </form>
+        </form>
 
         <div id="mensajeExito" class="alert alert-success" style="display: none;"></div>
 
