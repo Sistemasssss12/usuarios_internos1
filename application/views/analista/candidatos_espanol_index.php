@@ -8877,13 +8877,38 @@
 
 
 /************************FACIS**********************************/
+$(document).ready(function() {
+    cargarCandidatos();
+
+    $('#getCandidatosFACIS').change(function() {
+        var selectedCandidatos = $(this).find('option:selected'); // Obtener las opciones seleccionadas
+
+        // Iterar sobre las opciones seleccionadas
+        selectedCandidatos.each(function(index, candidatoOption) {
+            var candidatoId = $(candidatoOption).val();
+            var candidatoText = $(candidatoOption).text();
+
+            // Verificar si el candidato ya está en el div flexible
+            if ($('#espacio_agregar_Candidatos').find('[data-id="' + candidatoId + '"]').length === 0) {
+                // Si el candidato no está en el div flexible, agregarlo
+                var candidatoElement = $('<div class="candidato">' + candidatoText + '<button class="eliminarCandidato" data-id="' + candidatoId + '">x</button></div>');
+                $('#espacio_agregar_Candidatos').append(candidatoElement);
+            }
+        });
+    });
+
+    // Manejar clic en el botón de eliminar candidato
+    $('#espacio_agregar_Candidatos').on('click', '.eliminarCandidato', function() {
+        $(this).parent().remove(); // Eliminar el candidato del div flexible
+    });
+});
+
 function cargarCandidatos() {
     $.ajax({
         url: '<?php echo base_url('Cliente_General/obtenerCandidatosFACIS'); ?>', 
         type: 'GET',
         dataType: 'json',
         success: function(response) {
-         // console.log(response);
             // Limpiar el select
             $('#getCandidatosFACIS').empty();
             // Iterar sobre los candidatos y agregarlos al select
@@ -8905,10 +8930,25 @@ function abrirModalFACIS() {
     $('#ModalFACIS').modal('show');
 }
 
-$('#ModalFACIS').on('show.bs.modal', function(e) {
-    cargarCandidatos();
-});
-   /***************************************************/ 
+/***************************************************/ 
 </script>
 
 <script src="<?php echo base_url(); ?>js/analista/functions.js"></script>
+<style>
+  .candidato {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+.eliminarCandidato {
+    margin-left: 5px;
+    background-color: red;
+    border-radius: 10px;
+    border: 0px solid white;
+}
+</style>
