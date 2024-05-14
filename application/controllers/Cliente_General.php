@@ -11,6 +11,16 @@ class Cliente_General extends Custom_Controller{
 		$this->load->library('usuario_sesion');
 		$this->usuario_sesion->checkStatusBD();
   }
+/************************FACIS*************************/
+
+  public function obtenerCandidatosFACIS() {
+  
+      $candidatos = $this->cliente_general_model->getCandidatosFACIS();
+
+      echo json_encode($candidatos);
+  }
+
+/******************************************************* */
 
   function index(){
     if ($this->session->userdata('logueado') && $this->session->userdata('tipo') == 1) {

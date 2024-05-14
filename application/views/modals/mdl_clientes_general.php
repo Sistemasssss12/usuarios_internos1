@@ -1,3 +1,90 @@
+<style>
+.ui-datepicker {
+  background-color: #fff;
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.ui-datepicker-prev,
+.ui-datepicker-next {
+  position: absolute;
+  top: 0;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.ui-datepicker-prev {
+  left: 0;
+  /* A la izquierda */
+}
+
+.ui-datepicker-next {
+  right: 0;
+  /* A la derecha */
+}
+
+.ui-datepicker-title {
+  width: 100%;
+  text-align: center;
+}
+
+.ui-datepicker-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+</style>
+
+<div class="modal fade" id="ModalFACIS" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Actualizar FACIS</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--<div class="alert alert-info text-center">Actualizar FACIS</div> -->
+        <form id="FormActualizarFACIS">
+          <div class="row">
+            <div class="col-6">
+              <label for="fecha1">Fecha 1</label>
+              <input type="text" class="form-control" id="fecha1" name="fecha1" autocomplete="off">
+            </div>
+            <br>
+            <div class="col-6">
+              <label for="fecha2">Fecha 2</label>
+              <input type="text" class="form-control" id="fecha2" name="fecha2" autocomplete="off">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <br>
+              <label>Selecciona a los candidatos (FACIS)</label>
+              <select id="getCandidatosFACIS" name="getCandidatosFACIS" class="form-control"> </select>
+              </select>
+              <br>
+            </div>
+          </div>
+          <!-- Div flexible para mostrar los clientes y usuarios seleccionados -->
+          <div class="row">
+            <div id="espacio_agregar_Candidatos" class="col-12 d-flex flex-column mb-3">
+            </div>
+          </div>
+        </form>
+
+        <div id="msj_error" class="alert alert-danger hidden"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" onclick="actualizarFacis()">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="newModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg" role="document">
@@ -14,17 +101,20 @@
           <div class="row">
             <div class="col-4">
               <label>Nombre(s) *</label>
-              <input type="text" class="form-control obligado" name="nombre_registro" id="nombre_registro" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control obligado" name="nombre_registro" id="nombre_registro"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
             <div class="col-4">
               <label>Apellido paterno *</label>
-              <input type="text" class="form-control obligado" name="paterno_registro" id="paterno_registro" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control obligado" name="paterno_registro" id="paterno_registro"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
             <div class="col-4">
               <label>Apellido materno</label>
-              <input type="text" class="form-control" name="materno_registro" id="materno_registro" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control" name="materno_registro" id="materno_registro"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
           </div>
@@ -36,11 +126,11 @@
                 <?php
                 if ($subclientes) {
                   foreach ($subclientes as $sub) { ?>
-                    <option value="<?php echo $sub->id; ?>"><?php echo $sub->nombre; ?></option>
-                  <?php   }
+                <option value="<?php echo $sub->id; ?>"><?php echo $sub->nombre; ?></option>
+                <?php   }
                   echo '<option value="0">N/A</option>';
                 } else { ?>
-                  <option value="0">N/A</option>
+                <option value="0">N/A</option>
                 <?php } ?>
               </select>
               <br>
@@ -48,31 +138,32 @@
             <?php 
             $id_cliente = $this->uri->segment(3);
             if($id_cliente != 172 && $id_cliente != 178 && $id_cliente != 205 && $id_cliente != 96 && $id_cliente != 235){ ?>
-              <div class="col-4">
-                <label>Puesto *</label>
-                <select name="puesto" id="puesto" class="form-control obligado">
-                  <option value="">Selecciona</option>
-                  <?php
+            <div class="col-4">
+              <label>Puesto *</label>
+              <select name="puesto" id="puesto" class="form-control obligado">
+                <option value="">Selecciona</option>
+                <?php
                   foreach ($puestos as $p) { ?>
-                    <option value="<?php echo $p->id; ?>"><?php echo $p->nombre; ?></option>
-                  <?php
+                <option value="<?php echo $p->id; ?>"><?php echo $p->nombre; ?></option>
+                <?php
                   } ?>
-                </select>
-                <br>
-              </div>
+              </select>
+              <br>
+            </div>
             <?php 
             }
             else{ ?>
-              <div class="col-4">
-                <label>Puesto *</label>
-                <input type="text" class="form-control obligado" name="puesto" id="puesto">
-                <br>
-              </div>
+            <div class="col-4">
+              <label>Puesto *</label>
+              <input type="text" class="form-control obligado" name="puesto" id="puesto">
+              <br>
+            </div>
             <?php
             } ?>
             <div class="col-4">
               <label>Teléfono *</label>
-              <input type="text" class="form-control obligado" name="celular_registro" id="celular_registro" maxlength="16">
+              <input type="text" class="form-control obligado" name="celular_registro" id="celular_registro"
+                maxlength="16">
               <br>
             </div>
           </div>
@@ -83,8 +174,8 @@
                 <?php
                   foreach ($paises as $p) {
                     $default = ($p->nombre == 'México')? 'selected' : ''; ?>
-                    <option value="<?php echo $p->nombre; ?>" <?php echo $default ?>><?php echo $p->nombre; ?></option>
-                  <?php
+                <option value="<?php echo $p->nombre; ?>" <?php echo $default ?>><?php echo $p->nombre; ?></option>
+                <?php
                   } 
                 ?>
               </select>
@@ -97,27 +188,29 @@
             </div>
             <?php 
             if($this->uri->segment(3) == 159){  ?>
-              <div class="col-4">
-                <label>Centro de costos *</label>
-                <input type="text" class="form-control obligado" name="centro_costo" id="centro_costo">
-                <br>
-              </div>
+            <div class="col-4">
+              <label>Centro de costos *</label>
+              <input type="text" class="form-control obligado" name="centro_costo" id="centro_costo">
+              <br>
+            </div>
             <?php
             } ?>
           </div>
           <div class="row">
             <?php  
             if($this->uri->segment(3) == 159 || $this->uri->segment(3) == 87){ ?>
-              <div class="col-4">
-                <label>CURP *</label>
-                <input type="text" class="form-control obligado" name="curp_registro" id="curp_registro" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" maxlength="18">
-                <br>
-              </div>
-              <div class="col-4">
-                <label>Numero de Seguro Social (NSS) *</label>
-                <input type="text" class="form-control obligado" name="nss_registro" id="nss_registro" maxlength="11">
-                <br>
-              </div>
+            <div class="col-4">
+              <label>CURP *</label>
+              <input type="text" class="form-control obligado" name="curp_registro" id="curp_registro"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()"
+                maxlength="18">
+              <br>
+            </div>
+            <div class="col-4">
+              <label>Numero de Seguro Social (NSS) *</label>
+              <input type="text" class="form-control obligado" name="nss_registro" id="nss_registro" maxlength="11">
+              <br>
+            </div>
             <?php  
             } ?>
           </div>
@@ -269,7 +362,7 @@
                 <option value="0" selected>N/A</option>
                 <?php
                 foreach ($paquetes_antidoping as $paq) { ?>
-                  <option value="<?php echo $paq->id; ?>"><?php echo $paq->nombre.' ('.$paq->conjunto.')'; ?></option>
+                <option value="<?php echo $paq->id; ?>"><?php echo $paq->nombre.' ('.$paq->conjunto.')'; ?></option>
                 <?php
                 } ?>
               </select>
@@ -309,6 +402,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="registroCandidatoBecaModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -324,17 +418,20 @@
           <div class="row">
             <div class="col-4">
               <label>Nombre(s) *</label>
-              <input type="text" class="form-control obligado" name="nombre_beca" id="nombre_beca" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control obligado" name="nombre_beca" id="nombre_beca"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
             <div class="col-4">
               <label>Apellido paterno *</label>
-              <input type="text" class="form-control obligado" name="paterno_beca" id="paterno_beca" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control obligado" name="paterno_beca" id="paterno_beca"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
             <div class="col-4">
               <label>Apellido materno</label>
-              <input type="text" class="form-control" name="materno_beca" id="materno_beca" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+              <input type="text" class="form-control" name="materno_beca" id="materno_beca"
+                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
               <br>
             </div>
           </div>
@@ -346,11 +443,11 @@
                 <?php
                 if ($subclientes) {
                   foreach ($subclientes as $sub) { ?>
-                    <option value="<?php echo $sub->id; ?>"><?php echo $sub->nombre; ?></option>
-                  <?php   }
+                <option value="<?php echo $sub->id; ?>"><?php echo $sub->nombre; ?></option>
+                <?php   }
                   echo '<option value="0">N/A</option>';
                 } else { ?>
-                  <option value="0">N/A</option>
+                <option value="0">N/A</option>
                 <?php } ?>
               </select>
               <br>
@@ -375,6 +472,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="asignarCandidatoModal" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -410,9 +508,6 @@
     </div>
   </div>
 </div>
-
-
-
 
 
 
@@ -454,7 +549,8 @@
             </div>
             <div class="col-md-6">
               <label>Notas *</label>
-              <textarea cols="2" class="form-control inv_obligado" name="inv_penal_notas" id="inv_penal_notas"></textarea>
+              <textarea cols="2" class="form-control inv_obligado" name="inv_penal_notas"
+                id="inv_penal_notas"></textarea>
               <br>
             </div>
           </div>
@@ -466,7 +562,8 @@
             </div>
             <div class="col-md-6">
               <label>Notas *</label>
-              <textarea cols="2" class="form-control inv_obligado" name="inv_civil_notas" id="inv_civil_notas"></textarea>
+              <textarea cols="2" class="form-control inv_obligado" name="inv_civil_notas"
+                id="inv_civil_notas"></textarea>
               <br>
             </div>
           </div>
@@ -478,7 +575,8 @@
             </div>
             <div class="col-md-6">
               <label>Notas *</label>
-              <textarea cols="2" class="form-control inv_obligado" name="inv_laboral_notas" id="inv_laboral_notas"></textarea>
+              <textarea cols="2" class="form-control inv_obligado" name="inv_laboral_notas"
+                id="inv_laboral_notas"></textarea>
               <br>
             </div>
           </div>
@@ -522,7 +620,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Antes de finalizar tu estudio, realiza una ultima revisión de la ortografía, redacción y asegúrate que la información registrada sea la correcta. Para este estudio, se contemplan las siguientes secciones:</p><br>
+        <p>Antes de finalizar tu estudio, realiza una ultima revisión de la ortografía, redacción y asegúrate que la
+          información registrada sea la correcta. Para este estudio, se contemplan las siguientes secciones:</p><br>
         <ul>
           <li>Datos generales</li>
           <li>Historial académico</li>
@@ -537,11 +636,13 @@
           <li>Habitación y medio ambiente</li>
           <li>Referencias vecinales</li>
         </ul><br>
-        <p>En caso de que se presente un error o alguna imformación no se pueda cambiar, favor de avisar a TI en cuanto antes del cambio a solicitar </p>
+        <p>En caso de que se presente un error o alguna imformación no se pueda cambiar, favor de avisar a TI en cuanto
+          antes del cambio a solicitar </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar y regresar a revisar</button>
-        <button type="button" class="btn btn-success" onclick="aceptarRevision()">Acepto que he revisado el estudio</button>
+        <button type="button" class="btn btn-success" onclick="aceptarRevision()">Acepto que he revisado el
+          estudio</button>
       </div>
     </div>
   </div>
@@ -558,7 +659,8 @@
       <div class="modal-body">
         <form id="formConclusiones">
           <div class="alert alert-warning text-center">
-            <p>Las conclusiones y descripciones deshabilitadas no corresponden al proceso de este estudio. Solo registrar los campos disponibles.</p>
+            <p>Las conclusiones y descripciones deshabilitadas no corresponden al proceso de este estudio. Solo
+              registrar los campos disponibles.</p>
           </div>
           <div class="alert alert-info text-center">
             <p>Conclusión Personal</p>
@@ -638,7 +740,8 @@
           <div class="row">
             <div class="col-12">
               <label>Conclusión del proceso de estudio de investigación *</label>
-              <textarea class="form-control es_conclusion" name="conclusion_investigacion" id="conclusion_investigacion" rows="3"></textarea>
+              <textarea class="form-control es_conclusion" name="conclusion_investigacion" id="conclusion_investigacion"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -659,7 +762,8 @@
           <div class="row">
             <div class="col-12">
               <label>Comentario del estatus final del estudio</label>
-              <textarea class="form-control es_conclusion" name="comentario_bgc" id="comentario_bgc" rows="3"></textarea>
+              <textarea class="form-control es_conclusion" name="comentario_bgc" id="comentario_bgc"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -708,7 +812,8 @@
       </div>
       <div class="modal-body">
         <div class="">
-          <p class="text-center"><b>IMPORTANTE:</b> Para actualizar al candidato considera los siguientes puntos: <br><br>
+          <p class="text-center"><b>IMPORTANTE:</b> Para actualizar al candidato considera los siguientes puntos:
+            <br><br>
           <ul>
             <li>Se reanudarán los resultados (estatus) finales del estudio actual.</li>
             <li>El archivo PDF del estudio finalizado actual se respaldará.</li>
@@ -764,8 +869,9 @@
         <div class="row">
           <div class="col-12">
             <label for="archivo" id="label_modal"></label>
-          <input id="archivo" name="archivo" class="form-control" type="file" accept=".pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet "><br><br>
-          <br>
+            <input id="archivo" name="archivo" class="form-control" type="file"
+              accept=".pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet "><br><br>
+            <br>
           </div>
         </div>
       </div>
@@ -780,14 +886,16 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Pruebas y exámenes a aplicar al candidato: <br><span class="nombreCandidato"></span></h4>
+        <h4 class="modal-title">Pruebas y exámenes a aplicar al candidato: <br><span class="nombreCandidato"></span>
+        </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="alert alert-info">
-          Si la prueba o examen no se puede modificar indica que ya fue realizado. Si se desea modificar la prueba o examen ya realizado, favor de consultarlo con el administrador del sistema y/o con gerencia de operaciones.
+          Si la prueba o examen no se puede modificar indica que ya fue realizado. Si se desea modificar la prueba o
+          examen ya realizado, favor de consultarlo con el administrador del sistema y/o con gerencia de operaciones.
         </div>
         <form id="d_pruebas">
           <div class="row">
@@ -798,7 +906,7 @@
                 <option value="0">N/A</option>
                 <?php
                 foreach ($drogas as $d) { ?>
-                  <option value="<?php echo $d->id; ?>"><?php echo $d->nombre . " (" . $d->conjunto . ")"; ?></option>
+                <option value="<?php echo $d->id; ?>"><?php echo $d->nombre . " (" . $d->conjunto . ")"; ?></option>
                 <?php
                 } ?>
               </select>
@@ -830,7 +938,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" id="btnActualizarPruebas" onclick="actualizarPruebasCandidato()">Guardar</button>
+        <button type="button" class="btn btn-success" id="btnActualizarPruebas"
+          onclick="actualizarPruebasCandidato()">Guardar</button>
       </div>
     </div>
   </div>
@@ -861,7 +970,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Gaps laborales del candidato:  <br><span class="nombreCandidato"></span></h4>
+        <h4 class="modal-title">Gaps laborales del candidato: <br><span class="nombreCandidato"></span></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -932,7 +1041,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Verificación de estudios académicos del candidato: <br> <span class="nombreCandidato"></span></h4>
+        <h4 class="modal-title">Verificación de estudios académicos del candidato: <br> <span
+            class="nombreCandidato"></span></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -957,7 +1067,8 @@
             </div>
             <div class="col-md-9">
               <label for="estudio_estatus_comentario">Comentario</label>
-              <textarea class="form-control" name="estudio_estatus_comentario" id="estudio_estatus_comentario" rows="3"></textarea>
+              <textarea class="form-control" name="estudio_estatus_comentario" id="estudio_estatus_comentario"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -972,7 +1083,8 @@
               <br><br>
             </div>
             <div class="col-3 mt-4">
-              <button type="button" class="btn btn-primary" onclick="guardarEstatusEstudios()">Guardar estatus</button><br><br>
+              <button type="button" class="btn btn-primary" onclick="guardarEstatusEstudios()">Guardar
+                estatus</button><br><br>
             </div>
           </div>
           <div id="msj_error" class="alert alert-danger hidden"></div>
@@ -980,7 +1092,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="registrarEstatusEstudio()">Registrar comentario</button><br><br>
+        <button type="button" class="btn btn-success" onclick="registrarEstatusEstudio()">Registrar
+          comentario</button><br><br>
       </div>
     </div>
   </div>
@@ -1014,7 +1127,8 @@
             </div>
             <div class="col-md-9">
               <label for="laboral_estatus_comentario">Comentario</label>
-              <textarea class="form-control" name="laboral_estatus_comentario" id="laboral_estatus_comentario" rows="3"></textarea>
+              <textarea class="form-control" name="laboral_estatus_comentario" id="laboral_estatus_comentario"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -1029,7 +1143,8 @@
               <br><br>
             </div>
             <div class="col-3 mt-4">
-              <button type="button" class="btn btn-primary" onclick="guardarEstatusLaborales()">Guardar estatus</button><br><br>
+              <button type="button" class="btn btn-primary" onclick="guardarEstatusLaborales()">Guardar
+                estatus</button><br><br>
             </div>
           </div>
           <div id="msj_error" class="alert alert-danger hidden"></div>
@@ -1037,7 +1152,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="registrarEstatusLaboral()">Registrar comentario</button><br><br>
+        <button type="button" class="btn btn-success" onclick="registrarEstatusLaboral()">Registrar
+          comentario</button><br><br>
       </div>
     </div>
   </div>
@@ -1071,7 +1187,8 @@
             </div>
             <div class="col-md-9">
               <label>Comentario</label>
-              <textarea class="form-control" name="penales_estatus_comentario" id="penales_estatus_comentario" rows="3"></textarea>
+              <textarea class="form-control" name="penales_estatus_comentario" id="penales_estatus_comentario"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -1085,7 +1202,8 @@
               <br><br>
             </div>
             <div class="col-3 mt-4">
-              <button type="button" class="btn btn-primary" onclick="guardarEstatusPenales()">Guardar estatus</button><br><br>
+              <button type="button" class="btn btn-primary" onclick="guardarEstatusPenales()">Guardar
+                estatus</button><br><br>
             </div>
           </div>
           <div id="msj_error" class="alert alert-danger hidden"></div>
@@ -1093,7 +1211,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="registrarEstatusPenales()">Registrar comentario</button><br><br>
+        <button type="button" class="btn btn-success" onclick="registrarEstatusPenales()">Registrar
+          comentario</button><br><br>
       </div>
     </div>
   </div>
@@ -1102,7 +1221,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Verificaciones finales del proceso del candidato: <br><span class="nombreCandidato"></span></h4>
+        <h4 class="modal-title">Verificaciones finales del proceso del candidato: <br><span
+            class="nombreCandidato"></span></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1228,7 +1348,8 @@
             </div>
             <div class="col-md-4">
               <label>Acreditación profesional *</label>
-              <select name="check_professional_accreditation" id="check_professional_accreditation" class="form-control es_check">
+              <select name="check_professional_accreditation" id="check_professional_accreditation"
+                class="form-control es_check">
                 <option value="">Selecciona</option>
                 <option value="0">Negative</option>
                 <option value="1">Positive</option>
@@ -1322,7 +1443,8 @@
           <div class="row">
             <div class="col-md-12">
               <label>Declaración final *</label>
-              <textarea class="form-control check_obligado" name="comentario_final" id="comentario_final" rows="3"></textarea>
+              <textarea class="form-control check_obligado" name="comentario_final" id="comentario_final"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -1484,7 +1606,8 @@
           <div class="row">
             <div class="col-md-12">
               <label>Conclusión *</label>
-              <textarea class="form-control" name="comentario_investigaciones" id="comentario_investigaciones" rows="3"></textarea>
+              <textarea class="form-control" name="comentario_investigaciones" id="comentario_investigaciones"
+                rows="3"></textarea>
               <br>
             </div>
           </div>
@@ -1505,7 +1628,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" id="btnOfac" class="btn btn-success" onclick="finalizarInvestigaciones()">Terminar</button>
+        <button type="button" id="btnOfac" class="btn btn-success"
+          onclick="finalizarInvestigaciones()">Terminar</button>
       </div>
     </div>
   </div>
@@ -1524,9 +1648,16 @@
           <h4 class="text-center"><b>Considera los siguientes puntos:</b></h4><br>
           <ul>
             <li>Se debe hacer entrega del link de acceso al candidato.</li>
-            <li>El formulario estará activo hasta finalizar proceso para que se pueda actualizar la información en cualquier momento.</li>
-            <li>Si se brinda el link de acceso al candidato, se recomienda al analista no registrar la misma información (datos generales, aspectos sociales, referencias personales, historial académico, historial de empleos) y esperar a que esta sea registrada por el candidato, de lo contrario, la información podría cambiar por acción del candidato.</li>
-            <li>Una vez que el candidato conteste su formulario, en algunas secciones en el panel de analista puede aparecer la palabra 'undefined' pero esto no implica un error y se debe modificar de acuerdo a la verificación del(la) analista. Ejemplo: la pregunta ¿Lo recomienda? de las referencias personales debe ser registrada por la(el) analista.</li>
+            <li>El formulario estará activo hasta finalizar proceso para que se pueda actualizar la información en
+              cualquier momento.</li>
+            <li>Si se brinda el link de acceso al candidato, se recomienda al analista no registrar la misma información
+              (datos generales, aspectos sociales, referencias personales, historial académico, historial de empleos) y
+              esperar a que esta sea registrada por el candidato, de lo contrario, la información podría cambiar por
+              acción del candidato.</li>
+            <li>Una vez que el candidato conteste su formulario, en algunas secciones en el panel de analista puede
+              aparecer la palabra 'undefined' pero esto no implica un error y se debe modificar de acuerdo a la
+              verificación del(la) analista. Ejemplo: la pregunta ¿Lo recomienda? de las referencias personales debe ser
+              registrada por la(el) analista.</li>
           </ul><br>
         </div>
         <div class="row">
@@ -1621,7 +1752,8 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Asignación/Cambio de Subcliente al candidato: <br><span class="nombreCandidato"></span></h4>
+        <h4 class="modal-title">Asignación/Cambio de Subcliente al candidato: <br><span class="nombreCandidato"></span>
+        </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1632,16 +1764,16 @@
             <div class="col-12">
               <label>Elige un subcliente/proveedor:</label>
               <select name="subcliente_asignado" id="subcliente_asignado" class="form-control">
-              <?php
+                <?php
                 if ($subclientes) { ?>
-                  <option value="0">Selecciona</option>
-                  <?php
+                <option value="0">Selecciona</option>
+                <?php
                   foreach ($subclientes as $sub) { ?>
-                    <option value="<?php echo $sub->id; ?>"><?php echo $sub->nombre; ?></option>
-                  <?php   }
+                <option value="<?php echo $sub->id; ?>"><?php echo $sub->nombre; ?></option>
+                <?php   }
                   echo '<option value="0">N/A</option>';
                 } else { ?>
-                  <option value="0">Este cliente no posee subclientes</option>
+                <option value="0">Este cliente no posee subclientes</option>
                 <?php } ?>
               </select>
             </div>
@@ -1742,7 +1874,9 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-12">
-            <p class="text-center text-danger font-weight-bold">* Recuerda que los documentos solo se podrán visualizar en el estudio finalizado si están en formato imagen (.jpg, .png, .jpeg), si están en .pdf se debe tomar una captura o escanear el documento</p>
+            <p class="text-center text-danger font-weight-bold">* Recuerda que los documentos solo se podrán visualizar
+              en el estudio finalizado si están en formato imagen (.jpg, .png, .jpeg), si están en .pdf se debe tomar
+              una captura o escanear el documento</p>
           </div>
         </div>
         <div class="row">
@@ -1761,7 +1895,7 @@
             <select name="tipo_archivo" id="tipo_archivo" class="form-control personal_obligado">
               <option value="">Selecciona</option>
               <?php foreach ($tipos_docs as $t) { ?>
-                <option value="<?php echo $t->id; ?>"><?php echo $t->nombre; ?></option>
+              <option value="<?php echo $t->id; ?>"><?php echo $t->nombre; ?></option>
               <?php } ?>
             </select>
             <br>
@@ -1866,119 +2000,138 @@
     </div>
   </div>
 </div>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 <script>
-  $(document).ready(function(){
-    $('#formModal').on('hidden.bs.modal', function(e) {
-      $("#rowForm").empty();
-      $('#btnOpenFiles').remove()
-      $('#btnSubmitForm').text('Guardar')
-      $('#btnSubmitForm').css('display','initial')
-      $('#formModal .modal-body').removeClass('escrolable');
-    })
-    $('#nuevoItemModal').on('hidden.bs.modal', function(e) {
-      $('#rowNuevoItemForm').empty();
-    })
-    $('#familiaresModal').on('hidden.bs.modal', function(e) {
-      $("#rowFamiliares").empty();
-    })
-    $('#nuevoFamiliarModal').on('hidden.bs.modal', function(e) {
-      $('#rowNuevoFamiliar').empty();
-    })
-    $('#subirArchivoModal').on('hidden.bs.modal', function(e) {
-      $("#subirArchivoModal input").val('');
-    });
-    $('#mensajeModal').on('hidden.bs.modal', function(e) {
-      $("#mensajeModal #titulo_mensaje, #mensajeModal #mensaje").text('');
-      $("#mensajeModal #campos_mensaje").empty();
-      $("#mensajeModal #btnConfirmar").removeAttr('onclick');
-    });
-    $('#subirVisitaModal').on('hidden.bs.modal', function(e) {
-      $("#subirVisitaModal input").val('');
-      $('#divInfoVisita').empty();
-    })
+$(function() {
+  $("#fecha1, #fecha2").datepicker({
+    dateFormat: 'dd-mm-yy',
+    prevText: '&#x3c;', // Cambia el texto del botón "prev" por el símbolo <
+    nextText: '&#x3e;', // Cambia el texto del botón "next" por el símbolo >
+  });
+});
 
 
-    $("#newModal").on("hidden.bs.modal", function() {
-      $("#examen_registro").empty();
-      $("#examen_registro").append('<option value="">Selecciona</option><option value="0" selected>N/A</option>');
-      <?php
-      foreach ($paquetes_antidoping as $paq) { ?>
-        $("#examen_registro").append('<option value="<?php echo $paq->id; ?>"><?php echo $paq->nombre.' ('.$paq->conjunto.')'; ?></option>');
-      <?php
-      } ?>
-			$("#newModal input, #newModal select, #newModal textarea").val('');
-			$("#newModal #msj_error").css('display', 'none');
-			$("#examen_registro,#examen_medico,#examen_psicometrico").val(0);
-      $('#pais').val('México')
-      $('#detalles_previo').empty();
-      
-		})
-    $("#asignarCandidatoModal").on("hidden.bs.modal", function() {
-			$("#asignarCandidatoModal select").val('');
-			$("#asignarCandidatoModal #msj_error").css('display', 'none');
-		})
-    $('#avancesModal').on('hidden.bs.modal', function(e) {
-      $("#avancesModal #msj_error").css('display', 'none');
-      $("#avancesModal input, #avancesModal textarea").val('');
-    });
-    $('#generalesInternacionalesModal').on('hidden.bs.modal', function(e) {
-      $("#generalesInternacionalesModal #msj_error").css('display', 'none');
-      $("#generalesInternacionalesModal input, #generalesInternacionalesModal select").val('');
-    });
-   
-    
-    
-    
-    $('#refPersonalesModal').on('hidden.bs.modal', function(e) {
-      $("#refPersonalesModal div[id^='msj_error_personal']").css('display', 'none');
-      $("#contenedor_ref_personales").empty();
-    });
-    $('#legalesModal').on('hidden.bs.modal', function(e) {
-      $("#legalesModal #msj_error").css('display', 'none');
-      $("#legalesModal input, #legalesModal textarea").val('');
-    });
-    
-    $('#docsModal').on('hidden.bs.modal', function(e) {
-      $("#docsModal #msj_error").css('display', 'none');
-      $("#docsModal input, #docsModal select").val('');
-    });
-    
-    
-    
-    $('#refVecinalesModal').on('hidden.bs.modal', function(e) {
-      $("#refVecinalesModal input[id^='msj_error']").css('display', 'none');
-      $("#refVecinalesModal input").val('');
-    });
-    
-    $('#completarModal').on('hidden.bs.modal', function(e) {
-      $("#completarModal #msj_error").css('display', 'none');
-      $("#completarModal input, #completarModal textarea, #completarModal select").val('');
-    });
-    $('#pruebasModal').on('hidden.bs.modal', function(e) {
-      $("#pruebasModal #msj_error").css('display', 'none');
-      $("#pruebasModal select").val('');
-    });
-    
-    
-    
-    $('#gapsModal').on('hidden.bs.modal', function(e) {
-      $("#gapsModal #msj_error").css('display', 'none');
-      $("#div_antesgap").empty();
-      $("#gapsModal input, #gapsModal textarea").val('');
-    });
-    
-    
-    $('#accesoFormModal').on('hidden.bs.modal', function(e) {
-      $("#tokenForm").val('');
-      $("#accesoFormModal input").val('');
-    });
-    
-
-
-
-    $('#extraLaboralModal').on('hidden.bs.modal', function(e) {
-      $('#rowExtralaboral').empty();
-    });
-    
+$(document).ready(function() {
+  $('#formModal').on('hidden.bs.modal', function(e) {
+    $("#rowForm").empty();
+    $('#btnOpenFiles').remove()
+    $('#btnSubmitForm').text('Guardar')
+    $('#btnSubmitForm').css('display', 'initial')
+    $('#formModal .modal-body').removeClass('escrolable');
   })
+  $('#nuevoItemModal').on('hidden.bs.modal', function(e) {
+    $('#rowNuevoItemForm').empty();
+  })
+  $('#familiaresModal').on('hidden.bs.modal', function(e) {
+    $("#rowFamiliares").empty();
+  })
+  $('#nuevoFamiliarModal').on('hidden.bs.modal', function(e) {
+    $('#rowNuevoFamiliar').empty();
+  })
+  $('#subirArchivoModal').on('hidden.bs.modal', function(e) {
+    $("#subirArchivoModal input").val('');
+  });
+  $('#mensajeModal').on('hidden.bs.modal', function(e) {
+    $("#mensajeModal #titulo_mensaje, #mensajeModal #mensaje").text('');
+    $("#mensajeModal #campos_mensaje").empty();
+    $("#mensajeModal #btnConfirmar").removeAttr('onclick');
+  });
+  $('#subirVisitaModal').on('hidden.bs.modal', function(e) {
+    $("#subirVisitaModal input").val('');
+    $('#divInfoVisita').empty();
+  })
+
+  $("#ModalFACIS").on("hidden.bs.modal", function() {
+    $("#Modal-FACIS select").val('');
+    $("#Modal-FACIS #msj_error").css('display', 'none');
+  })
+
+
+  $("#newModal").on("hidden.bs.modal", function() {
+    $("#examen_registro").empty();
+    $("#examen_registro").append('<option value="">Selecciona</option><option value="0" selected>N/A</option>');
+    <?php
+      foreach ($paquetes_antidoping as $paq) { ?>
+    $("#examen_registro").append(
+      '<option value="<?php echo $paq->id; ?>"><?php echo $paq->nombre.' ('.$paq->conjunto.')'; ?></option>');
+    <?php
+      } ?>
+    $("#newModal input, #newModal select, #newModal textarea").val('');
+    $("#newModal #msj_error").css('display', 'none');
+    $("#examen_registro,#examen_medico,#examen_psicometrico").val(0);
+    $('#pais').val('México')
+    $('#detalles_previo').empty();
+
+  })
+
+  $("#asignarCandidatoModal").on("hidden.bs.modal", function() {
+    $("#asignarCandidatoModal select").val('');
+    $("#asignarCandidatoModal #msj_error").css('display', 'none');
+  })
+  $('#avancesModal').on('hidden.bs.modal', function(e) {
+    $("#avancesModal #msj_error").css('display', 'none');
+    $("#avancesModal input, #avancesModal textarea").val('');
+  });
+  $('#generalesInternacionalesModal').on('hidden.bs.modal', function(e) {
+    $("#generalesInternacionalesModal #msj_error").css('display', 'none');
+    $("#generalesInternacionalesModal input, #generalesInternacionalesModal select").val('');
+  });
+
+
+
+
+  $('#refPersonalesModal').on('hidden.bs.modal', function(e) {
+    $("#refPersonalesModal div[id^='msj_error_personal']").css('display', 'none');
+    $("#contenedor_ref_personales").empty();
+  });
+  $('#legalesModal').on('hidden.bs.modal', function(e) {
+    $("#legalesModal #msj_error").css('display', 'none');
+    $("#legalesModal input, #legalesModal textarea").val('');
+  });
+
+  $('#docsModal').on('hidden.bs.modal', function(e) {
+    $("#docsModal #msj_error").css('display', 'none');
+    $("#docsModal input, #docsModal select").val('');
+  });
+
+
+
+  $('#refVecinalesModal').on('hidden.bs.modal', function(e) {
+    $("#refVecinalesModal input[id^='msj_error']").css('display', 'none');
+    $("#refVecinalesModal input").val('');
+  });
+
+  $('#completarModal').on('hidden.bs.modal', function(e) {
+    $("#completarModal #msj_error").css('display', 'none');
+    $("#completarModal input, #completarModal textarea, #completarModal select").val('');
+  });
+  $('#pruebasModal').on('hidden.bs.modal', function(e) {
+    $("#pruebasModal #msj_error").css('display', 'none');
+    $("#pruebasModal select").val('');
+  });
+
+
+
+  $('#gapsModal').on('hidden.bs.modal', function(e) {
+    $("#gapsModal #msj_error").css('display', 'none');
+    $("#div_antesgap").empty();
+    $("#gapsModal input, #gapsModal textarea").val('');
+  });
+
+
+  $('#accesoFormModal').on('hidden.bs.modal', function(e) {
+    $("#tokenForm").val('');
+    $("#accesoFormModal input").val('');
+  });
+
+
+
+
+  $('#extraLaboralModal').on('hidden.bs.modal', function(e) {
+    $('#rowExtralaboral').empty();
+  });
+
+})
 </script>

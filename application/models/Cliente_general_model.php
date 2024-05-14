@@ -27,6 +27,35 @@ class Cliente_general_model extends CI_Model{
       return FALSE;
     }
   }
+
+/*********************FACIS****************************************/
+public function getCandidatosFACIS() {
+  $query = $this->db
+              ->select("candidato.id, candidato.nombre, candidato.paterno, candidato.materno") 
+              ->from('candidato')
+              ->join('candidato_seccion', 'candidato_seccion.id_candidato = candidato.id')
+              ->where('candidato_seccion.proyecto', 'FACIS') // Filtra por el proyecto 'FACIS'
+              ->where('candidato.id_cliente', 1) 
+              ->get();
+  if ($query->num_rows() > 0) {
+      return $query->result(); // Devuelve los resultados sin convertir a JSON
+  } else {
+      return FALSE;
+  }
+}
+/********Insertar datos**************************************************************/      
+/*public function guardarCandidato($datos) {
+
+    $this->db->insert('', $datos);
+    
+    if ($this->db->affected_rows() > 0) {
+        return true; 
+    } else {
+        return false; 
+    }
+}*/
+/*************************************************************/
+
   function getDatosCliente($id_cliente){
     $this->db
     ->select('cl.*')

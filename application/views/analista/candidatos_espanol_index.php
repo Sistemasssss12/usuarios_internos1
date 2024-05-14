@@ -4,6 +4,14 @@
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Cliente: <small><?php echo $cliente; ?></small></h1><br>
+
+    <a href="#" class="btn btn-primary btn-icon-split" id="btn_nuevo" onclick="abrirModalFACIS()">
+			<span class="icon text-white-50">
+				<i class="fas fa-user-plus"></i>
+			</span>
+			<span class="text">Actualizar FACIS</span>
+		</a>
+   
 		<a href="#" class="btn btn-primary btn-icon-split" id="btn_nuevo" onclick="nuevoRegistro()">
 			<span class="icon text-white-50">
 				<i class="fas fa-user-plus"></i>
@@ -4578,6 +4586,7 @@
       }
     });
   }
+
   function asignarCandidatoAnalista(){
     var analistas = getAnalistasActivos();
     var candidatos = getCandidatosActivosPorCliente(id);
@@ -8865,6 +8874,41 @@
 	function regresarListado() {
 		location.reload();
 	}
+
+
+/************************FACIS**********************************/
+function cargarCandidatos() {
+    $.ajax({
+        url: '<?php echo base_url('Cliente_General/obtenerCandidatosFACIS'); ?>', 
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+         // console.log(response);
+            // Limpiar el select
+            $('#getCandidatosFACIS').empty();
+            // Iterar sobre los candidatos y agregarlos al select
+            $.each(response, function(index, candidato) {
+                $('#getCandidatosFACIS').append($('<option>', {
+                    value: candidato.id,
+                    text: candidato.nombre + ' ' + candidato.paterno + ' ' + candidato.materno
+                }));
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            console.error('Error al obtener los candidatos.');
+        }
+    });
+}
+
+function abrirModalFACIS() {
+    $('#ModalFACIS').modal('show');
+}
+
+$('#ModalFACIS').on('show.bs.modal', function(e) {
+    cargarCandidatos();
+});
+   /***************************************************/ 
 </script>
 
 <script src="<?php echo base_url(); ?>js/analista/functions.js"></script>
