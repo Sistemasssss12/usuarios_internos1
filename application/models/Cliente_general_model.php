@@ -29,31 +29,95 @@ class Cliente_general_model extends CI_Model{
   }
 
 /*********************FACIS****************************************/
-public function getCandidatosFACIS() {
-  $query = $this->db
-              ->select("candidato.id, candidato.nombre, candidato.paterno, candidato.materno") 
-              ->from('candidato')
-              ->join('candidato_seccion', 'candidato_seccion.id_candidato = candidato.id')
-              ->where('candidato_seccion.proyecto', 'FACIS') // Filtra por el proyecto 'FACIS'
-              ->where('candidato.id_cliente', 1) 
-              ->get();
-  if ($query->num_rows() > 0) {
-      return $query->result(); // Devuelve los resultados sin convertir a JSON
-  } else {
+
+/********ACTUALIZAR DATOS*************************************************************/      
+  public function getCandidatosFACIS() {
+      $query = $this->db
+          ->select("candidato.id, candidato.nombre, candidato.paterno, candidato.materno")
+          ->from('candidato')
+          ->join('candidato_seccion', 'candidato_seccion.id_candidato = candidato.id')
+          ->where('candidato_seccion.proyecto', 'FACIS')
+          ->where('candidato.id_cliente', 1)
+          ->get();
+      return $query->num_rows() > 0 ? $query->result() : FALSE;
+  }
+
+  public function getCandidatoById($id) {
+    $this->db->where('id', $id);
+    $query = $this->db->get('candidato'); 
+    return $query->row();
+}
+
+
+public function actualizarCandidatos($candidatos, $fecha_Inicio, $fecha_Final) {
+  // Iniciar transacción
+  $this->db->trans_start();
+
+  foreach ($candidatos as $id_candidato) {
+      // Actualizar la tabla candidato_bgc
+      $data_bgc = array(
+          'creacion' => $fecha_Final,
+          'edicion' => $fecha_Final
+      );
+      $this->db->where('id_candidato', $id_candidato);
+      $this->db->update('candidato_bgc', $data_bgc);
+
+    //  var_dump($data_bgc);
+
+      // Actualizar la tabla candidato
+      $data_candidato = array(
+          'fecha_alta' => $fecha_Inicio
+      );
+      $this->db->where('id', $id_candidato);
+      $this->db->update('candidato', $data_candidato);
+
+      // Actualizar la tabla candidato_pruebas
+      $data_pruebas = array(
+          'creacion' => $fecha_Final,
+          'edicion' => $fecha_Final
+      );
+      $this->db->where('id_candidato', $id_candidato);
+      $this->db->update('candidato_pruebas', $data_pruebas);
+
+  }
+
+  // Completar transacción
+  $this->db->trans_complete();
+
+  // Verificar el estado de la transacción
+  if ($this->db->trans_status() === FALSE) {
       return FALSE;
+  } else {
+      return TRUE;
   }
 }
-/********Insertar datos**************************************************************/      
-/*public function guardarCandidato($datos) {
 
-    $this->db->insert('', $datos);
-    
-    if ($this->db->affected_rows() > 0) {
-        return true; 
-    } else {
-        return false; 
-    }
-}*/
+
+public function getCandidatoInfoConDatos($id, $fecha_Inicio, $fecha_Final) {
+  $this->db->where('id', $id);
+  $query = $this->db->get('candidato');
+  $candidato = $query->row();
+  
+  if ($candidato) {
+      $nombreCompleto = $candidato->nombre . ' ' . $candidato->paterno . ' ' . $candidato->materno;
+      return 'ID candidato: ' . $id . ' - ' . ' | Fecha Inicio: ' . $fecha_Inicio . ' | Fecha Final: ' . $fecha_Final;
+  } else {
+      return 'Candidato con ID: ' . $id . ' no encontrado.';
+  }
+}
+
+
+  public function guardarCandidatosFACIS($candidatos) {
+      $data = [];
+      foreach ($candidatos as $candidatoId) {
+          $data[] = [
+              'id_candidato' => $candidatoId,
+              'proyecto' => 'FACIS'
+          ];
+      }
+      return $this->db->insert_batch('candidato_seccion', $data);
+  }
+
 /*************************************************************/
 
   function getDatosCliente($id_cliente){

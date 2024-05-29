@@ -37,50 +37,47 @@
 }
 </style>
 
+
 <div class="modal fade" id="ModalFACIS" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Actualizar FACIS</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
-        <!--<div class="alert alert-info text-center">Actualizar FACIS</div> -->
+        
         <form id="FormActualizarFACIS">
           <div class="row">
             <div class="col-6">
-              <label for="fecha1">Fecha 1</label>
-              <input type="text" class="form-control" id="fecha1" name="fecha1" autocomplete="off">
+              <label for="fecha_Inicio">Fecha inicial</label>
+              <input type="text" class="form-control" id="fecha_Inicio" name="fecha_Inicio" autocomplete="off">
             </div>
             <br>
             <div class="col-6">
-              <label for="fecha2">Fecha 2</label>
-              <input type="text" class="form-control" id="fecha2" name="fecha2" autocomplete="off">
+              <label for="fecha_Final">Fecha final</label>
+              <input type="text" class="form-control" id="fecha_Final" name="fecha_Final" autocomplete="off" value="" >
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <br>
               <label>Selecciona a los candidatos (FACIS)</label>
-              <select id="getCandidatosFACIS" name="getCandidatosFACIS" class="form-control"> </select>
+              <select id="getCandidatosFACIS" name="getCandidatosFACIS" class="form-control select2">
+                <option value="" selected>Selecciona</option>
               </select>
               <br>
             </div>
           </div>
-          <!-- Div flexible para mostrar los clientes y usuarios seleccionados -->
           <div class="row">
             <div id="espacio_agregar_Candidatos" class="col-12 d-flex flex-column mb-3">
             </div>
           </div>
         </form>
-
-        <div id="msj_error" class="alert alert-danger hidden"></div>
+        <div id="mensajeResultado" class="alert-danger  hidden"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="actualizarFacis()">Registrar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cerrar_modal">Cerrar</button>
+        <button type="button" class="btn btn-success" id="btnActualizar" onclick="actualizarFacis()">Actualizar</button>
       </div>
     </div>
   </div>
@@ -2002,16 +1999,31 @@
 </div>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
 $(function() {
-  $("#fecha1, #fecha2").datepicker({
+  $("#fecha_Inicio, #fecha_Final").datepicker({
     dateFormat: 'dd-mm-yy',
     prevText: '&#x3c;', // Cambia el texto del botón "prev" por el símbolo <
     nextText: '&#x3e;', // Cambia el texto del botón "next" por el símbolo >
   });
 });
 
+
+$('#getCandidatosFACIS').select2({
+            placeholder: 'Selecciona', // Texto de placeholder
+            allowClear: true, // Permite limpiar la selección
+            width: '100%' // Ancho del select
+        });
+        
+        // Cargar candidatos después de abrir el modal
+       /* $('#ModalFACIS').on('shown.bs.modal', function () {
+            cargarCandidatos();
+        });*/
+
+  /************************************************************/      
 
 $(document).ready(function() {
   $('#formModal').on('hidden.bs.modal', function(e) {
@@ -2043,10 +2055,6 @@ $(document).ready(function() {
     $('#divInfoVisita').empty();
   })
 
-  $("#ModalFACIS").on("hidden.bs.modal", function() {
-    $("#Modal-FACIS select").val('');
-    $("#Modal-FACIS #msj_error").css('display', 'none');
-  })
 
 
   $("#newModal").on("hidden.bs.modal", function() {

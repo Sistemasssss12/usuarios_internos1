@@ -839,7 +839,7 @@ class Client extends Custom_Controller{
 										$mail->Host     = 'mail.rodicontrol.com';
 										$mail->SMTPAuth = true;
 										$mail->Username = 'rodicontrol@rodicontrol.com';
-										$mail->Password = 'r49o*&rUm%91';
+										$mail->Password = 'r49o*&rUm%91prueba';
 										$mail->SMTPSecure = 'ssl';
 										$mail->Port     = 465;
                     $mail->addCC('rodicontrol@rodicontrol.com');
@@ -877,7 +877,7 @@ class Client extends Custom_Controller{
 										$mail->Host     = 'mail.rodicontrol.com';
 										$mail->SMTPAuth = true;
 										$mail->Username = 'rodicontrol@rodicontrol.com';
-										$mail->Password = 'r49o*&rUm%91';
+										$mail->Password = 'r49o*&rUm%91prueba';
 										$mail->SMTPSecure = 'ssl';
 										$mail->Port     = 465;
 										
@@ -1341,7 +1341,7 @@ class Client extends Custom_Controller{
 										$mail->Host     = 'mail.rodicontrol.com';
 										$mail->SMTPAuth = true;
 										$mail->Username = 'rodicontrol@rodicontrol.com';
-										$mail->Password = 'r49o*&rUm%91';
+										$mail->Password = 'r49o*&rUm%91prueba';
 										$mail->SMTPSecure = 'ssl';
 										$mail->Port     = 465;
                     $mail->addCC('rodicontrol@rodicontrol.com');
@@ -1379,7 +1379,7 @@ class Client extends Custom_Controller{
 										$mail->Host     = 'mail.rodicontrol.com';
 										$mail->SMTPAuth = true;
 										$mail->Username = 'rodicontrol@rodicontrol.com';
-										$mail->Password = 'r49o*&rUm%91';
+										$mail->Password = 'r49o*&rUm%91prueba';
 										$mail->SMTPSecure = 'ssl';
 										$mail->Port     = 465;
                     $mail->addCC('rodicontrol@rodicontrol.com');
@@ -1461,7 +1461,7 @@ class Client extends Custom_Controller{
       $mail->Host     = 'mail.rodicontrol.com';
       $mail->SMTPAuth = true;
       $mail->Username = 'rodicontrol@rodicontrol.com';
-      $mail->Password = 'r49o*&rUm%91';
+      $mail->Password = 'r49o*&rUm%91prueba';
       $mail->SMTPSecure = 'ssl';
       $mail->Port     = 465;
       $mail->addCC('rodicontrol@rodicontrol.com');

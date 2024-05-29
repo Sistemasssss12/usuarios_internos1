@@ -176,7 +176,7 @@ function editarUsuarioControlador()
     echo json_encode($msj);
   }
 
-  /*********************************************************************************/
+  /*****************************/
   function status() {
     $id_usuario = $this->session->userdata('id');
     $date = date('Y-m-d H:i:s');
@@ -224,7 +224,7 @@ function editarUsuarioControlador()
 
     echo json_encode($msj);
 }
-//__________________________________________________________________________________
+//________________________________________________
    function getActivos(){
     $res = $this->Cat_UsuarioInternos_model->getActivos();
     if($res){

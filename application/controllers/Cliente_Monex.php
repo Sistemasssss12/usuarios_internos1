@@ -455,7 +455,7 @@ class Cliente_Monex extends CI_Controller{
               $mail->Host     = 'mail.rodicontrol.com';
               $mail->SMTPAuth = true;
               $mail->Username = 'rodicontrol@rodicontrol.com';
-              $mail->Password = 'r49o*&rUm%91';
+              $mail->Password = 'r49o*&rUm%91prueba';
               $mail->SMTPSecure = 'ssl';
               $mail->Port     = 465;
               $mail->setFrom('rodicontrol@rodicontrol.com', 'Mensaje automático de RODICONTROL');
@@ -917,7 +917,7 @@ class Cliente_Monex extends CI_Controller{
                 $mail->Host     = 'mail.rodicontrol.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'rodicontrol@rodicontrol.com';
-                $mail->Password = 'r49o*&rUm%91';
+                $mail->Password = 'r49o*&rUm%91prueba';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port     = 465;
                 $mail->setFrom('rodicontrol@rodicontrol.com', 'RODI');

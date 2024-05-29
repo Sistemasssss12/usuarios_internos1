@@ -277,7 +277,7 @@ class Cat_Cliente extends CI_Controller{
     }
   }
 
-  /*******************************************************************************/
+  /******************/
   public function get_Proyecto_Y_SubClients() {
   $cliente_id = $this->input->post('cliente_id');
    
@@ -294,7 +294,7 @@ public function get_Proyecto() {
 
     echo json_encode(array('success' => true, 'data' => $data)); // Devolver los datos con un indicador de éxito
 }
-  /*******************************************************************************/
+  /***************************/
 
   public function get_Visibilidad() {
     $data = $this->cat_cliente_model->getVisibilidad();
@@ -302,7 +302,7 @@ public function get_Proyecto() {
    echo json_encode($data);
 }
 
-/*************************************************************/
+/*************/
 
 public function select_antidoping(){
   $paquete = $this->cat_cliente_model->getPaquetesAntidoping();
@@ -310,7 +310,7 @@ public function select_antidoping(){
   echo json_encode($paquete);
 }
 
-/***********************************************************************************/
+/********************************/
 public function boton_Guardar_1() {
   $this->form_validation->set_rules('id_clientePermisos', 'Cliente', 'required');
   $this->form_validation->set_rules('usuarios_seleccionados[]', 'Usuarios', 'required');

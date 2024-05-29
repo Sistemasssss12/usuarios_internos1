@@ -12,15 +12,40 @@ class Cliente_General extends Custom_Controller{
 		$this->usuario_sesion->checkStatusBD();
   }
 /************************FACIS*************************/
+public function obtenerCandidatosFACIS() {
+  $candidatos = $this->cliente_general_model->getCandidatosFACIS();
+  echo json_encode($candidatos);
+}
 
-  public function obtenerCandidatosFACIS() {
-  
-      $candidatos = $this->cliente_general_model->getCandidatosFACIS();
+public function actualizarCandidatosFACIS() {
+  $candidatos = $this->input->post('candidatos');
+  $fecha_Inicio = $this->input->post('fecha_Inicio');
+  $fecha_Final = $this->input->post('fecha_Final');
 
-      echo json_encode($candidatos);
+  if (empty($candidatos) || empty($fecha_Inicio) || empty($fecha_Final)) {
+      echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios.']);
+      return;
   }
 
-/******************************************************* */
+  if (!is_array($candidatos) || !strtotime($fecha_Inicio) || !strtotime($fecha_Final)) {
+      echo json_encode(['success' => false, 'message' => 'Datos inválidos.']);
+      return;
+  }
+
+  $fecha_Inicio = date('Y-m-d H:i:s', strtotime($fecha_Inicio));
+  $fecha_Final = date('Y-m-d H:i:s', strtotime($fecha_Final));
+
+  $this->load->model('Cliente_General_Model');
+
+  $resultado = $this->Cliente_General_Model->actualizarCandidatos($candidatos, $fecha_Inicio, $fecha_Final);
+
+  if ($resultado) {
+      echo json_encode(['success' => true, 'message' => 'Candidatos actualizados correctamente.']);
+  } else {
+      echo json_encode(['success' => false, 'message' => 'Error al actualizar los candidatos.']);
+  }
+}
+/************************************************************************/
 
   function index(){
     if ($this->session->userdata('logueado') && $this->session->userdata('tipo') == 1) {
@@ -841,7 +866,7 @@ class Cliente_General extends Custom_Controller{
                 $mail->Host     = 'mail.rodicontrol.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'rodicontrol@rodicontrol.com';
-                $mail->Password = 'r49o*&rUm%91';
+                $mail->Password = 'r49o*&rUm%91prueba';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port     = 465;
                 
@@ -1995,7 +2020,7 @@ class Cliente_General extends Custom_Controller{
               $mail->Host     = 'mail.rodicontrol.com';
               $mail->SMTPAuth = true;
               $mail->Username = 'rodicontrol@rodicontrol.com';
-              $mail->Password = 'r49o*&rUm%91';
+              $mail->Password = 'r49o*&rUm%91prueba';
               $mail->SMTPSecure = 'ssl';
               $mail->Port     = 465;
               $mail->setFrom('rodicontrol@rodicontrol.com', 'Rodi');
@@ -2021,7 +2046,7 @@ class Cliente_General extends Custom_Controller{
               $mail->Host     = 'mail.rodicontrol.com';
               $mail->SMTPAuth = true;
               $mail->Username = 'rodicontrol@rodicontrol.com';
-              $mail->Password = 'r49o*&rUm%91';
+              $mail->Password = 'r49o*&rUm%91prueba';
               $mail->SMTPSecure = 'ssl';
               $mail->Port     = 465;
               $mail->setFrom('rodicontrol@rodicontrol.com', 'Rodi');

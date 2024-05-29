@@ -918,7 +918,7 @@ class Candidato extends Custom_Controller{
           $mail->Host     = 'mail.rodicontrol.com';
           $mail->SMTPAuth = true;
           $mail->Username = 'rodicontrol@rodicontrol.com';
-          $mail->Password = 'r49o*&rUm%91';
+          $mail->Password = 'r49o*&rUm%91prueba';
           $mail->SMTPSecure = 'ssl';
           $mail->Port     = 465;
           $mail->setFrom('rodicontrol@rodicontrol.com', 'Mensaje automático de RODICONTROL');
@@ -5602,7 +5602,7 @@ class Candidato extends Custom_Controller{
                     $mail->Host     = 'mail.rodicontrol.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'rodicontrol@rodicontrol.com';
-                    $mail->Password = 'r49o*&rUm%91';
+                    $mail->Password = 'r49o*&rUm%91prueba';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port     = 465;
                     
@@ -6047,7 +6047,7 @@ class Candidato extends Custom_Controller{
                     $mail->Host     = 'mail.rodicontrol.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'rodicontrol@rodicontrol.com';
-                    $mail->Password = 'r49o*&rUm%91';
+                    $mail->Password = 'r49o*&rUm%91prueba';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port     = 465;
                     
@@ -6220,7 +6220,7 @@ class Candidato extends Custom_Controller{
                 $mail->Host     = 'mail.rodicontrol.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'rodicontrol@rodicontrol.com';
-                $mail->Password = 'r49o*&rUm%91';
+                $mail->Password = 'r49o*&rUm%91prueba';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port     = 465;
                 
@@ -7276,7 +7276,7 @@ class Candidato extends Custom_Controller{
                 $mail->Host     = 'mail.rodicontrol.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'rodicontrol@rodicontrol.com';
-                $mail->Password = 'r49o*&rUm%91';
+                $mail->Password = 'r49o*&rUm%91prueba';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port     = 465;
                 
@@ -8783,7 +8783,7 @@ class Candidato extends Custom_Controller{
         ]);
     }
 
-    /************************************************ Candidatos *********************************************************/
+    /************************************************Candidatos*********************************************/
     function registrarCandidatoEspanol(){
         date_default_timezone_set('America/Mexico_City');
         $date = date('Y-m-d H:i:s');
@@ -8914,7 +8914,7 @@ class Candidato extends Custom_Controller{
                     $mail->Host     = 'mail.rodicontrol.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'rodicontrol@rodicontrol.com';
-                    $mail->Password = 'r49o*&rUm%91';
+                    $mail->Password = 'r49o*&rUm%91prueba';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port     = 465;
                     $mail->setFrom('rodicontrol@rodicontrol.com', 'Rodi');
@@ -9091,7 +9091,7 @@ class Candidato extends Custom_Controller{
                     $mail->Host     = 'mail.rodicontrol.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'rodicontrol@rodicontrol.com';
-                    $mail->Password = 'r49o*&rUm%91';
+                    $mail->Password = 'r49o*&rUm%91prueba';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port     = 465;
                     $mail->setFrom('rodicontrol@rodicontrol.com', 'Rodi');
@@ -9674,7 +9674,7 @@ class Candidato extends Custom_Controller{
     
 
     
-    /************************************************ Rules Validate Form ************************************************/
+/************************************************RulesValidate Form*************************************/
 
     //Regla para nombres con espacios
     function alpha_space_only($str){
@@ -9705,7 +9705,7 @@ class Candidato extends Custom_Controller{
     }
     function string_values($str){
         if (!preg_match("/^\d+$|^[\d,\d]+$/",$str)){
-            //$this->form_validation->set_message('string_values', 'El campo {field} no es válido');
+            //$this->form_validation->set_message('string_values','El campo {field} no es válido');
             return FALSE;
         }
         else{
