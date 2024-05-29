@@ -35,7 +35,12 @@
   right: 5px;
   cursor: pointer;
 }
-</style>
+</style> 
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 
 <div class="modal fade" id="ModalFACIS" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -48,12 +53,12 @@
         
         <form id="FormActualizarFACIS">
           <div class="row">
-            <div class="col-6">
-              <label for="fecha_Inicio">Fecha inicial</label>
+            <div class="col-6 form-group">
+              <label for="fecha_Inicio">Fecha inicio</label>
               <input type="text" class="form-control" id="fecha_Inicio" name="fecha_Inicio" autocomplete="off">
             </div>
             <br>
-            <div class="col-6">
+            <div class="col-6 form-group">
               <label for="fecha_Final">Fecha final</label>
               <input type="text" class="form-control" id="fecha_Final" name="fecha_Final" autocomplete="off" value="" >
             </div>

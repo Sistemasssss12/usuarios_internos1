@@ -10198,6 +10198,7 @@ function regresarListado() {
 
 // Obtener la fecha actual y establecerla en el campo de fecha final
 $('#fecha_Final').val(new Date().toISOString().split('T')[0]);
+$('#fecha_Final').datepicker('setDate', new Date());
 
 // Inicializar select2
 $('.select2').select2();
@@ -10365,20 +10366,18 @@ function actualizarFacis() {
   });
 }
 
-
 function limpiarModalFACIS() {
   $('#getCandidatosFACIS').val(null).trigger('change'); // Limpiar el select2
+  $('#fecha_Final').datepicker('setDate', new Date()); // Restablecer la fecha final con la fecha actual
   $('#espacio_agregar_Candidatos').empty(); // Limpiar el div flexible
 
   // Limpiar las fechas utilizando el método setDate(null) del plugin de datepicker
   $('#fecha_Inicio').datepicker('setDate', null);
-  // $('#fecha_Final').datepicker('setDate', null);
   $('#mensajeResultado').addClass('hidden'); // Ocultar el mensaje de error si estaba visible
+  $('#ModalFACIS').on('shown.bs.modal', function (e) {
+        $('#fecha_Final').datepicker('setDate', new Date()); // Restablecer la fecha final con la fecha actual al abrir el modal
+    });
 }
-// Llamar a la función cargarCandidatos cuando se carga la página
-/*$(document).ready(function() {
-    cargarCandidatos();
-});*/
 </script>
 
 <script src="<?php echo base_url(); ?>js/analista/functions.js"></script>
